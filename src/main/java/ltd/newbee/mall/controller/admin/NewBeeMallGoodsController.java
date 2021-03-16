@@ -13,6 +13,7 @@ import ltd.newbee.mall.common.NewBeeMallCategoryLevelEnum;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -147,7 +148,7 @@ public class NewBeeMallGoodsController {
      */
     @RequestMapping(value = "/goods/save", method = RequestMethod.POST)
     @ResponseBody
-    public Result save(@RequestBody NewBeeMallGoods newBeeMallGoods) {
+    public Result save(@RequestBody NewBeeMallGoods newBeeMallGoods, @RequestBody GoodsImg goodsImg) {
         if (StringUtils.isEmpty(newBeeMallGoods.getGoodsName())
                 || StringUtils.isEmpty(newBeeMallGoods.getGoodsIntro())
                 || StringUtils.isEmpty(newBeeMallGoods.getTag())
@@ -157,7 +158,9 @@ public class NewBeeMallGoodsController {
                 || Objects.isNull(newBeeMallGoods.getStockNum())
                 || Objects.isNull(newBeeMallGoods.getGoodsSellStatus())
                 || StringUtils.isEmpty(newBeeMallGoods.getGoodsCoverImg())
-                || StringUtils.isEmpty(newBeeMallGoods.getGoodsDetailContent())) {
+                || StringUtils.isEmpty(newBeeMallGoods.getGoodsDetailContent())
+            //|| Objects.isNull(goodsImg.getImgStatus())
+        ) {
             return ResultGenerator.genFailResult("参数异常！");
         }
         String result = newBeeMallGoodsService.saveNewBeeMallGoods(newBeeMallGoods);
@@ -174,7 +177,7 @@ public class NewBeeMallGoodsController {
      */
     @RequestMapping(value = "/goods/update", method = RequestMethod.POST)
     @ResponseBody
-    public Result update(@RequestBody NewBeeMallGoods newBeeMallGoods) {
+    public Result update(@RequestBody NewBeeMallGoods newBeeMallGoods, @RequestBody GoodsImg goodsImg) {
         if (Objects.isNull(newBeeMallGoods.getGoodsId())
                 || StringUtils.isEmpty(newBeeMallGoods.getGoodsName())
                 || StringUtils.isEmpty(newBeeMallGoods.getGoodsIntro())
@@ -185,7 +188,9 @@ public class NewBeeMallGoodsController {
                 || Objects.isNull(newBeeMallGoods.getStockNum())
                 || Objects.isNull(newBeeMallGoods.getGoodsSellStatus())
                 || StringUtils.isEmpty(newBeeMallGoods.getGoodsCoverImg())
-                || StringUtils.isEmpty(newBeeMallGoods.getGoodsDetailContent())) {
+                || StringUtils.isEmpty(newBeeMallGoods.getGoodsDetailContent())
+            //|| Objects.isNull(goodsImg.getImgStatus())
+        ) {
             return ResultGenerator.genFailResult("参数异常！");
         }
         String result = newBeeMallGoodsService.updateNewBeeMallGoods(newBeeMallGoods);

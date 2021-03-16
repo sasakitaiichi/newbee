@@ -9,10 +9,17 @@
 package ltd.newbee.mall.controller.common;
 
 import ltd.newbee.mall.common.Constants;
+import ltd.newbee.mall.controller.vo.NewBeeMallGoodsDetailVO;
+import ltd.newbee.mall.controller.vo.NewBeeMallGoodsImgDetailVO;
+import ltd.newbee.mall.dao.GoodsImgMapper;
+import ltd.newbee.mall.entity.GoodsImg;
+import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.NewBeeMallUtils;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -43,28 +51,73 @@ public class UploadController {
 
     @Autowired
     private StandardServletMultipartResolver standardServletMultipartResolver;
+    @Lazy
+    @Resource
+    private NewBeeMallGoodsService newBeeMallGoodsService;
+    @Lazy
+    @Resource
+    @Autowired
+    private GoodsImgMapper goodsImgMapper;
 
     @PostMapping({"/upload/file"})
     @ResponseBody
-    public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException {
+    public Result upload(@RequestParam("goodsId") Long goodsId, @RequestParam("imgStatus") String imgStatus, HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException {
+        Byte aaa = Byte.parseByte(imgStatus);
         String fileName = file.getOriginalFilename();
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));//寻找name去除后缀名
         //生成文件名称通用方法
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Random r = new Random();
         StringBuilder tempName = new StringBuilder();
-        tempName.append(sdf.format(new Date())).append(r.nextInt(100)).append(suffixName);
-        String newFileName = tempName.toString();
+        tempName.append(sdf.format(new Date())).append(r.nextInt(100)).append(suffixName);//不是很清楚 是关于取时间的
+        String newFileName = tempName.toString();//返回tempName的结果
         File fileDirectory = new File(Constants.FILE_UPLOAD_DIC);
         //创建文件
         File destFile = new File(Constants.FILE_UPLOAD_DIC + newFileName);
+        //File destFile = new File("C:\\Users\\Administrator\\Desktop\\lin\\内容\\up\\" + newFileName);//传文件的地址
         try {
-            if (!fileDirectory.exists()) {
+            if (!fileDirectory.exists()) {//指定目录文件不存在
                 if (!fileDirectory.mkdir()) {
                     throw new IOException("文件夹创建失败,路径为：" + fileDirectory);
                 }
             }
-            file.transferTo(destFile);
+
+            //在这里进service
+            List<GoodsImg> goodsImgList = new ArrayList<GoodsImg>();
+            List<GoodsImg> goodsBigImgList = new ArrayList<GoodsImg>();
+            List<GoodsImg> goodsSmallImgList = new ArrayList<GoodsImg>();
+            NewBeeMallGoods newBeeMallGoods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
+            goodsBigImgList = goodsImgMapper.selectGoodsBigImg(goodsId);
+            goodsSmallImgList = goodsImgMapper.selectGoodsSmallImg(goodsId);
+            GoodsImg goodsImg = new GoodsImg();
+            goodsImgList = goodsImgMapper.selectGoodsImg(goodsId);
+/*            for (int i = 0; i < goodsImgList.size(); i++) {
+                GoodsImg sortedGoodsList = goodsImgList.get(i);
+                if ((sortedGoodsList.getGoodsId() == goodsId) && sortedGoodsList.getImg() == newFileName ){
+                    throw new IOException("文件夹上传失败,id为：" + goodsId + "的数据中文件名已存在");
+                }
+            }*/
+            goodsImg.setGoodsId(newBeeMallGoods.getGoodsId());
+            goodsImg.setImg("/goods-img/" + newFileName);
+            goodsImg.setImgStatus(aaa);
+
+            if (goodsImgList.size() < 1) {//判断goodsId在数据库内是否存在，不存在设置为1
+                goodsImg.setOrderby((byte) 1);
+            } else {
+                if (aaa == 1) {//goodsId在数据库内存在的话，判断imgStatu的值等于1的话，取其长度后加一
+                    int goodsImgListorder = goodsSmallImgList.size() + 1;
+                    goodsImg.setOrderby((byte) goodsImgListorder);
+                } else {
+                    int goodsImgListorder = goodsBigImgList.size() + 1;
+                    goodsImg.setOrderby((byte) goodsImgListorder);
+                }
+            }
+            int insertImg = newBeeMallGoodsService.ImgInsertA(goodsImg);
+            //在这里出service
+            file.transferTo(destFile);//把文件上传到upload
+            NewBeeMallGoodsImgDetailVO goodsimgVO = new NewBeeMallGoodsImgDetailVO();
+            httpServletRequest.setAttribute("goodsImgVo", goodsimgVO);
+
             Result resultSuccess = ResultGenerator.genSuccessResult();
             resultSuccess.setData(NewBeeMallUtils.getHost(new URI(httpServletRequest.getRequestURL() + "")) + "/upload/" + newFileName);
             return resultSuccess;

@@ -45,9 +45,9 @@ $(function () {
         }
     }
     editorD.create();
-
     //图片上传插件初始化 用于商品预览图上传
     new AjaxUpload('#uploadGoodsCoverImg', {
+        //action: '/admin/upload/file?goodsId=' + 10906 + '&imgStatus = '+ $("input[name='imgStatus']:checked").val(),
         action: '/admin/upload/file',
         name: 'file',
         autoSubmit: true,
@@ -68,6 +68,34 @@ $(function () {
             }
         }
     });
+    //图片上传插件初始化 用于商品预览图上传
+    new AjaxUpload('#uploadGoodsImg', {
+        action: '/admin/upload/file?goodsId=10906&imgStatus=0',
+        //action: '/admin/upload/file?goodsId',
+        name: 'file',
+        autoSubmit: true,
+        responseType: "json",
+        onSubmit: function (file, extension) {
+            if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))) {
+                alert('只支持jpg、png、gif格式的文件！');
+                return false;
+            }
+            var newGoodsId = $('#goodsId').val();
+            this._settings.action = this._settings.action.replace('goodsId=10906', 'goodsId=' + newGoodsId);
+            var valu = $("input[name='imgStatus']:checked").val();
+            this._settings.action = this._settings.action.replace('&imgStatus=0', '&imgStatus=' + valu);
+
+        },
+        onComplete: function (file, r) {
+            if (r != null && r.resultCode == 200) {
+                $("#goodsImg").attr("src", r.data);
+                $("#goodsImg").attr("style", "width: 128px;height: 128px;display:block;");
+                return false;
+            } else {
+                alert("error");
+            }
+        }
+    });
 });
 
 $('#saveButton').click(function () {
@@ -80,6 +108,7 @@ $('#saveButton').click(function () {
     var goodsIntro = $('#goodsIntro').val();
     var stockNum = $('#stockNum').val();
     var goodsSellStatus = $("input[name='goodsSellStatus']:checked").val();
+
     var goodsDetailContent = editorD.txt.html();
     var goodsCoverImg = $('#goodsCoverImg')[0].src;
     if (isNull(goodsCategoryId)) {
@@ -148,6 +177,14 @@ $('#saveButton').click(function () {
         });
         return;
     }
+
+
+    /*    if (isNull(imgStatus)) {
+            swal("请选择图片大小", {
+                icon: "error",
+            });
+            return;
+        }*/
     if (isNull(goodsDetailContent)) {
         swal("请输入商品介绍", {
             icon: "error",
@@ -180,6 +217,8 @@ $('#saveButton').click(function () {
         "goodsCoverImg": goodsCoverImg,
         "goodsCarousel": goodsCoverImg,
         "goodsSellStatus": goodsSellStatus
+        //  , "imgStatus": imgStatus
+
     };
     if (goodsId > 0) {
         url = '/admin/goods/update';
@@ -197,6 +236,7 @@ $('#saveButton').click(function () {
             "goodsCoverImg": goodsCoverImg,
             "goodsCarousel": goodsCoverImg,
             "goodsSellStatus": goodsSellStatus
+            //     , "imgStatus": imgStatus
         };
     }
     console.log(data);

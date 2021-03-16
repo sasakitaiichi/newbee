@@ -31,7 +31,6 @@
         cursor: pointer;
     }
 
-    /* Next & previous buttons */
     .prev,
     .next {
         cursor: pointer;
@@ -53,6 +52,11 @@
         right: 0;
         border-radius: 3px 0 0 3px;
     }
+
+    .prev {
+        left: 0;
+    }
+
 
     /* On hover, add a black background color with a little bit see-through */
     .prev:hover,
@@ -82,16 +86,22 @@
         display: table;
         clear: both;
 
+
     }
 
     .wrap {
         display: flex;
+        flex-flow: row wrap;
+        flex: 0 0 20%;
     }
 
     /* Six columns side by side */
     .column {
-        float: left;
-        width: 16.66%;
+
+        display: flex;
+        flex-flow: row wrap;
+
+        width: 33%;
 
 
     }
@@ -123,12 +133,10 @@
             <div class="clear"></div>
         </div>
     </div>
-
     <div class="intro mt20 w clearfix">
         <!--~~~~~~~~~~~~~~~~~~~~~~-->
+
         <div class="left fl" style="position: relative;">
-
-
             <div class="swiper-container fl">
                 <th:block th:unless="${#lists.isEmpty(goodsBigImgDetail)}">
                     <th:block th:each="bigImg : ${goodsBigImgDetail}">
@@ -136,40 +144,29 @@
                             <!--<div class="numbertext" id="demo">/</div>+'/'+${orderby.size()}-->
                             <div class="mySlides block">
                                 <div class="numbertext" th:text="|${bigImg.orderby}/${goodsBigImgDetail.size()}|"></div>
-                                <!--<div class="numbertext" th:text="${goodsBigImgDetail.size()}"></div>-->
-                                <!--<div class="numbertext" th:text="${bigImg.orderby}"></div>-->
                                 <img th:src="@{${bigImg.img}}" style="width:100%">
-
                             </div>
                         </div>
                     </th:block>
                 </th:block>
             </div>
+            <a class="prev" style=" z-index:10;margin-left:34px;" onclick="plusSlides(-1)">❮</a>
+            <a class="next" style=" z-index:10;" onclick="plusSlides(1)">❯</a>
 
-            <div class="swiper-container Lb">
-
-                <!--<img th:src="@{${goodsDetail.goodsCoverImg}}">-->
+            <div class="swiper-container Lb" style="display:flex;width: 100%;flex: 0 0 20%;">
                 <th:block th:unless="${#lists.isEmpty(goodsSmallImgDetail)}">
                     <th:block th:each="smallImg : ${goodsSmallImgDetail}">
-                        <div class="wrap">
-                            <div class="row">
-                                <div class="column">
-                                    <img class="demo cursor" th:src="@{${smallImg.img}}" style="width:100%"
-                                         th:onclick="'currentSlide('+${smallImg.orderby}+')'">
-                                </div>
-                            </div>
+                        <div class="column">
+                            <img class="demo cursor" th:src="@{${smallImg.img}}" style="width:100%"
+                                 th:onclick="'currentSlide('+${smallImg.orderby}+')'">
                         </div>
                     </th:block>
                 </th:block>
-
             </div>
 
-
-            <!--                <a class="prev" onclick="plusSlides(-1)">❮</a>
-                            <a class="next" onclick="plusSlides(1)">❯</a>-->
-
-
         </div>
+
+
         <!--~~~~~~~~~~~~~~~~~~~~~~-->
 
         <div class="right fr">
@@ -325,15 +322,9 @@
         var i;
         var slides = document.getElementsByClassName("mySlides");
         /*getElementsByClassName() 方法返回文档中所有指定类名的元素集合，作为 NodeList 对象。
-        NodeList 对象代表一个有顺序的节点列表。
-        https://www.runoob.com/jsref/met-document-getelementsbyclassname.html*/
+        NodeList 对象代表一个有顺序的节点列表。*/
         var dots = document.getElementsByClassName("demo");
         var captionText = document.getElementById("caption");
-        /*        var orderLength = slides.length ;
-                var number = (n) + "/" + (orderLength);
-
-                document.getElementById("demo").innerHTML= number;*/
-
         if (n > slides.length) {
             slideIndex = 1
         }

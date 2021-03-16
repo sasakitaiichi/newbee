@@ -16,6 +16,13 @@ $(function () {
                 width: 80,
                 formatter: goodsSellStatusFormatter
             },
+/*            {
+                label: '图片大小',
+                name: 'imgStatus',
+                index: 'imgStatus',
+                width: 80,
+                formatter: imgStatusFormatter
+            },*/
             {label: '创建时间', name: 'createTime', index: 'createTime', width: 60}
         ],
         height: 760,
@@ -58,6 +65,16 @@ $(function () {
             return "<button type=\"button\" class=\"btn btn-block btn-secondary btn-sm\" style=\"width: 80%;\">已下架</button>";
         }
     }
+
+    /*    function imgStatusFormatter(cellvalue) {
+            //图片大小 0-大图 1-小图
+            if (cellvalue == 0) {
+                return "<button type=\"button\" class=\"btn btn-block btn-success btn-sm\" style=\"width: 80%;\">销售中a</button>";
+            }
+            if (cellvalue == 1) {
+                return "<button type=\"button\" class=\"btn btn-block btn-secondary btn-sm\" style=\"width: 80%;\">已下架a</button>";
+            }
+        }*/
 
     function coverImageFormatter(cellvalue) {
         return "<img src='" + cellvalue + "' height=\"80\" width=\"80\" alt='商品主图'/>";

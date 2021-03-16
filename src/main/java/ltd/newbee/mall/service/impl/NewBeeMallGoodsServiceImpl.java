@@ -184,6 +184,13 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 
     }
 
+    @Override
+    public int ImgInsertA(GoodsImg record) {
+        int insertImg = goodsImgMapper.ImgInsert(record);
+
+        return insertImg;
+    }
+
 }
 
 

@@ -105,5 +105,13 @@ public interface NewBeeMallGoodsService {
      *//*
     PageResult searchGoodsBigImg(Long goodsId);*/
 
+    /**
+     * 增加图片
+     *
+     * @param goodsid
+     * @return
+     */
 
+
+    int ImgInsertA(GoodsImg goodsid);
 }

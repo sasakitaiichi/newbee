@@ -99,7 +99,9 @@
                                        th:value="${goods!=null and goods.tag!=null }?${goods.tag}: ''"
                                        required="true">
                             </div>
+             <!--商品上架开始-->
                             <div class="form-group">
+
                                 <label class="control-label">上架状态:&nbsp;</label>
                                 <input name="goodsSellStatus" type="radio" id="goodsSellStatusTrue" checked=true
                                        th:checked="${null==goods||(null !=goods and null !=goods.goodsSellStatus and goods.goodsSellStatus==0)} ?true:false"
@@ -107,6 +109,8 @@
                                 <input name="goodsSellStatus" type="radio" id="goodsSellStatusFalse" value="1"
                                        th:checked="${null !=goods and null !=goods.goodsSellStatus and goods.goodsSellStatus==1} ?true:false"/>&nbsp;下架&nbsp;
                             </div>
+                            <!--商品上架结束-->
+                            <!--上传图片开始-->
                             <div class="form-group">
                                 <div class="form-group">
                                     <div class="col-sm-4">
@@ -130,20 +134,49 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="wangEditor"
-                                 th:utext="${goods!=null and goods.goodsDetailContent !=null}?${goods.goodsDetailContent}: ''">
-                            </div>
-                            <div class="form-group">
-                                <!-- 按钮 -->
-                                &nbsp;<button class="btn btn-info float-right" style="margin-left: 5px;"
-                                              id="saveButton">保存商品
-                            </button>&nbsp;
-                                &nbsp;<button class="btn btn-secondary float-right" style="margin-left: 5px;"
-                                              id="cancelButton">返回商品列表
-                            </button>&nbsp;
-                            </div>
-                        </form>
+                            <!--上传图片结束 -->
+                            <!--开始-->
+                            <input name="imgStatus" type="radio" checked=true value="0"/>&nbsp;大图&nbsp;
+                            <input name="imgStatus" type="radio" value="1"/>&nbsp;小图&nbsp;
                     </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <th:block th:if="${null == goods}">
+                                    <img id="goodsImg" src="/admin/dist/img/img-upload.png"
+                                         style="height: 64px;width: 64px;">
+                                </th:block>
+                                <th:block th:unless="${null == goods}">
+                                    <img id="goodsImg" th:src="${goods.goodsCoverImg}"
+                                         style="width:160px ;height: 160px;display:block;">
+                                </th:block>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <button class="btn btn-info" style="margin-bottom: 5px;"
+                                        id="uploadGoodsImg">
+                                    <i class="fa fa-picture-o"></i>&nbsp;上传商品辅图
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--结束-->
+                    <div class="form-group" id="wangEditor"
+                         th:utext="${goods!=null and goods.goodsDetailContent !=null}?${goods.goodsDetailContent}: ''">
+                    </div>
+                    <div class="form-group">
+                        <!-- 按钮 -->
+                        &nbsp;<button class="btn btn-info float-right" style="margin-left: 5px;"
+                                      id="saveButton">保存商品
+                    </button>&nbsp;
+                        &nbsp;<button class="btn btn-secondary float-right" style="margin-left: 5px;"
+                                      id="cancelButton">返回商品列表
+                    </button>&nbsp;
+                    </div>
+                    </form>
+                </div>
 
                 </div>
             </div><!-- /.container-fluid -->
