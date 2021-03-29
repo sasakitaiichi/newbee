@@ -222,7 +222,7 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
                 }
 
                 for (int j = 0; j < sortedGoodsList.size(); j++) {
-                    goodsList2.add(sortedGoodsList.get(j));//sortedGoodsListをgoodListに追加して
+                    goodsList2.add(sortedGoodsList.get(j));//sortedGoodsListをgoodList2に追加して
                 }
 
             }

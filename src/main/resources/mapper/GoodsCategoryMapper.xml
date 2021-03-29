@@ -90,6 +90,21 @@
         where parent_id = #{parentId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectLevelTwoList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_category
+        where is_deleted=0 and category_level=2
+    </select>
+
+    <select id="selectLevelThreeList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_category
+        where parent_id = #{parentId,jdbcType=BIGINT} and is_deleted=0 and category_level=3
+    </select>
+
+
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
         update tb_newbee_mall_goods_category
         set is_deleted=1

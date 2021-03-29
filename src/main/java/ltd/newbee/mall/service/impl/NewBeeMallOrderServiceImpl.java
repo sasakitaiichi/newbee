@@ -371,13 +371,13 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 
     @Override
     public List<NewBeeMallOrderItemVO> getOrderItems(Long id) {
-        NewBeeMallOrder newBeeMallOrder = newBeeMallOrderMapper.selectByPrimaryKey(id);
-        if (newBeeMallOrder != null) {
+        NewBeeMallOrder newBeeMallOrder = newBeeMallOrderMapper.selectByPrimaryKey(id);//根据订单id去表中查询是否存在该订单
+        if (newBeeMallOrder != null) {//如果该订单存在，↓则根据该id去item表中查询该订单下单过的商品
             List<NewBeeMallOrderItem> orderItems = newBeeMallOrderItemMapper.selectByOrderId(newBeeMallOrder.getOrderId());
             //获取订单项数据
-            if (!CollectionUtils.isEmpty(orderItems)) {
+            if (!CollectionUtils.isEmpty(orderItems)) {//判断取出来的详细订单是否为空，不为空则复制进vos
                 List<NewBeeMallOrderItemVO> newBeeMallOrderItemVOS = BeanUtil.copyList(orderItems, NewBeeMallOrderItemVO.class);
-                return newBeeMallOrderItemVOS;
+                return newBeeMallOrderItemVOS;//向controller传出
             }
         }
         return null;

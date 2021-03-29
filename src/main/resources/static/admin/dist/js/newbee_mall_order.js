@@ -118,6 +118,7 @@ function openOrderItems(orderId) {
         url: '/admin/order-items/' + orderId,
         contentType: 'application/json',
         success: function (result) {
+            debugger;
             if (result.resultCode == 200) {
                 $('#orderItemModal').modal('show');
                 var itemString = '';

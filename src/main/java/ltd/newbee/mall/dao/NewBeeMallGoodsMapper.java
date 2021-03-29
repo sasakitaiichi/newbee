@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.dao;
 
+import ltd.newbee.mall.entity.GoodsIdCatId;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -51,4 +52,8 @@ public interface NewBeeMallGoodsMapper {
     List<NewBeeMallGoods> findNewBeeSearchBySecondLevelCat(PageQueryUtil pageUtil);
 
     List<NewBeeMallGoods> findNewBeeMallGoodsListByGoodsCategoryId(Long categoryId);
+
+    List<NewBeeMallGoods> findNewBeeMallGoodsListByGoodsId(Long goodsId);
+
+    int updateGoods(GoodsIdCatId record);
 }

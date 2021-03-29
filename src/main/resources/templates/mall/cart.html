@@ -1,6 +1,13 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    .img {
+        max-width: 500%;
+        max-height: 1000%;
+    }
+
+</style>
 <head>
     <meta charset="UTF-8">
     <title>NewBee商城-购物车</title>
@@ -37,7 +44,12 @@
                     <div class="sub_top fl">
                     </div>
                     <div class="sub_top fl">商品名称</div>
-                    <div class="sub_top fl">单价</div>
+                    <div class="sub_top fl">
+                        <div style="display:flex;">单价</div>
+                        <img id="orderItemString" src="mall/image/up.png" style="width:25%;display:flex;"
+                             onclick="priceUp('up')">
+                        <img src="mall/image/down.png" style="width:25%" onclick="priceDown">
+                    </div>
                     <div class="sub_top fl">数量</div>
                     <div class="sub_top fl">小计</div>
                     <div class="sub_top fr">操作</div>
@@ -47,7 +59,11 @@
                     <div class="content2 center">
                         <div class="sub_content fl ">
                         </div>
-                        <div class="sub_content cover fl"><img th:src="@{${item.goodsCoverImg}}"></div>
+                        <div class="sub_content cover fl">
+                            <a th:href="@{${'/goods/detail/'+item.goodsId}}" style="width: 500%; height: 1000%;">
+                                <img th:src="@{${item.goodsCoverImg}}">
+                            </a>
+                        </div>
                         <div class="sub_content fl ft20" th:text="${item.goodsName}">商品名称</div>
                         <div class="sub_content fl" th:text="${item.sellingPrice+'元'}">1299元</div>
                         <div class="sub_content fl">
@@ -180,6 +196,7 @@
                         type: 'DELETE',
                         url: '/shop-cart/' + id,
                         success: function (result) {
+                            debugger;
                             if (result.resultCode == 200) {
                                 window.location.reload();
                             } else {
@@ -199,5 +216,44 @@
         )
         ;
     }
+
+    /**
+     * 查看订单项信息
+     * @param id
+     */
+    function priceUp(up) {
+        $.ajax({
+            type: 'GET',//方法类型
+            //dataType: "text",
+            //data: {"id": id},
+            url: '/shop-cart/' + up,//'/xxxx/xxxxx',目标地址
+            contentType: 'application/json',
+            success: function (result) {
+                debugger;
+                if (result.resultCode == 200) {
+                    //$('#orderItemModal').modal('show');
+                    // var itemString = '';
+                    var ShoppingString = '';
+                    for (i = 0; i < result.data.length; i++) {
+                        ShoppingString += result.data[i].goodsCoverImg + result.data[i].goodsName + result.data[i].sellingPrice +
+                            result.data[i].goodsCount + result.data[i].sellingPrice * result.data[i].goodsCount + ";<br>";
+                    }
+                    $("#orderItemString").html(ShoppingString);
+                    window.location.reload();
+                } else {
+                    swal(result.message, {
+                        icon: "error",
+                    });
+                }
+                ;
+            },
+            error: function () {
+                swal("操作失败", {
+                    icon: "error",
+                });
+            }
+        });
+    }
+
 </script>
 </html>

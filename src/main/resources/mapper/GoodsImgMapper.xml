@@ -13,6 +13,7 @@
         , img, img_status, orderby
     </sql>
 
+
     <select id="selectGoodsImg" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -32,6 +33,12 @@
         <include refid="Base_Column_List"/>
         from tb_newbee_mall_goods_img
         where goods_id = #{goodsId,jdbcType=BIGINT} and img_status = 1
+    </select>
+    <select id="selectGoodsImgBylimitFive" parameterType="java.lang.Long" resultType="java.lang.String">
+        select img
+        from tb_newbee_mall_goods_img
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+          and img_status = 1 limit 5
     </select>
 
     <select id="selectGoodsIdOrderby" parameterType="java.lang.Long" resultMap="BaseResultMap">

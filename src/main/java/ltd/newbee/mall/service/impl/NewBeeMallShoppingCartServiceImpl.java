@@ -13,6 +13,7 @@ import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
+import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
@@ -100,30 +101,45 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
 
     @Override
     public List<NewBeeMallShoppingCartItemVO> getMyShoppingCartItems(Long newBeeMallUserId) {
+/*
+        final String PRICE_UP = "priceUp";
+        final String PRICE_DOWN = "priceDown";
+        String ORDER_BY = (String)  "orderBy";
+*/
+
+        //List<NewBeeMallShoppingCartItemVO> sortedGoodsList = new ArrayList<NewBeeMallShoppingCartItemVO>();//ソート済みのlist
         List<NewBeeMallShoppingCartItemVO> newBeeMallShoppingCartItemVOS = new ArrayList<>();
-        List<NewBeeMallShoppingCartItem> newBeeMallShoppingCartItems = newBeeMallShoppingCartItemMapper.selectByUserId(newBeeMallUserId, Constants.SHOPPING_CART_ITEM_TOTAL_NUMBER);
-        if (!CollectionUtils.isEmpty(newBeeMallShoppingCartItems)) {
+        List<NewBeeMallShoppingCartItem> newBeeMallShoppingCartItems = newBeeMallShoppingCartItemMapper.selectByUserId(newBeeMallUserId, Constants.SHOPPING_CART_ITEM_TOTAL_NUMBER);//根据user取当前购物车list数量
+        if (!CollectionUtils.isEmpty(newBeeMallShoppingCartItems)) {//如果不为空
             //查询商品信息并做数据转换
-            List<Long> newBeeMallGoodsIds = newBeeMallShoppingCartItems.stream().map(NewBeeMallShoppingCartItem::getGoodsId).collect(Collectors.toList());
-            List<NewBeeMallGoods> newBeeMallGoods = newBeeMallGoodsMapper.selectByPrimaryKeys(newBeeMallGoodsIds);
+            List<Long> newBeeMallGoodsIds = newBeeMallShoppingCartItems.stream().map(NewBeeMallShoppingCartItem::getGoodsId).collect(Collectors.toList());//取goodsId
+            List<NewBeeMallGoods> newBeeMallGoods = newBeeMallGoodsMapper.selectByPrimaryKeys(newBeeMallGoodsIds);//根据goodsId取商品详细数据
             Map<Long, NewBeeMallGoods> newBeeMallGoodsMap = new HashMap<>();
             if (!CollectionUtils.isEmpty(newBeeMallGoods)) {
                 newBeeMallGoodsMap = newBeeMallGoods.stream().collect(Collectors.toMap(NewBeeMallGoods::getGoodsId, Function.identity(), (entity1, entity2) -> entity1));
             }
-            for (NewBeeMallShoppingCartItem newBeeMallShoppingCartItem : newBeeMallShoppingCartItems) {
+            for (NewBeeMallShoppingCartItem newBeeMallShoppingCartItem : newBeeMallShoppingCartItems) {//后面的数组进行长度的循环
                 NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO = new NewBeeMallShoppingCartItemVO();
                 BeanUtil.copyProperties(newBeeMallShoppingCartItem, newBeeMallShoppingCartItemVO);
-                if (newBeeMallGoodsMap.containsKey(newBeeMallShoppingCartItem.getGoodsId())) {
+                if (newBeeMallGoodsMap.containsKey(newBeeMallShoppingCartItem.getGoodsId())) {//如果goodsId是Key
                     NewBeeMallGoods newBeeMallGoodsTemp = newBeeMallGoodsMap.get(newBeeMallShoppingCartItem.getGoodsId());
-                    newBeeMallShoppingCartItemVO.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());
+                    newBeeMallShoppingCartItemVO.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());//向vo内设照片
+
                     String goodsName = newBeeMallGoodsTemp.getGoodsName();
                     // 字符串过长导致文字超出的问题
                     if (goodsName.length() > 28) {
                         goodsName = goodsName.substring(0, 28) + "...";
                     }
-                    newBeeMallShoppingCartItemVO.setGoodsName(goodsName);
-                    newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());
+                    newBeeMallShoppingCartItemVO.setGoodsName(goodsName);//向vo内设Name
+                    newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());//向vo内设价格
                     newBeeMallShoppingCartItemVOS.add(newBeeMallShoppingCartItemVO);
+/*                    if(PRICE_UP.equals(orderBy)){
+                        sortedGoodsList = newBeeMallShoppingCartItemVOS.stream().sorted(Comparator.comparing(NewBeeMallShoppingCartItemVO::getSellingPrice).reversed()).collect(Collectors.toList());
+                    }
+                    if(PRICE_DOWN.equals(ORDER_BY)) {
+                        sortedGoodsList = newBeeMallShoppingCartItemVOS.stream().sorted(Comparator.comparing(NewBeeMallShoppingCartItemVO::getSellingPrice)).collect(Collectors.toList());
+                    }
+                    newBeeMallShoppingCartItemVOS =  sortedGoodsList;*/
                 }
             }
         }

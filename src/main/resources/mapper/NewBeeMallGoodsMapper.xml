@@ -62,6 +62,11 @@
             #{id}
         </foreach>
     </update>
+    <update id="updateGoods">
+        update tb_newbee_mall_goods_info
+        set goods_name=#{goodsName}
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+    </update>
     <select id="findNewBeeMallGoodsList" parameterType="Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -227,6 +232,14 @@
         from
         tb_newbee_mall_goods_info
         where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT}
+
+    </select>
+    <select id="findNewBeeMallGoodsListByGoodsId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select goods_id,
+               goods_name,
+               goods_cover_img
+        from tb_newbee_mall_goods_info
+        where goods_id = #{goodsId,jdbcType=BIGINT}
 
     </select>
 

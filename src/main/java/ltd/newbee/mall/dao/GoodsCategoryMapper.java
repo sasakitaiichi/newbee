@@ -9,6 +9,7 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
@@ -41,5 +42,9 @@ public interface GoodsCategoryMapper {
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Long> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
 
     List<Long> selectCategoryId(PageQueryUtil pageUtil);//mapper.selectByCategoryId(parentId);
+
+    List<GoodsCategory> selectLevelTwoList();
+
+    List<GoodsCategory> selectLevelThreeList(Long categoryId);
 }
 

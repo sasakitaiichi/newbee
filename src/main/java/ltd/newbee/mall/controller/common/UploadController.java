@@ -120,6 +120,7 @@ public class UploadController {
 
             Result resultSuccess = ResultGenerator.genSuccessResult();
             resultSuccess.setData(NewBeeMallUtils.getHost(new URI(httpServletRequest.getRequestURL() + "")) + "/upload/" + newFileName);
+            //↑把这个内容set出去（getHost中返回的url "/upload/" + newFileName）
             return resultSuccess;
         } catch (IOException e) {
             e.printStackTrace();

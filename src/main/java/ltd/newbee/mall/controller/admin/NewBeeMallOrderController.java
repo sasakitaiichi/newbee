@@ -86,10 +86,10 @@ public class NewBeeMallOrderController {
     @ResponseBody
     public Result info(@PathVariable("id") Long id) {
         List<NewBeeMallOrderItemVO> orderItems = newBeeMallOrderService.getOrderItems(id);
-        if (!CollectionUtils.isEmpty(orderItems)) {
-            return ResultGenerator.genSuccessResult(orderItems);
+        if (!CollectionUtils.isEmpty(orderItems)) {//判断传出订单list是否为空，
+            return ResultGenerator.genSuccessResult(orderItems);//不为空则
         }
-        return ResultGenerator.genFailResult(ServiceResultEnum.DATA_NOT_EXIST.getResult());
+        return ResultGenerator.genFailResult(ServiceResultEnum.DATA_NOT_EXIST.getResult());//没查询到则返回这个id‘没查询到数据’
     }
 
     /**

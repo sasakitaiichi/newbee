@@ -1,0 +1,489 @@
+<!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    .menubackground {
+        background-color: #ffd848;
+
+        color: black;
+
+        height: 100px;
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    .goodslist {
+        height: 200px;
+        width: 350px;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+
+    }
+
+    .goodslistcomplete {
+        width: 100%;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+    }
+
+    .menu {
+        background-color: #ffd848;
+        border: none;
+        color: black;
+        height: 30px;
+        width: 100px;
+        padding-lift: 20px;
+        text-align: center;
+    }
+
+
+    .active {
+        background-color: #ffc600;
+    }
+
+
+</style>
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <!--        <div class="content">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">首页</h3>
+                        </div> &lt;!&ndash; /.card-body &ndash;&gt;
+                        <div class="card-body">
+                            <div class="panel panel-default">
+                                <div style="padding: 10px 0 20px 10px;">
+                                    <a href="https://gitee.com/newbee-ltd/newbee-mall" target="_blank">
+                                        <img th:src="@{/admin/dist/img/newbee-logo.png}" style="width: 480px;height: 240px;">
+                                        <p>newbee-mall 项目是一套电商系统，包括 newbee-mall 商城系统及 newbee-mall-admin 商城后台管理系统，基于 Spring Boot
+                                            2.X
+                                            及相关技术栈开发。
+                                            前台商城系统包含首页门户、商品分类、新品上线、首页轮播、商品推荐、商品搜索、商品展示、购物车、订单结算、订单流程、个人订单管理、会员中心、帮助中心等模块。
+                                            后台管理系统包含数据面板、轮播图管理、商品管理、订单管理、会员管理、分类管理、设置等模块。</p>
+                                        <ul>
+                                            <li>newbee-mall 对新手开发者十分友好，无需复杂的操作步骤，仅需 2 秒就可以启动这个完整的商城项目；</li>
+                                            <li>newbee-mall 也是一个企业级别的 Spring Boot 大型项目，对于各个阶段的 Java 开发者都是极佳的选择；</li>
+                                            <li>你可以把它作为 Spring Boot 技术栈的综合实践项目，newbee-mall 足够符合要求，且代码开源、功能完备、流程完整、页面交互美观；</li>
+                                            <li>技术栈新颖且知识点丰富，学习后可以提升大家对于知识的理解和掌握，可以进一步提升你的市场竞争力；</li>
+                                            <li>对于部分求职中的 Java 开发者，你也可以将该项目放入求职简历中以丰富你的工作履历；</li>
+                                            <li>newbee-mall 还有一些不完善的地方，鄙人才疏学浅，望见谅；</li>
+                                            <li>有任何问题都可以反馈给我，我会尽量完善该项目。</li>
+                                        </ul>
+                                    </a>
+                                    <h3>联系作者</h3>
+                                    <ul>
+                                        <li>我的邮箱：2449207463@qq.com</li>
+                                        <li>QQ技术交流群：796794009 <a target="_blank"
+                                                                 href="//shang.qq.com/wpa/qunwpa?idkey=dc0e028f177932aee2c212a2dd60e0b8342042ac205305803ea801c4eea6727c"><img
+                                                border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="SpringBoot技术交流"
+                                                title="SpringBoot技术交流"></a>
+                                        </li>
+                                    </ul>
+                                    <p>newbee-mall 在 GitHub 和国内的码云都创建了代码仓库，如果有人访问 GitHub 比较慢的话，建议在 Gitee 上查看该项目，两个仓库会保持同步更新。</p>
+                                    <ul>
+                                        <li><a href="https://github.com/newbee-ltd/newbee-mall" target="_blank">newbee-mall in
+                                            GitHub</a></li>
+                                        <li><a href="https://gitee.com/newbee-ltd/newbee-mall" target="_blank">newbee-mall in
+                                            Gitee</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>&lt;!&ndash; /.container-fluid &ndash;&gt;
+                </div>-->
+        <!-- /.content -->
+
+        <div class="menubackground">
+            <ul style=" list-style: none;">
+
+                <th:block th:unless="${#lists.isEmpty(categoryLevelTwo)}">
+                    <th:block th:each="twoList : ${categoryLevelTwo}">
+                        <div class="menu" style="float:left;">
+                            <div th:class="${ categoryId == null ||categoryId == twoList.categoryId ?'active':''}">
+                                <dt><em><a th:categoryId="${twoList.categoryId}" href="#"
+                                           th:href="@{'/recommend?categoryId='+${twoList.categoryId}}"
+                                           style="font-style:normal;color: black;">
+                                    <th:block th:text="${twoList.categoryName}" style="float:right;"></th:block>
+                                </a></em></dt>
+                                </button>
+                            </div>
+                        </div>
+                    </th:block>
+                </th:block>
+            </ul>
+        </div>
+
+        <!-- 模态框（Modal） -->
+        <!--       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                   <div class="modal-dialog">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                             &times;
+                         </button>
+                         <h4 class="modal-title" id="myModalLabel">
+                             模态框（Modal）标题
+                         </h4>
+                     </div>
+                     <div class="modal-body">
+                         在这里添加一些文本
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                         </button>
+                         <button type="button" class="btn btn-primary">
+                             提交更改
+                         </button>
+                     </div>
+                 </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+             </div>
+        </div><!-- /.modal -->
+
+        <div class="goodslistcomplete">
+            <th:block th:unless="${#lists.isEmpty(categoryLevelTwo)}">
+                <th:block th:each="goodsImg : ${goodsImgFive}">
+                    <div class="goodslist" style="float:left;">
+                        <th:block th:each="imgFive : ${goodsImg.img}">
+                            <img id="orderItemString" th:goodsId="${goodsImg.goodsId} " th:goodsIdImg="${goodsImg.img} "
+                                 th:onclick="'searchGoods('+${goodsImg.goodsId}+')'"
+                                 th:src="@{${imgFive}}" style="float:left;text-align: center;width:25%">
+                        </th:block>
+                    </div>
+                </th:block>
+            </th:block>
+        </div>
+
+        <!-- 模态框（Modal） -->
+        <div class="content">
+            <div class="modal fade" id="orderInfoModal" tabindex="-1" role="dialog"
+                 aria-labelledby="orderInfoModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="orderInfoModalLabel">Modal</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="##">
+                                <div class="form-group">
+                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                        错误信息展示栏。
+                                    </div>
+                                </div>
+                                <input type="hidden" id="orderId">
+                                <div class="form-group">
+                                    <!--   <label for="totalPrice" class="control-label">订单价格:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                    <p>商品Id:</p>
+                                    <input type="number" class="form-control" id="goodsId" name="goodsId"
+                                           placeholder="请输入改价金额" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <!--                                    <label for="userAddress"
+                                                                               class="control-label">收件人信息:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                    <p>商品名称:</p>
+                                    <input type="text" class="form-control" id="goodsName" name="goodsName"
+                                           placeholder="请输入收件人地址" value="##">
+                                </div>
+                                <div class="form-group">
+                                    <!--                                    <label for="userAddress"
+                                                                               class="control-label">收件人信息:&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+                                    <p>商品图片:</p>
+                                    <input type="text" class="form-control" id="goodsImg" name="goodsImg"
+                                           placeholder="请输入收件人地址" value="##">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="saveButton" th:onclick="upDateGoods()">
+                                确认
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.modal -->
+    </div>
+</div>
+<div id="scroll-to"></div>
+<!-- /.content-wrapper -->
+<!-- 引入页脚footer-fragment -->
+<div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/dist/js/newbee_mall_order.js}"></script>
+<script type="text/javascript">
+
+
+    var list = document.getElementsByClassName("menu");
+    for (var i = 0; i < list.length; i++) {
+        //为li注册鼠标进入事件
+        list[i].onmouseover = function () {
+            this.style.backgroundColor = "#ffc600";
+        };
+        //为li注册鼠标离开事件
+        list[i].onmouseout = function () {
+            this.style.backgroundColor = "#ffd848";
+        };
+    }
+    var ListOnclick = document.getElementsByClassName("goodslist");
+    for (var i = 0; i < ListOnclick.length; i++) {
+        //为li注册鼠标进入事件
+        ListOnclick[i].onmouseover = function () {
+            this.className = "goodslist activeOnclick";
+        };
+        //为li注册鼠标离开事件
+        ListOnclick[i].onmouseout = function () {
+            this.className = "goodslist";
+        };
+    }
+    /*
+        $(window).scroll(function() {
+            var hT = $('#scroll-to').offset().top,//div内容所在高度
+                hH = $('#scroll-to').outerHeight(),//取总高度
+                wH = $(window).height(),//可见高度
+                wS = $(this).scrollTop();//页面顶部 到 当前div高度
+           // console.log((hT-wH) , wS);//获得的高度-可视区域大小...
+
+            if (wS > (hT+hH-wH)){//
+                alert('you have scrolled to the h1!');
+                //取当前页面的categoryId
+                var findCategoryId = document.getElementsByClassName("menu");//寻找所有classname为menu的div
+                var categoryId;
+                for (i = 0; i < findCategoryId.length; i++) {
+                    if($(findCategoryId[i]).find("div").attr('class')=="active"){//判断classname是否为active
+                        categoryId = $(findCategoryId[i]).find("a").get(0).getAttribute("categoryId")//取categoryId
+                    //$(findCategoryId[i]).find("a").attr("categoryId");
+                   /!* console.log(categoryId);*!/
+                    }
+                };
+                    if(categoryId == null ){//如果为初始化页面没有categoryId的话，设置categoryId为19（手机）
+                        categoryId = 19;
+                    }
+
+                //取当前页面的goodsId
+                var findGoodsId = document.getElementsByClassName("goodslist");//寻找所有classname为goodslist的div
+                var goodsId;
+                var goodsArray = [];
+                for (i = 0; i < findGoodsId.length; i++) {//取页面的  goodsId
+                    goodsId = $(findGoodsId[i]).find("img").get(0).getAttribute("goodsId");
+                    goodsArray.push(goodsId);
+
+                };
+                var data = {
+                    "categoryId": categoryId,
+                    "goodsArray": goodsArray
+                }
+
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: '/recommendAjax',//'/xxxx/xxxxx',目标地址
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        debugger;
+                        if (result.resultCode == 200) {
+                            var GoodsStringAll = '';
+                            for (i = 0; i < result.data.length; i++) {
+                                var GoodsString = '';
+                                for (j = 0; j< result.data[i].img.length; j++) {
+                                    GoodsString +=
+                                        ' <img goodsid=\"' + result.data[i].goodsId + '\" id=\"orderItemString\" src=\"' + result.data[i].img[j] + '\" '
+                                        + 'style=\"float:left;text-align: center;width:25%\">'
+                                }
+                                GoodsStringAll += ' <div className=\"goodslist\" style=\"float:left;height:200px;width:350px;padding-top: 10px;padding-left: 10px;padding-right: 10px;padding-bottom: 10px;text-align:center;\"> '+ GoodsString + ' </div>'
+
+                               // $(".goodslistcomplete").html(GoodsStringAll);
+
+                            }
+                            $(".goodslistcomplete").append(GoodsStringAll);
+                        }
+                    }
+                });
+            }
+        });
+    */
+
+    /**
+     * 查看订单项信息
+     * @param orderId
+     */
+    /*
+        function openOrderItems(orderId) {
+            $('.modal-title').html('订单详情');
+            $.ajax({
+                type: 'GET',//方法类型
+                url: '/admin/order-items/' + orderId,
+                contentType: 'application/json',
+                success: function (result) {
+                    debugger;
+                    if (result.resultCode == 200) {
+                        $('#orderItemModal').modal('show');
+                        var itemString = '';
+                        for (i = 0; i < result.data.length; i++) {
+                            itemString += result.data[i].goodsName + ' x ' + result.data[i].goodsCount + ' 商品编号 ' + result.data[i].goodsId + ";<br>";
+                        }
+                        $("#orderItemString").html(itemString);
+                    } else {
+                        swal(result.message, {
+                            icon: "error",
+                        });
+                    };
+                },
+                error: function () {
+                    swal("操作失败", {
+                        icon: "error",
+                    });
+                }
+            });
+        }
+
+    */
+    /*    function searchGoods() {
+
+            debugger;
+            var activeOnclick = document.getElementsByClassName("goodslist activeOnclick");
+            var goodsId;
+            var goodsIdImg;
+            var goodsArray = [];
+            for (i = 0; i < activeOnclick.length; i++) {//取页面的  goodsId
+                goodsId = $(activeOnclick[i]).find("img").get(0).getAttribute("goodsId");
+                goodsIdImg = $(activeOnclick[i]).find("img").get(0).getAttribute("goodsIdImg");
+                goodsArray.push(goodsIdImg);
+            }
+           // var rowData = $("#jqGrid").jqGrid("getRowData", goodsId);//
+            $('.modal-title').html('商品编辑');
+            $('#orderInfoModal').modal('show');
+            $("#totalPrice").val(goodsId);
+            $("#userAddress").val(goodsIdImg);
+       /!*     $("#totalPrice").val(rowData.totalPrice);*!/
+        }*/
+
+    function searchGoods(goodsId) {
+        debugger
+        $.ajax({
+            type: 'GET',//方法类型
+            //dataType: "text",
+            //data: JSON.stringify(data),
+            //data: {"goodsId": goodsId},
+            url: '/recommendAjaxGoodsId/' + goodsId,   //xxxx/xxxxx',目标地址
+            contentType: 'application/json',
+            success: function (result) {
+                debugger;
+                var goodsId = '';
+                var goodsName = '';
+                var goodsArray = '';
+                if (result.resultCode == 200) {
+                    for (i = 0; i < result.data.length; i++) {
+                        goodsId = result.data[i].goodsId
+                        goodsName = result.data[i].goodsName
+                        goodsArray = result.data[i].goodsCoverImg
+                    }
+                    $('.modal-title').html('商品编辑');
+                    $('#orderInfoModal').modal('show');
+                    $("#goodsId").val(goodsId);
+                    $("#goodsName").val(goodsName);
+                    $("#goodsImg").val(goodsArray);
+                }
+            }
+        })
+
+    }
+
+    function upDateGoods() {
+        debugger
+        var goodsId = '';
+        var goodsName = '';
+        var goodsArray = '';
+        goodsId = $("#goodsId").val()
+        goodsName = $("#goodsName").val()
+        /*         goodsArray = $("#goodsImg").val()
+               var upDateGoodsId = document.getElementById("totalPrice");
+                var upDateGoodsName = document.getElementById("userAddress");
+                var upDateGoodsImg = document.getElementById("userAddresss");
+                var goodsId;
+                for (i = 0; i < activeOnclick.length; i++) {//取页面的  goodsId
+                    goodsId = $(activeOnclick[i]).find("img").get(0).getAttribute("goodsId");
+                }*/
+        var data = {
+            "goodsId": goodsId,
+            "goodsName": goodsName
+        }
+        $.ajax({
+            type: 'POST',//方法类型
+            //dataType: "text",
+            //data: JSON.stringify(data),
+            data: JSON.stringify(data),
+            url: '/recommendAjaxUpdate',   //xxxx/xxxxx',目标地址
+            contentType: 'application/json',
+            success: function (result) {
+                debugger;
+                var goodsId = '';
+                var goodsName = '';
+                var goodsArray = '';
+                if (result.resultCode == 200) {
+                    for (i = 0; i < result.data.length; i++) {
+                        goodsId = result.data[i].goodsId
+                        goodsName = result.data[i].goodsName
+                        goodsArray = result.data[i].goodsCoverImg
+                    }
+                    $('.modal-title').html('商品编辑');
+                    $('#orderInfoModal').modal('show');
+                    $("#totalPrice").val(goodsId);
+                    $("#userAddress").val(goodsName);
+                    $("#userAddresss").val(goodsArray);
+                    $('#orderInfoModal').modal('hide');
+                    swal("保存成功", {
+                        icon: "success",
+                    });
+                    reload();
+                } else {
+                    $('#orderInfoModal').modal('hide');
+                    swal(result.message, {
+                        icon: "error",
+                    });
+                }
+                ;
+            },
+            error: function () {
+                swal("操作失败", {
+                    icon: "error",
+                });
+            }
+        })
+    }
+
+</script>
+</script>
+</body>
+</html>

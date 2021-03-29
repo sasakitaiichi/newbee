@@ -9,9 +9,7 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.GoodsImg;
-import ltd.newbee.mall.entity.NewBeeMallGoods;
-import ltd.newbee.mall.util.PageQueryUtil;
-import org.apache.ibatis.annotations.Param;
+
 
 import java.util.List;
 
@@ -33,6 +31,8 @@ public interface GoodsImgMapper {
     List<GoodsImg> selectGoodsBigImg(Long goodsId);
 
     List<GoodsImg> selectGoodsSmallImg(Long goodsId);
+
+    List<String> selectGoodsImgBylimitFive(Long goodsId);
 
     List<GoodsImg> selectGoodsIdOrderby(GoodsImg orderby);
 
