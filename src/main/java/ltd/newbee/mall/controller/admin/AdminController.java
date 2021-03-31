@@ -33,6 +33,11 @@ public class AdminController {
     @Resource
     private AdminUserService adminUserService;
 
+    @GetMapping({"/sample"})
+    public String sample() {
+        return "admin/sample";
+    }
+
     @GetMapping({"/login"})
     public String login() {
         return "admin/login";
