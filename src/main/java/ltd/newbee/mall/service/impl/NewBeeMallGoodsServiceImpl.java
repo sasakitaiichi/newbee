@@ -11,7 +11,9 @@ package ltd.newbee.mall.service.impl;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallGoodsImgDetailVO;
+import ltd.newbee.mall.dao.GoodsCommentMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.dao.GoodsImgMapper;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
@@ -35,6 +37,8 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     private NewBeeMallGoodsMapper goodsMapper;
     @Autowired
     private GoodsImgMapper goodsImgMapper;
+    @Autowired
+    private GoodsCommentMapper commentMapper;
 
 
     @Override
@@ -190,6 +194,20 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 
         return insertImg;
     }
+
+    @Override
+    public String saveComment(GoodsComment comment) {
+        if (commentMapper.insert(comment) > 0) {
+            return ServiceResultEnum.SUCCESS.getResult();
+        }
+        return ServiceResultEnum.DB_ERROR.getResult();
+    }
+
+    @Override
+    public GoodsComment getCommentById(Long id) {
+        return commentMapper.selectByPrimaryKey(id);
+    }
+
 
 }
 

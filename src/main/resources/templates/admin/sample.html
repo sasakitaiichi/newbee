@@ -17,24 +17,19 @@
         </div>
         <!-- Main content -->
 
-        <div class="dropdown">
-            <button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
-                    data-toggle="dropdown">
-                選項
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" href="#">注冊</a>
-                </li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" href="#">登錄</a>
-                </li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" href="#">退出</a>
-                </li>
-            </ul>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default">注册</button>
+            <button type="button" class="btn btn-default">登录</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    选项
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">返回首页</a></li>
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
         </div>
 
         <div class="content">
@@ -46,6 +41,7 @@
                     <th>姓名</th>
                     <th>性别</th>
                     <th>年龄</th>
+                    <th>自己アピール</th>
                     <th>履历</th>
                     <th>操作</th>
                 </tr>
@@ -54,9 +50,12 @@
                     <td><input type="checkbox" name="check"></td>
                     <td>
                         <img src="https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png" height="60"
-                             width="60" alt="photo"/>
+                             width="60" alt="photo"/><br>
                     </td>
-                    <td>张三</td>
+                    <td>
+                        <label for="name">姓名</label><br>
+                        <input type="text" id="name" placeholder="请输入姓名">
+                    </td>
                     <td>
                         <input type="radio" name="sex" value="male">男<br>
                         <input type="radio" name="sex" value="female">女
@@ -65,6 +64,10 @@
                         <span>3</span>
                         <button class="plus">+</button>
                         <button class="minus">-</button>
+                    </td>
+                    <td>
+                        <label for="name">自己アピール</label><br>
+                        <textarea class="form-control" rows="3"></textarea>
                     </td>
                     <td>
                         <a href="https://gitee.com/newbee-ltd/newbee-mall">Git</a>
@@ -77,9 +80,12 @@
                     <td><input type="checkbox" name="check"></td>
                     <td>
                         <img src="https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png" height="60"
-                             width="60" alt="photo"/>
+                             width="60" alt="photo"/><br>
                     </td>
-                    <td>李四</td>
+                    <td>
+                        <label for="name">姓名</label><br>
+                        <input type="text" id="name" placeholder="请输入姓名">
+                    </td>
                     <td>
                         <input type="radio" name="sex" value="male">男<br>
                         <input type="radio" name="sex" value="female">女
@@ -88,6 +94,10 @@
                         <span>4</span>
                         <button class="plus">+</button>
                         <button class="minus">-</button>
+                    </td>
+                    <td>
+                        <label for="name">自己アピール</label><br>
+                        <textarea class="form-control" rows="3"></textarea>
                     </td>
                     <td>
                         <a href="https://gitee.com/newbee-ltd/newbee-mall">Git</a>
@@ -100,9 +110,12 @@
                     <td><input type="checkbox" name="check"></td>
                     <td>
                         <img src="https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png" height="60"
-                             width="60" alt="photo"/>
+                             width="60" alt="photo"/><br>
                     </td>
-                    <td>王五</td>
+                    <td>
+                        <label for="name">姓名</label><br>
+                        <input type="text" id="name" placeholder="请输入姓名">
+                    </td>
                     <td>
                         <input type="radio" name="sex" value="male">男<br>
                         <input type="radio" name="sex" value="female">女
@@ -111,6 +124,10 @@
                         <span>5</span>
                         <button class="plus">+</button>
                         <button class="minus">-</button>
+                    </td>
+                    <td>
+                        <label for="name">自己アピール</label><br>
+                        <textarea class="form-control" rows="3"></textarea>
                     </td>
                     <td>
                         <a href="https://gitee.com/newbee-ltd/newbee-mall">Git</a>
@@ -124,7 +141,9 @@
             <form>
                 First name: <input type="text" name="firstname"><br>
                 Last name: <input type="text" name="lastname"><br>
-                Password: <input type="password" name="pwd">
+                Password: <input type="password" name="pwd"><br>
+                <label class="sr-only" for="inputfile">文件输入</label><br>
+                <input type="file" id="inputfile"><br>
                 <input type="submit" value="Submit" onclick="alert('已提交')">
             </form>
 
@@ -176,20 +195,18 @@
 <script type="text/javascript">
     $(function () {
         $('.plus').click(function () {
-            var age = [];
-            var spans = document.getElementsByClassName('table');
-            for (i = 0; i < spans.length; i++) {
-                age.push(parseFloat(spans[i].innerHTML.replace(/^\D+/g, ''))+1)
-            }
+            var span = $(this).closest("tr").find("span");
+            var age = parseInt(span.eq(0).text());
+            age += 1;
+            span.html(age);
             console.log(age);
         })
 
         $('.minus').click(function () {
-            var age = [];
-            var spans = document.getElementsByClassName('table');
-            for (i = 0; i < spans.length; i++) {
-                age.push(parseFloat(spans[i].innerHTML.replace(/^\D+/g, ''))-1)
-            }
+            var span = $(this).closest("tr").find("span");
+            var age = parseInt(span.eq(0).text());
+            age -= 1
+            span.html(age);
             console.log(age);
         })
 

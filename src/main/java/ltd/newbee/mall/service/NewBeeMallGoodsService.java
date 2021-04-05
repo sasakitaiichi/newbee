@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.service;
 
+import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -114,4 +115,22 @@ public interface NewBeeMallGoodsService {
 
 
     int ImgInsertA(GoodsImg goodsid);
+
+//    2021/04/05 added by sasaki for comment
+    /**
+     * 添加评论
+     *
+     * @param comment
+     * @return
+     */
+    String saveComment(GoodsComment comment);
+
+//   2021/04/05 added by sasaki for comment
+    /**
+     * 获取评论
+     *
+     * @param id
+     * @return
+     */
+    GoodsComment getCommentById(Long id);
 }
