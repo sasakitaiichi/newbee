@@ -129,8 +129,8 @@ public interface NewBeeMallGoodsService {
     /**
      * 获取评论
      *
-     * @param id
+     * @param goodsId
      * @return
      */
-    GoodsComment getCommentById(Long id);
+    List<GoodsComment> getCommentById(Long goodsId);
 }

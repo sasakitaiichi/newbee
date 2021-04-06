@@ -204,8 +204,9 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     }
 
     @Override
-    public GoodsComment getCommentById(Long id) {
-        return commentMapper.selectByPrimaryKey(id);
+    public List<GoodsComment> getCommentById(Long goodsId) {
+        List<GoodsComment> goodsComments = goodsMapper.selectById(goodsId);
+        return goodsComments;
     }
 
 

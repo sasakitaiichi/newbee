@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.dao;
 
+import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.GoodsIdCatId;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.StockNumDTO;
@@ -56,4 +57,8 @@ public interface NewBeeMallGoodsMapper {
     List<NewBeeMallGoods> findNewBeeMallGoodsListByGoodsId(Long goodsId);
 
     int updateGoods(GoodsIdCatId record);
+
+    List<GoodsComment> selectById(Long goodsId);
+
+    int insertComment(GoodsComment record);
 }

@@ -18,6 +18,7 @@ public interface GoodsCommentMapper {
 
     int insert(GoodsComment record);
 
-    GoodsComment selectByPrimaryKey(Long goodsId);
+    //    List<GoodsComment> selectByPrimaryKey(Long goodsId);
+    List<String> selectByPrimaryKey(Long goodsId);
 
 }

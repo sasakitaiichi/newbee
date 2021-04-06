@@ -18,6 +18,18 @@
         <result column="update_user" jdbcType="INTEGER" property="updateUser"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+
+    <resultMap id="CommentResultMap" type="ltd.newbee.mall.entity.GoodsComment">
+        <id column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="goods_img" jdbcType="VARCHAR" property="goodsImg"/>
+        <result column="goods_comment_title" jdbcType="VARCHAR" property="goodsCommentTitle"/>
+        <result column="goods_comment" jdbcType="VARCHAR" property="goodsComment"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="ltd.newbee.mall.entity.NewBeeMallGoods">
         <result column="goods_detail_content" jdbcType="LONGVARCHAR" property="goodsDetailContent"/>
     </resultMap>
@@ -496,4 +508,19 @@
             update_time       = #{updateTime,jdbcType=TIMESTAMP}
         where goods_id = #{goodsId,jdbcType=BIGINT}
     </update>
+
+<!--    2021/04/06 added by sasaki for comment-->
+    <select id="selectById" resultMap="CommentResultMap">
+        select user_id,nick_name,goods_id,goods_name,goods_img,goods_comment_title,goods_comment,create_time
+        from tb_newbee_mall_goods_comment
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+    </select>
+
+    <!--    2021/04/06 added by sasaki for comment-->
+    <insert id="insertComment" parameterType="ltd.newbee.mall.entity.GoodsComment">
+        insert into tb_newbee_mall_goods_comment (user_id,nick_name,goods_id,goods_name,goods_img,goods_comment_title,goods_comment,create_time)
+        values (#{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT},
+                #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, #{goodsCommentTitle,jdbcType=VARCHAR},
+                #{goodsComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
 </mapper>

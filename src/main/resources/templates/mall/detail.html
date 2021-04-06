@@ -206,46 +206,53 @@
             </div>
         </div>
 
-<div class="review">
-    <h2 class="title">
-        <span>レビュー</span>
-    </h2>
-    <div class="p-reviewScore">
-        <p class="p-average">
-            平均評価<span class="g-digit">4.5</span>
-        </p>
-        <p class="g-score">
-            <span data-score="4.5"></span>
-            <span>(<span id="js-reviews">31</span>)</span>
-        </p>
-    </div>
-    <ul class="reviewList">
-        <li class="g-reviewList_item">
-            <p class="g-label-brand g-reviewList_label">ピックアップレビュー</p>
-            <div class="g-lg-flow-sm">
+        <div class="review">
+            <h2 class="title">
+                <span>レビュー</span>
+            </h2>
+            <div class="p-reviewScore">
+                <p class="p-average">
+                    平均評価<span class="g-digit">4.5</span>
+                </p>
                 <p class="g-score">
+                    <span data-score="4.5"></span>
+                    <span>(<span id="js-reviews">31</span>)</span>
+                </p>
+            </div>
+            <ul class="reviewList">
+                <li class="g-reviewList_item">
+                    <p class="g-label-brand g-reviewList_label">ピックアップレビュー</p>
+                    <div class="g-lg-flow-sm">
+                        <p class="g-score">
 				<span data-score="5.0">
 					<span class="g-clip">text.product.review.Rating</span>
 	      		</span>
-                </p>
-                <p class="g-reviewList_user">
-                        <th:block th:each="user : ${user}">
-                          <div class="name" th:text="${user.nickName} + 'さん'">昵称</div>
+                        </p>
+                        <th:block th:each="comment : ${goodsComment}">
+<!--                            <p class="g-reviewList_user">-->
+
+                            <div th:class="name" th:text="${comment.nickName}"></div>
+
+                            <p >
+                                <div th:class="date" th:text="${#dates.format(comment.createTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                            </p>
+                            <p class="g-reviewList_info">
+                            <div class="h3 ml20 mt20" th:text="${comment.goodsName}">NewBeeMall</div>
+                            </p>
+                            <p class="g-reviewList_h">
+                            <div th:class="commenttitle" th:text="${comment.goodsCommentTitle}"></div>
+                            </p>
+                            <p>
+                            <div th:class="comment" th:text="${comment.goodsComment}"></div>
+                            </p>
+                            <ul class="g-sm-flow-sm g-lg-flow g-reviewList_pics">
+                                <li><img class="img" th:src="${comment.goodsImg}" alt=""></li>
+                            </ul>
                         </th:block>
-                    <p id="date">
-                </p>
-            </div>
-            <p class="g-reviewList_info">
-               <div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
-            </p>
-            <p class="g-reviewList_h">コンパクトなのに横にもなれる！</p>
-            <p>背もたれのクッション部分が取り外せるので掃除しやすいです。身長約160cmですが、脚を投げ出すか曲げるかたちですが想像していたよりも快適に横になることもできます。座面の高さも良いです。背もたれがもう少し高いと座りやすいかなと思いますがデザイン可愛いいので満足しています。耐久性あるといいな!オススメです。</p>
-            <ul class="g-sm-flow-sm g-lg-flow g-reviewList_pics">
-                <li><img class="g-fw" src="" alt=""></li>
+                    </div>
+                </li>
             </ul>
-        </li>
-    </ul>
-</div>
+        </div>
 
         <div class="clear"></div>
     </div>

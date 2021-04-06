@@ -11,10 +11,8 @@ package ltd.newbee.mall.controller.mall;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
-import ltd.newbee.mall.controller.vo.NewBeeMallGoodsDetailVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallGoodsImgDetailVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
-import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
+import ltd.newbee.mall.controller.vo.*;
+import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
@@ -156,6 +154,7 @@ public class GoodsController {
         }
         NewBeeMallGoods goods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
         Map goodsImg = newBeeMallGoodsService.searchGoodsImg(goodsId);
+        List<GoodsComment> goodsComment = newBeeMallGoodsService.getCommentById(goodsId);
 
         if (goods == null) {
             NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
@@ -173,12 +172,16 @@ public class GoodsController {
         List<NewBeeMallGoodsImgDetailVO> newBeeMallSearchGoodsBigVOS = BeanUtil.copyList(bigOrderBy, NewBeeMallGoodsImgDetailVO.class);
         List<NewBeeMallGoodsImgDetailVO> newBeeMallSearchGoodsSmallVOS = BeanUtil.copyList(smallOrderBy, NewBeeMallGoodsImgDetailVO.class);
 
+        List<GoodsCommentVO> goodsCommentVOS = BeanUtil.copyList(goodsComment, GoodsCommentVO.class);
+
+
         goodsDetailVO.setGoodsCarouselList(goods.getGoodsCarousel().split(","));
 
 
         request.setAttribute("goodsDetail", goodsDetailVO);
         request.setAttribute("goodsBigImgDetail", newBeeMallSearchGoodsBigVOS);
         request.setAttribute("goodsSmallImgDetail", newBeeMallSearchGoodsSmallVOS);
+        request.setAttribute("goodsComment",goodsCommentVOS);
         return "mall/detail";
     }
 
