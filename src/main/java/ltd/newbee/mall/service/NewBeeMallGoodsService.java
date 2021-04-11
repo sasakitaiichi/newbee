@@ -133,4 +133,14 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     List<GoodsComment> getCommentById(Long goodsId);
+    
+    /**
+     * 商品搜索 cell phone
+     *
+     * @param pageUtil
+     * @return
+     */
+    PageResult searchSecondLevel(PageQueryUtil pageUtil);
+    
+    
 }

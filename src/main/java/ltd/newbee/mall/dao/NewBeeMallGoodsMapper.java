@@ -61,4 +61,8 @@ public interface NewBeeMallGoodsMapper {
     List<GoodsComment> selectById(Long goodsId);
 
     int insertComment(GoodsComment record);
+    
+    List<NewBeeMallGoods> searchSecondLevel(PageQueryUtil pageUtil);
+    
+    List<NewBeeMallGoods> selectByCategoryId(List<Long> categoryIds);
 }

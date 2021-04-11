@@ -25,7 +25,7 @@ public interface GoodsCategoryMapper {
 
     GoodsCategory selectByPrimaryKey(Long categoryId);
 
-    GoodsCategory selectByPrimaryKeyParentId(Long parentId);
+    List<GoodsCategory> selectByPrimaryKeyParentId(Long parentId);
 
     GoodsCategory selectByLevelAndName(@Param("categoryLevel") Byte categoryLevel, @Param("categoryName") String categoryName);
 

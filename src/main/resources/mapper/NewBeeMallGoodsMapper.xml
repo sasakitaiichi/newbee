@@ -237,6 +237,60 @@
             limit #{start},#{limit}
         </if>
     </select>
+    
+    <select id="searchSecondLevel" parameterType="Map" resultMap="BaseResultMap">
+        select goods_id,
+               goods_name,
+               goods_intro,
+               goods_category_id,
+               goods_cover_img,
+               goods_carousel,
+               original_price,
+               selling_price,
+               stock_num,
+               tag,
+               goods_sell_status,
+               create_user,
+               create_time,
+               update_user,
+               update_time
+        from (
+                 (select *
+                  from newbee_mall_db.tb_newbee_mall_goods_info
+                  where goods_category_id = 45
+                  order by selling_price limit 5)
+                 union all
+                 (select *
+                  from newbee_mall_db.tb_newbee_mall_goods_info
+                  where goods_category_id = 46
+                  order by selling_price limit 5)
+                 union all
+                 (select *
+                  from newbee_mall_db.tb_newbee_mall_goods_info
+                  where goods_category_id = 47
+                  order by selling_price limit 5)
+                 union all
+                 (select *
+                  from newbee_mall_db.tb_newbee_mall_goods_info
+                  where goods_category_id = 51
+                  order by selling_price limit 5)
+             ) as temp
+    </select>
+    
+    <select id="selectByCategoryId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_info
+        where goods_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        order by field(selling_price,
+        <foreach item="price" collection="list" separator=",">
+            #{price}
+        </foreach>
+        );
+    </select>
 
     <select id="findNewBeeMallGoodsListByGoodsCategoryId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
