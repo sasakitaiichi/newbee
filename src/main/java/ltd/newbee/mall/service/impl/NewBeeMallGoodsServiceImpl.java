@@ -143,21 +143,30 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 
 	@Override
 	public PageResult searchSecondLevel(PageQueryUtil pageUtil) {
-		List<Long> goodsCategoryIds = new ArrayList<Long>();
+		List<NewBeeMallGoods> goodsList = new ArrayList<NewBeeMallGoods>();
+		Long parentId = null;
 		List<NewBeeMallSearchGoodsVO> newBeeMallSearchGoodsVOS = new ArrayList<>();
 		int total = goodsMapper.getTotalNewBeeMallGoodsBySearch(pageUtil);
-		List<GoodsCategory> goodsCategories = goodsCategoryMapper.findGoodsCategoryList(pageUtil);
-		List<Long> parentIdList = goodsCategories.stream().map(GoodsCategory::getParentId).collect(Collectors.toList());
-		for (int i = 0; i < parentIdList.size(); i++) {
-			List<GoodsCategory> list = goodsCategoryMapper.selectByPrimaryKeyParentId(parentIdList.get(i));
-			for (int j = 0; j < list.size(); j++) {
-				goodsCategoryIds.add(list.get(j).getCategoryId());
+		parentId = Long.parseLong((String) pageUtil.get("goodsCategoryId"));
+		List<GoodsCategory> categories = goodsCategoryMapper.selectByPrimaryKeyParentId(parentId);
+		List<Long> categoryIds = categories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+		for (int i = 0; i < categoryIds.size(); i++) {
+			
+			List<NewBeeMallGoods> temp = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(i));
+			if (temp != null) {
+				goodsList.addAll(temp);
 			}
 		}
-		for (int i = 0; i < goodsCategoryIds.size(); i++) {
-			List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.selectByCategoryId(goodsCategoryIds);
-			if (!CollectionUtils.isEmpty(newBeeMallGoods)) {
-				newBeeMallSearchGoodsVOS = BeanUtil.copyList(newBeeMallGoods, NewBeeMallSearchGoodsVO.class);// vos复制vo
+//			List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.selectByCategoryId(categoryIds);
+//			Map<Long, List<NewBeeMallGoods>> goodsGroupByCategoryId = newBeeMallGoods.stream()
+//					.collect(Collectors.groupingBy(NewBeeMallGoods::getGoodsCategoryId, Collectors.collectingAndThen(
+//							Collectors.toList(), value -> value.stream().limit(5).collect(Collectors.toList()))));
+//
+//			for (Map.Entry<Long, List<NewBeeMallGoods>> entry : goodsGroupByCategoryId.entrySet()) {
+//				List<NewBeeMallGoods> temp = entry.getValue();
+
+			if (!CollectionUtils.isEmpty(goodsList)) {
+				newBeeMallSearchGoodsVOS = BeanUtil.copyList(goodsList, NewBeeMallSearchGoodsVO.class);// vos复制vo
 				for (NewBeeMallSearchGoodsVO newBeeMallSearchGoodsVO : newBeeMallSearchGoodsVOS) {// vo遍历vos
 					String goodsName = newBeeMallSearchGoodsVO.getGoodsName();
 					String goodsIntro = newBeeMallSearchGoodsVO.getGoodsIntro();
@@ -172,7 +181,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 					}
 				}
 			}
-		}
+
 		PageResult pageResult = new PageResult(newBeeMallSearchGoodsVOS, total, pageUtil.getLimit(),
 				pageUtil.getPage());
 		return pageResult;
