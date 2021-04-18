@@ -29,6 +29,18 @@
         <result column="goods_comment" jdbcType="VARCHAR" property="goodsComment"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
+    
+<!--     2021/04/16 added by sasaki for sale -->
+    <resultMap id="SaleResultMap" type="ltd.newbee.mall.entity.GoodsSale">
+        <id column="sale_id" jdbcType="BIGINT" property="saleId"/>
+        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="category_level" jdbcType="TINYINT" property="categoryLevel"/>
+        <result column="sale_value" jdbcType="DOUBLE" property="saleValue"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+    </resultMap>
 
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="ltd.newbee.mall.entity.NewBeeMallGoods">
         <result column="goods_detail_content" jdbcType="LONGVARCHAR" property="goodsDetailContent"/>
@@ -578,4 +590,68 @@
                 #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, #{goodsCommentTitle,jdbcType=VARCHAR},
                 #{goodsComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
     </insert>
+    
+<!--     2021/04/15 added by sasaki for categorySearch -->
+    <select id="getTotalNewBeeMallGoodsByCategory" parameterType="Map" resultType="int">
+        select count(*) from tb_newbee_mall_goods_info
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
+                and goods_category_id = any
+              (select category_id from newbee_mall_db.tb_newbee_mall_goods_category where parent_id = #{goodsCategoryId} )
+            </if>
+            <if test="goodsSellStatus!=null">
+                and goods_sell_status = #{goodsSellStatus}
+            </if>
+        </where>
+    </select>
+   
+    
+<!--     2021/04/16 added by sasaki for sale -->
+<insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
+        insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,category_level,sale_value,start_date,end_date)
+        values ({saleId,jdbcType=BIGINT},{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{categoryLevel,jdbcType=TINYINT},
+        #{saleValue,jdbcType=DOUBLE}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <!--     2021/04/17 added by sasaki for sale -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete
+        from goods_sale
+        where sale_id = #{saleId,jdbcType=BIGINT}
+    </delete>
+    
+    <!--     2021/04/17 added by sasaki for sale -->
+    <select id="selectSale" resultMap="SaleResultMap">
+        select
+        sale_id,goods_id,goods_category_id,parent_id,sale_value,start_date,end_date
+        from goods_sale
+        where sale_id = #{saleId,jdbcType=BIGINT}
+        or    goods_id = #{goodsId,jdbcType=BIGINT}
+        or    (goods_category_id = #{goodsCatgoryId,jdbcType=BIGINT}
+        and    category_level = #{categoryLevel,jdbcType=TINYINT})
+    </select>
+    
+    <!--     2021/04/17 added by sasaki for sale -->
+    <select id="selectBySaleId" resultMap="SaleResultMap">
+        select
+        sale_id,goods_id,goods_category_id,parent_id,sale_value,start_date,end_date
+        from goods_sale
+        where sale_id = #{saleId,jdbcType=BIGINT}
+    </select>
+    
+    
+    <!--     2021/04/17 added by sasaki for sale -->
+    <update id="updateSaleBySaleId">
+        update goods_sale
+        set sale_value=#{saleValue}
+        where sale_id = #{saleId,jdbcType=BIGINT}
+        or    goods_id = #{goodsId,jdbcType=BIGINT}
+        or    (goods_category_id = #{goodsCatgoryId,jdbcType=BIGINT}
+        and    category_level = #{categoryLevel,jdbcType=TINYINT})
+    </update>
+    
+    
 </mapper>

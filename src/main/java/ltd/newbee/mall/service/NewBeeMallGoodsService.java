@@ -142,5 +142,13 @@ public interface NewBeeMallGoodsService {
      */
     PageResult searchSecondLevel(PageQueryUtil pageUtil);
     
-    
+    //2021/04/17 added by sasaki for sale
+    /**
+     * 折扣商品搜索
+     *
+     * @param pageUtil
+     * @return
+     */
+    PageResult searchSaleGoods(PageQueryUtil pageUtil);
+
 }

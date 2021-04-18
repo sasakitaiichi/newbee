@@ -26,7 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 import ltd.newbee.mall.entity.GoodsImg;
+import ltd.newbee.mall.entity.GoodsSale;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -115,6 +118,68 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return pageResult;
 	}
 
+	// 2021/04/17 added by sasaki for sale
+	@Override
+	public PageResult searchSaleGoods(PageQueryUtil pageUtil) {
+		Long saleId = Long.parseLong((String) pageUtil.get("saleId"));
+		Long goodsCategoryId = Long.parseLong((String) pageUtil.get("goodsCategoryId"));
+		Long categoryLeve = Long.parseLong((String) pageUtil.get("categoryLevel"));
+		List<NewBeeMallGoods> newBeeMallGoods = new ArrayList<NewBeeMallGoods>();
+		List<NewBeeMallGoods> goodsList = new ArrayList<NewBeeMallGoods>();
+		
+		List<GoodsSale> goodsSales = goodsMapper.selectBySaleId(saleId);
+		List<Double> saleValue = goodsSales.stream().map(GoodsSale::getSaleValue).collect(Collectors.toList());
+		if (categoryLeve == 1) {
+			Long firstLevelId = goodsCategoryId;
+			List<GoodsCategory> secondLevelList = goodsCategoryMapper.selectByPrimaryKeyParentId(firstLevelId);
+			for (int i = 0; i < secondLevelList.size(); i++) {
+				List<GoodsCategory> categories = 
+						goodsCategoryMapper.selectByPrimaryKeyParentId(secondLevelList.get(i).getCategoryId());
+				List<Long> categoryIds = categories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+				for (int j = 0; j < categoryIds.size(); j++) {
+					List<NewBeeMallGoods> temp = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(j));
+					newBeeMallGoods.addAll(temp);
+				}
+			}
+			
+		} else if (categoryLeve == 2) {
+			Long parentId = goodsCategoryId;
+			List<GoodsCategory> categories = goodsCategoryMapper.selectByPrimaryKeyParentId(parentId);
+			List<Long> categoryIds = categories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+			for (int i = 0; i < categoryIds.size(); i++) {
+				newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(i));
+			}
+		} else if (categoryLeve == 3) {
+			newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsCategoryId);
+		}
+		
+		for (int j = 0; j < newBeeMallGoods.size(); j++) {
+						if (goodsSales.get(j).getGoodsCategoryId()==newBeeMallGoods.get(j).getGoodsCategoryId()) {
+							Integer salePrice = (int) (newBeeMallGoods.get(j).getSellingPrice()*saleValue.get(j));
+							newBeeMallGoods.get(j).setSellingPrice(salePrice);
+						}
+						goodsList.addAll(newBeeMallGoods);
+			if (!CollectionUtils.isEmpty(goodsList)) {
+			newBeeMallSearchGoodsVOS = BeanUtil.copyList(goodsList, NewBeeMallSearchGoodsVO.class);
+			for (NewBeeMallSearchGoodsVO newBeeMallSearchGoodsVO : newBeeMallSearchGoodsVOS) 
+				String goodsName = newBeeMallSearchGoodsVO.getGoodsName();
+				String goodsIntro = newBeeMallSearchGoodsVO.getGoodsIntro();
+				// 字符串过长导致文字超出的问题
+				if (goodsName.length() > 28) {
+					goodsName = goodsName.substring(0, 28) + "...";
+					newBeeMallSearchGoodsVO.setGoodsName(goodsName);
+				}
+				if (goodsIntro.length() > 30) {
+					goodsIntro = goodsIntro.substring(0, 30) + "...";
+					newBeeMallSearchGoodsVO.setGoodsIntro(goodsIntro);
+				}
+			}
+		}
+	}
+	PageResult pageResult = new PageResult(newBeeMallSearchGoodsVOS, total, pageUtil.getLimit(),
+			pageUtil.getPage());return pageResult;
+	}
+
 	@Override
 	public PageResult searchNewBeeMallGoodsCat(PageQueryUtil pageUtil) {
 		List<NewBeeMallGoods> goodsList = goodsMapper.findNewBeeMallGoodsListBySearchCat(pageUtil);
@@ -146,17 +211,29 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		List<NewBeeMallGoods> goodsList = new ArrayList<NewBeeMallGoods>();
 		Long parentId = null;
 		List<NewBeeMallSearchGoodsVO> newBeeMallSearchGoodsVOS = new ArrayList<>();
-		int total = goodsMapper.getTotalNewBeeMallGoodsBySearch(pageUtil);
+//		int total = goodsMapper.getTotalNewBeeMallGoodsByCategory(pageUtil);
+
 		parentId = Long.parseLong((String) pageUtil.get("goodsCategoryId"));
 		List<GoodsCategory> categories = goodsCategoryMapper.selectByPrimaryKeyParentId(parentId);
 		List<Long> categoryIds = categories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+
 		for (int i = 0; i < categoryIds.size(); i++) {
-			
+
 			List<NewBeeMallGoods> temp = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(i));
 			if (temp != null) {
 				goodsList.addAll(temp);
 			}
 		}
+		int currPage = (int) pageUtil.get("page");// 当前页
+		int pageSize = (int) pageUtil.get("limit");// 每页几条
+		int startIndex = (currPage - 1) * pageSize;// 开始下标
+		int endIndex = currPage * pageSize;// 结束下标
+		int total = goodsList.size();// list总条数
+		int pageCount = 0;// 总页数
+		if (currPage == pageCount) {
+			endIndex = total;
+		}
+		List<NewBeeMallGoods> pageList = goodsList.subList(startIndex, endIndex);
 //			List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.selectByCategoryId(categoryIds);
 //			Map<Long, List<NewBeeMallGoods>> goodsGroupByCategoryId = newBeeMallGoods.stream()
 //					.collect(Collectors.groupingBy(NewBeeMallGoods::getGoodsCategoryId, Collectors.collectingAndThen(
@@ -165,22 +242,22 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 //			for (Map.Entry<Long, List<NewBeeMallGoods>> entry : goodsGroupByCategoryId.entrySet()) {
 //				List<NewBeeMallGoods> temp = entry.getValue();
 
-			if (!CollectionUtils.isEmpty(goodsList)) {
-				newBeeMallSearchGoodsVOS = BeanUtil.copyList(goodsList, NewBeeMallSearchGoodsVO.class);// vos复制vo
-				for (NewBeeMallSearchGoodsVO newBeeMallSearchGoodsVO : newBeeMallSearchGoodsVOS) {// vo遍历vos
-					String goodsName = newBeeMallSearchGoodsVO.getGoodsName();
-					String goodsIntro = newBeeMallSearchGoodsVO.getGoodsIntro();
-					// 字符串过长导致文字超出的问题
-					if (goodsName.length() > 28) {
-						goodsName = goodsName.substring(0, 28) + "...";
-						newBeeMallSearchGoodsVO.setGoodsName(goodsName);
-					}
-					if (goodsIntro.length() > 30) {
-						goodsIntro = goodsIntro.substring(0, 30) + "...";
-						newBeeMallSearchGoodsVO.setGoodsIntro(goodsIntro);
-					}
+		if (!CollectionUtils.isEmpty(pageList)) {
+			newBeeMallSearchGoodsVOS = BeanUtil.copyList(pageList, NewBeeMallSearchGoodsVO.class);// vos复制vo
+			for (NewBeeMallSearchGoodsVO newBeeMallSearchGoodsVO : newBeeMallSearchGoodsVOS) {// vo遍历vos
+				String goodsName = newBeeMallSearchGoodsVO.getGoodsName();
+				String goodsIntro = newBeeMallSearchGoodsVO.getGoodsIntro();
+				// 字符串过长导致文字超出的问题
+				if (goodsName.length() > 28) {
+					goodsName = goodsName.substring(0, 28) + "...";
+					newBeeMallSearchGoodsVO.setGoodsName(goodsName);
+				}
+				if (goodsIntro.length() > 30) {
+					goodsIntro = goodsIntro.substring(0, 30) + "...";
+					newBeeMallSearchGoodsVO.setGoodsIntro(goodsIntro);
 				}
 			}
+		}
 
 		PageResult pageResult = new PageResult(newBeeMallSearchGoodsVOS, total, pageUtil.getLimit(),
 				pageUtil.getPage());

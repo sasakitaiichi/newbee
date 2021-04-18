@@ -117,11 +117,11 @@ public class GoodsController {
         //封装分类数据
         if (params.containsKey("goodsCategoryId") && !StringUtils.isEmpty(params.get("goodsCategoryId") + "")) {
             Long categoryId = Long.valueOf(params.get("goodsCategoryId") + "");
-            SearchPageCategoryVO searchPageCategoryVO = newBeeMallCategoryService.getCategoriesForSearch(categoryId);
-            if (searchPageCategoryVO != null) {
+//            SearchPageCategoryVO searchPageCategoryVO = newBeeMallCategoryService.getCategoriesForSearch(categoryId);
+//            if (searchPageCategoryVO != null) {
                 request.setAttribute("goodsCategoryId", categoryId);
-                request.setAttribute("searchPageCategoryVO", searchPageCategoryVO);
-            }
+//                request.setAttribute("searchPageCategoryVO", searchPageCategoryVO);
+//            }
         }
         //封装参数供前端回显
         if (params.containsKey("orderBy") && !StringUtils.isEmpty(params.get("orderBy") + "")) {

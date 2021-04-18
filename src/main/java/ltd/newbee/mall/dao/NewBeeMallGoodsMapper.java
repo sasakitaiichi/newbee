@@ -10,12 +10,14 @@ package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.GoodsIdCatId;
+import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface NewBeeMallGoodsMapper {
     int deleteByPrimaryKey(Long goodsId);
@@ -65,4 +67,22 @@ public interface NewBeeMallGoodsMapper {
     List<NewBeeMallGoods> searchSecondLevel(PageQueryUtil pageUtil);
     
     List<NewBeeMallGoods> selectByCategoryId(List<Long> categoryIds);
+    
+//    2021/04/15 added by sasaki for categorySearch
+    int getTotalNewBeeMallGoodsByCategory(PageQueryUtil pageUtil);
+    
+    //2021/04/16 added by sasaki for sale
+    int insertSale(GoodsSale record);
+    
+  //2021/04/16 added by sasaki for sale
+    int deleteById(Long saleId);
+    
+  //2021/04/17 added by sasaki for sale
+    List<GoodsSale> selectSale(Long saleId,Long goodsId,Long goodsCategoryId,Long categoryLevel);
+    
+  //2021/04/17 added by sasaki for sale
+    List<GoodsSale> selectBySaleId(Long saleId);
+    
+  //2021/04/17 added by sasaki for sale
+    int updateSaleBySaleId(Long saleId,Long goodsId,Long goodsCategoryId,Long categoryLevel);
 }
