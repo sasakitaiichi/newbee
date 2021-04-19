@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.service;
 
+import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.GoodsImg;
@@ -142,13 +143,13 @@ public interface NewBeeMallGoodsService {
      */
     PageResult searchSecondLevel(PageQueryUtil pageUtil);
     
-    //2021/04/17 added by sasaki for sale
+    //2021/04/19 added by sasaki for sale
     /**
      * 折扣商品搜索
      *
      * @param pageUtil
      * @return
      */
-    PageResult searchSaleGoods(PageQueryUtil pageUtil);
+    List<GoodsSaleVO> searchSaleGoods(Long saleId);
 
 }

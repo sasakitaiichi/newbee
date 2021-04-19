@@ -10,6 +10,7 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
+import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallGoodsImgDetailVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.GoodsCommentMapper;
@@ -120,66 +121,67 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 
 	// 2021/04/17 added by sasaki for sale
 	@Override
-	public PageResult searchSaleGoods(PageQueryUtil pageUtil) {
-		Long saleId = Long.parseLong((String) pageUtil.get("saleId"));
-		Long goodsCategoryId = Long.parseLong((String) pageUtil.get("goodsCategoryId"));
-		Long categoryLeve = Long.parseLong((String) pageUtil.get("categoryLevel"));
-		List<NewBeeMallGoods> newBeeMallGoods = new ArrayList<NewBeeMallGoods>();
-		List<NewBeeMallGoods> goodsList = new ArrayList<NewBeeMallGoods>();
-		
+	public List<GoodsSaleVO> searchSaleGoods(Long saleId) {
+		List<NewBeeMallGoods> goodsList = new ArrayList<>();
+		List<GoodsSaleVO> goodsSaleVOs = new ArrayList<>();
 		List<GoodsSale> goodsSales = goodsMapper.selectBySaleId(saleId);
-		List<Double> saleValue = goodsSales.stream().map(GoodsSale::getSaleValue).collect(Collectors.toList());
-		if (categoryLeve == 1) {
-			Long firstLevelId = goodsCategoryId;
-			List<GoodsCategory> secondLevelList = goodsCategoryMapper.selectByPrimaryKeyParentId(firstLevelId);
-			for (int i = 0; i < secondLevelList.size(); i++) {
-				List<GoodsCategory> categories = 
-						goodsCategoryMapper.selectByPrimaryKeyParentId(secondLevelList.get(i).getCategoryId());
-				List<Long> categoryIds = categories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
-				for (int j = 0; j < categoryIds.size(); j++) {
-					List<NewBeeMallGoods> temp = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(j));
-					newBeeMallGoods.addAll(temp);
+		for (int i = 0; i < goodsSales.size(); i++) {
+			if (goodsSales.get(i).getGoodsId() != null && goodsSales.get(i).getCategoryLevel() == null) {
+				NewBeeMallGoods temp =  goodsMapper.selectByPrimaryKey(goodsSales.get(i).getGoodsId());
+				goodsList.add(temp);
+				for (int j = 0; j < goodsList.size(); j++) {
+					if(goodsList.get(j).getGoodsId() == goodsSales.get(j).getGoodsId()) {
+						Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
+						goodsList.get(j).setSellingPrice(salePrice);
+					}
 				}
 			}
-			
-		} else if (categoryLeve == 2) {
-			Long parentId = goodsCategoryId;
-			List<GoodsCategory> categories = goodsCategoryMapper.selectByPrimaryKeyParentId(parentId);
-			List<Long> categoryIds = categories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
-			for (int i = 0; i < categoryIds.size(); i++) {
-				newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(i));
+			if (goodsSales.get(i).getGoodsId() == null && goodsSales.get(i).getCategoryLevel() == 1) {
+				GoodsCategory firstLevelCategory = 
+						goodsCategoryMapper.selectByLevelAndId(goodsSales.get(i).getGoodsCategoryId(),goodsSales.get(i).getCategoryLevel());
+				List<GoodsCategory> secondLevelCategories = 
+						goodsCategoryMapper.selectByPrimaryKeyParentId(firstLevelCategory.getCategoryId());
+				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+				List<NewBeeMallGoods> temp = goodsMapper.selectByCategoryId(categoryIds);
+				goodsList.addAll(temp);
+				for (int j = 0; j < goodsList.size(); j++) {
+					Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
+					goodsList.get(j).setSellingPrice(salePrice);
+				}
 			}
-		} else if (categoryLeve == 3) {
-			newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsCategoryId);
+			if (goodsSales.get(i).getGoodsId() == null && goodsSales.get(i).getCategoryLevel() == 2) {
+				List<GoodsCategory> secondLevelCategories = 
+						goodsCategoryMapper.selectByPrimaryKeyParentId(goodsSales.get(i).getGoodsCategoryId());
+				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+				List<NewBeeMallGoods> temp = goodsMapper.selectByCategoryId(categoryIds);
+				goodsList.addAll(temp);
+				for (int j = 0; j < goodsList.size(); j++) {
+					if (goodsList.get(j).getGoodsCategoryId() == categoryIds.get(j)) {
+						Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
+						goodsList.get(j).setSellingPrice(salePrice);
+					}
+				}
+			}
+			if (goodsSales.get(i).getGoodsId() == null && goodsSales.get(i).getCategoryLevel() == 3) {
+				List<NewBeeMallGoods> temp = 
+						goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsSales.get(i).getGoodsCategoryId());
+				goodsList.addAll(temp);
+				for (int j = 0; j < goodsList.size(); j++) {
+					Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
+					goodsList.get(j).setSellingPrice(salePrice);
+				}
+			}
+		}
+		for (int i = 0; i < goodsList.size(); i++) {
+			GoodsSaleVO goodsSaleVO = new GoodsSaleVO();
+			goodsSaleVO.setGoodsId(goodsList.get(i).getGoodsId());
+			goodsSaleVO.setSalePrice(goodsList.get(i).getSellingPrice());
+			goodsSaleVO.setSaleValue(goodsSales.get(i).getSaleValue());
+			goodsSaleVOs.add(goodsSaleVO);
+		}
+		return goodsSaleVOs;
 		}
 		
-		for (int j = 0; j < newBeeMallGoods.size(); j++) {
-						if (goodsSales.get(j).getGoodsCategoryId()==newBeeMallGoods.get(j).getGoodsCategoryId()) {
-							Integer salePrice = (int) (newBeeMallGoods.get(j).getSellingPrice()*saleValue.get(j));
-							newBeeMallGoods.get(j).setSellingPrice(salePrice);
-						}
-						goodsList.addAll(newBeeMallGoods);
-			if (!CollectionUtils.isEmpty(goodsList)) {
-			newBeeMallSearchGoodsVOS = BeanUtil.copyList(goodsList, NewBeeMallSearchGoodsVO.class);
-			for (NewBeeMallSearchGoodsVO newBeeMallSearchGoodsVO : newBeeMallSearchGoodsVOS) 
-				String goodsName = newBeeMallSearchGoodsVO.getGoodsName();
-				String goodsIntro = newBeeMallSearchGoodsVO.getGoodsIntro();
-				// 字符串过长导致文字超出的问题
-				if (goodsName.length() > 28) {
-					goodsName = goodsName.substring(0, 28) + "...";
-					newBeeMallSearchGoodsVO.setGoodsName(goodsName);
-				}
-				if (goodsIntro.length() > 30) {
-					goodsIntro = goodsIntro.substring(0, 30) + "...";
-					newBeeMallSearchGoodsVO.setGoodsIntro(goodsIntro);
-				}
-			}
-		}
-	}
-	PageResult pageResult = new PageResult(newBeeMallSearchGoodsVOS, total, pageUtil.getLimit(),
-			pageUtil.getPage());return pageResult;
-	}
-
 	@Override
 	public PageResult searchNewBeeMallGoodsCat(PageQueryUtil pageUtil) {
 		List<NewBeeMallGoods> goodsList = goodsMapper.findNewBeeMallGoodsListBySearchCat(pageUtil);

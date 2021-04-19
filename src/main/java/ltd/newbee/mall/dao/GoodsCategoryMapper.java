@@ -29,6 +29,9 @@ public interface GoodsCategoryMapper {
 
     GoodsCategory selectByLevelAndName(@Param("categoryLevel") Byte categoryLevel, @Param("categoryName") String categoryName);
 
+//    2021/04/19 added by sasaki for sale
+    GoodsCategory selectByLevelAndId(@Param("categoryId") Long categoryId, @Param("categoryLevel") Byte categoryLevel);
+
     int updateByPrimaryKeySelective(GoodsCategory record);
 
     int updateByPrimaryKey(GoodsCategory record);
