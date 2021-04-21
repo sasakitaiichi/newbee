@@ -18,6 +18,7 @@ import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.Sale;
 import ltd.newbee.mall.dao.GoodsImgMapper;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
@@ -32,6 +33,7 @@ import org.springframework.util.StringUtils;
 import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.entity.GoodsSale;
 
+import java.awt.Color;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -119,68 +121,155 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return pageResult;
 	}
 
-	// 2021/04/17 added by sasaki for sale
+//	// 2021/04/17 added by sasaki for sale
+//	@Override
+//	public List<GoodsSaleVO> searchSaleGoods(Long saleId) {
+//		List<NewBeeMallGoods> goodsList = new ArrayList<>();
+//		List<GoodsSaleVO> goodsSaleVOs = new ArrayList<>();
+//		List<GoodsSale> goodsSales = goodsMapper.selectBySaleId(saleId);
+//		for (int i = 0; i < goodsSales.size(); i++) {
+//			if (goodsSales.get(i).getGoodsId() != null) {
+//				NewBeeMallGoods temp =  goodsMapper.selectByPrimaryKey(goodsSales.get(i).getGoodsId());
+//				Integer salePrice = (int) Math.round(temp.getSellingPrice()*goodsSales.get(i).getSaleValue());
+//				temp.setSellingPrice(salePrice);
+//				goodsList.add(temp);
+//			}
+//			else if (goodsSales.get(i).getGoodsCategoryId() != null && goodsSales.get(i).getCategoryLevel() == 3) {
+//				List<NewBeeMallGoods> temp = 
+//						goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsSales.get(i).getGoodsCategoryId());
+//				if (temp != null)
+//				{				for (int j = 0; j < temp.size(); j++) {
+//					if (temp.get(j).getGoodsCategoryId() == goodsSales.get(j).getGoodsCategoryId()) {
+//						Integer salePrice = (int) Math.round(temp.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
+//						temp.get(j).setSellingPrice(salePrice);
+//				goodsList.addAll(temp);
+//					   }
+//					}
+//				}
+//			}
+//			else if (goodsSales.get(i).getGoodsCategoryId() != null && goodsSales.get(i).getCategoryLevel() == 2) {
+//				List<GoodsCategory> secondLevelCategories = 
+//						goodsCategoryMapper.selectByPrimaryKeyParentId(goodsSales.get(i).getGoodsCategoryId());
+//				if (secondLevelCategories != null) {
+//				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+//				for (int j = 0; j < categoryIds.size(); j++) {
+//					List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(j));
+//					for (int k = 0; k < newBeeMallGoods.size(); k++) {
+//						Integer salePrice = (int) Math.round(newBeeMallGoods.get(k).getSellingPrice()*goodsSales.get(i).getSaleValue());
+//						newBeeMallGoods.get(k).setSellingPrice(salePrice);
+//						goodsList.addAll(newBeeMallGoods);
+//					}
+//				   }
+//				}
+//			}
+//			else if (goodsSales.get(i).getGoodsCategoryId() != null && goodsSales.get(i).getCategoryLevel() == 1) {
+//				GoodsCategory firstLevelCategory = 
+//						goodsCategoryMapper.selectByLevelAndId(goodsSales.get(i).getGoodsCategoryId(),goodsSales.get(i).getCategoryLevel());
+//				if (firstLevelCategory != null) {
+//				List<GoodsCategory> secondLevelCategories = 
+//						goodsCategoryMapper.selectByPrimaryKeyParentId(firstLevelCategory.getCategoryId());
+//				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
+//				List<NewBeeMallGoods> temp = goodsMapper.selectByCategoryId(categoryIds);
+//				for (int j = 0; j < temp.size(); j++) {
+//					if (temp.get(j).getGoodsCategoryId() == categoryIds.get(j)) {
+//						Integer salePrice = (int) Math.round(temp.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
+//						temp.get(j).setSellingPrice(salePrice);
+//						goodsList.addAll(temp);
+//					   }
+//					}
+//				}
+//			}
+//		}
+//		for (int i = 0; i < goodsList.size(); i++) {
+//			GoodsSaleVO goodsSaleVO = new GoodsSaleVO();
+//			goodsSaleVO.setGoodsId(goodsList.get(i).getGoodsId());
+//			goodsSaleVO.setSalePrice(goodsList.get(i).getSellingPrice());
+//			goodsSaleVO.setSaleValue(goodsSales.get(i).getSaleValue());
+//			goodsSaleVOs.add(goodsSaleVO);
+//		}
+//		return goodsSaleVOs;
+//		}
+	
+//	2021/04/21 added by sasaki for sale
 	@Override
-	public List<GoodsSaleVO> searchSaleGoods(Long saleId) {
-		List<NewBeeMallGoods> goodsList = new ArrayList<>();
-		List<GoodsSaleVO> goodsSaleVOs = new ArrayList<>();
+	public List<GoodsSale> searchSaleGoods(Long saleId) {
 		List<GoodsSale> goodsSales = goodsMapper.selectBySaleId(saleId);
-		for (int i = 0; i < goodsSales.size(); i++) {
-			if (goodsSales.get(i).getGoodsId() != null && goodsSales.get(i).getCategoryLevel() == null) {
-				NewBeeMallGoods temp =  goodsMapper.selectByPrimaryKey(goodsSales.get(i).getGoodsId());
-				goodsList.add(temp);
-				for (int j = 0; j < goodsList.size(); j++) {
-					if(goodsList.get(j).getGoodsId() == goodsSales.get(j).getGoodsId()) {
-						Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
-						goodsList.get(j).setSellingPrice(salePrice);
-					}
-				}
-			}
-			if (goodsSales.get(i).getGoodsId() == null && goodsSales.get(i).getCategoryLevel() == 1) {
-				GoodsCategory firstLevelCategory = 
-						goodsCategoryMapper.selectByLevelAndId(goodsSales.get(i).getGoodsCategoryId(),goodsSales.get(i).getCategoryLevel());
-				List<GoodsCategory> secondLevelCategories = 
-						goodsCategoryMapper.selectByPrimaryKeyParentId(firstLevelCategory.getCategoryId());
-				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
-				List<NewBeeMallGoods> temp = goodsMapper.selectByCategoryId(categoryIds);
-				goodsList.addAll(temp);
-				for (int j = 0; j < goodsList.size(); j++) {
-					Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
-					goodsList.get(j).setSellingPrice(salePrice);
-				}
-			}
-			if (goodsSales.get(i).getGoodsId() == null && goodsSales.get(i).getCategoryLevel() == 2) {
-				List<GoodsCategory> secondLevelCategories = 
-						goodsCategoryMapper.selectByPrimaryKeyParentId(goodsSales.get(i).getGoodsCategoryId());
-				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
-				List<NewBeeMallGoods> temp = goodsMapper.selectByCategoryId(categoryIds);
-				goodsList.addAll(temp);
-				for (int j = 0; j < goodsList.size(); j++) {
-					if (goodsList.get(j).getGoodsCategoryId() == categoryIds.get(j)) {
-						Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
-						goodsList.get(j).setSellingPrice(salePrice);
-					}
-				}
-			}
-			if (goodsSales.get(i).getGoodsId() == null && goodsSales.get(i).getCategoryLevel() == 3) {
-				List<NewBeeMallGoods> temp = 
-						goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsSales.get(i).getGoodsCategoryId());
-				goodsList.addAll(temp);
-				for (int j = 0; j < goodsList.size(); j++) {
-					Integer salePrice = (int) (goodsList.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
-					goodsList.get(j).setSellingPrice(salePrice);
-				}
-			}
+		return goodsSales;
+	}
+	
+// 2021/04/21 added by sasaki for sale	
+	@Override
+	public String saveSalesGoods(GoodsSale goods) {
+		if (goodsMapper.insertSale(goods) > 0) {
+			return ServiceResultEnum.SUCCESS.getResult();
 		}
-		for (int i = 0; i < goodsList.size(); i++) {
-			GoodsSaleVO goodsSaleVO = new GoodsSaleVO();
-			goodsSaleVO.setGoodsId(goodsList.get(i).getGoodsId());
-			goodsSaleVO.setSalePrice(goodsList.get(i).getSellingPrice());
-			goodsSaleVO.setSaleValue(goodsSales.get(i).getSaleValue());
-			goodsSaleVOs.add(goodsSaleVO);
+		return ServiceResultEnum.DB_ERROR.getResult();
+	}
+	
+	// 2021/04/21 added by sasaki for sale	
+	@Override
+	public String updateSaleGoods(GoodsSale goods) {
+		GoodsSale temp = (GoodsSale) goodsMapper.selectBySaleId(goods.getSaleId());
+		if (temp == null) {
+			return ServiceResultEnum.DATA_NOT_EXIST.getResult();
 		}
-		return goodsSaleVOs;
+		if (goodsMapper.updateSaleBySaleId(goods) > 0) {
+			return ServiceResultEnum.SUCCESS.getResult();
 		}
+		return ServiceResultEnum.DB_ERROR.getResult();
+	}
+	
+	// 2021/04/21 added by sasaki for sale
+	@Override
+    public Boolean deleteSaleGoods(Long goodsId) {
+        return goodsMapper.deleteById(goodsId) > 0;
+    }
+	
+// 2021/04/21 added by sasaki for sale
+	@Override
+	public Boolean isSale(Long goodsId) {
+		List<GoodsSale> goodsSales = goodsMapper.selectByGoodsId(goodsId);
+		if(goodsSales != null) {
+			return true;
+		}
+		return true;
+	}
+	
+	// 2021/04/21 added by sasaki for sale	
+		@Override
+		public String saveSales(Sale sale) {
+			if (goodsMapper.insertSaleList(sale) > 0) {
+				return ServiceResultEnum.SUCCESS.getResult();
+			}
+			return ServiceResultEnum.DB_ERROR.getResult();
+		}
+	
+	// 2021/04/21 added by sasaki for sale
+		@Override
+	    public Boolean deleteSale(Long saleId) {
+	        return goodsMapper.deleteSaleListById(saleId) > 0;
+	    }
+	
+		// 2021/04/21 added by sasaki for sale	
+		@Override
+		public String updateSale(Sale sale) {
+			Sale temp = (Sale) goodsMapper.selectSaleListBySaleId(sale.getSaleId());
+			if (temp == null) {
+				return ServiceResultEnum.DATA_NOT_EXIST.getResult();
+			}
+			if (goodsMapper.updateSaleListBySaleId(sale) > 0) {
+				return ServiceResultEnum.SUCCESS.getResult();
+			}
+			return ServiceResultEnum.DB_ERROR.getResult();
+		}
+		
+//		2021/04/21 added by sasaki for sale
+		@Override
+		public List<Sale> searchSale(Long saleId) {
+			List<Sale> Sales = goodsMapper.selectSaleListBySaleId(saleId);
+			return Sales;
+		}
+	
 		
 	@Override
 	public PageResult searchNewBeeMallGoodsCat(PageQueryUtil pageUtil) {
@@ -339,5 +428,4 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		List<GoodsComment> goodsComments = goodsMapper.selectById(goodsId);
 		return goodsComments;
 	}
-
 }

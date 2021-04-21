@@ -11,7 +11,9 @@ package ltd.newbee.mall.service;
 import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.Sale;
 import ltd.newbee.mall.entity.GoodsImg;
+import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
@@ -143,13 +145,81 @@ public interface NewBeeMallGoodsService {
      */
     PageResult searchSecondLevel(PageQueryUtil pageUtil);
     
-    //2021/04/19 added by sasaki for sale
+//    //2021/04/19 added by sasaki for sale
+//    /**
+//     * 折扣商品搜索
+//     *
+//     * @param pageUtil
+//     * @return
+//     */
+//    List<GoodsSaleVO> searchSaleGoods(Long saleId);
+    
+  //2021/04/21 added by sasaki for sale
     /**
      * 折扣商品搜索
      *
      * @param pageUtil
      * @return
      */
-    List<GoodsSaleVO> searchSaleGoods(Long saleId);
+    List<GoodsSale> searchSaleGoods(Long saleId);
+    
+    //2021/04/21 added by sasaki for sale
+    /**
+     * 添加折扣商品
+     *
+     * @param goods
+     * @return
+     */
+    String saveSalesGoods(GoodsSale goods);
+    
+  //2021/04/21 added by sasaki for sale
+    Boolean deleteSaleGoods(Long goodsId);
+    
+  //2021/04/21 added by sasaki for sale
+    /**
+     * 修改打折商品信息
+     *
+     * @param goods
+     * @return
+     */
+    String updateSaleGoods(GoodsSale goods);
+    
+  //2021/04/21 added by sasaki for sale
+    /**
+     * 判斷是否打折
+     *
+     * @param goodsId
+     * @return
+     */
+    Boolean isSale(Long goodsId);
 
+    //2021/04/21 added by sasaki for sale
+    Boolean deleteSale(Long saleId);
+    
+  //2021/04/21 added by sasaki for sale
+    /**
+     * 修改打折キャンペーン信息
+     *
+     * @param sale
+     * @return
+     */
+    String updateSale(Sale sale);
+    
+  //2021/04/21 added by sasaki for sale
+    /**
+     * 添加折扣キャンペーン
+     *
+     * @param sale
+     * @return
+     */
+    String saveSales(Sale sale);
+    
+    //2021/04/21 added by sasaki for sale
+    /**
+     * 折扣キャンペーン搜索
+     *
+     * @param saleId
+     * @return
+     */
+    List<Sale> searchSale(Long saleId);
 }

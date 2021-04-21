@@ -12,6 +12,7 @@ import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.GoodsIdCatId;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.Sale;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
@@ -83,6 +84,21 @@ public interface NewBeeMallGoodsMapper {
   //2021/04/17 added by sasaki for sale
     List<GoodsSale> selectBySaleId(Long saleId);
     
+  //2021/04/121 added by sasaki for sale
+    List<GoodsSale> selectByGoodsId(Long goodsId);
+    
   //2021/04/17 added by sasaki for sale
-    int updateSaleBySaleId(Long saleId,Long goodsId,Long goodsCategoryId,Long categoryLevel);
+    int updateSaleBySaleId(GoodsSale record);
+    
+  //2021/04/21 added by sasaki for sale
+    int insertSaleList(Sale record);
+    
+  //2021/04/21 added by sasaki for sale
+    int deleteSaleListById(Long saleId);
+    
+  //2021/04/21 added by sasaki for sale
+    int updateSaleListBySaleId(Sale record);
+    
+  //2021/04/21 added by sasaki for sale
+    List<Sale> selectSaleListBySaleId(Long saleId);
 }
