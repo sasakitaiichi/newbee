@@ -45,7 +45,6 @@
     <!--     2021/04/21 added by sasaki for sale -->
     <resultMap id="SaleResultMap" type="ltd.newbee.mall.entity.Sale">
         <id column="sale_id" jdbcType="BIGINT" property="saleId"/>
-        <result column="is_on" jdbcType="TINYINT" property="isOn"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
     </resultMap>
@@ -667,8 +666,8 @@
     
     <!--     2021/04/21 added by sasaki for sale -->
 <insert id="insertSaleList" parameterType="ltd.newbee.mall.entity.Sale">
-        insert tb_sale (sale_id,is_on,start_date,end_date)
-        values (#{saleId,jdbcType=BIGINT},#{isOn,jdbcType=TINYINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
+        insert tb_sale (sale_id,start_date,end_date)
+        values (#{saleId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
     </insert>
     
     <!--     2021/04/21 added by sasaki for sale -->
@@ -695,7 +694,7 @@
     <!--     2021/04/21 added by sasaki for sale -->
     <select id="selectSaleListBySaleId" resultMap="SaleResultMap">
         select
-        sale_id,is_on,start_date,end_date
+        sale_id,start_date,end_date
         from tb_sale
         where sale_id = #{saleId,jdbcType=BIGINT}
     </select>
