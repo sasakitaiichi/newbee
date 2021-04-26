@@ -79,9 +79,6 @@ public interface NewBeeMallGoodsMapper {
     int deleteById(Long saleId);
     
   //2021/04/17 added by sasaki for sale
-    List<GoodsSale> selectSale(Long saleId,Long goodsId,Long goodsCategoryId,Long categoryLevel);
-    
-  //2021/04/17 added by sasaki for sale
     List<GoodsSale> selectBySaleId(Long saleId);
     
   //2021/04/121 added by sasaki for sale

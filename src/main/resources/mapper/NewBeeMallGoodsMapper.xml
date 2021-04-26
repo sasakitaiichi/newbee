@@ -36,7 +36,7 @@
         <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
         <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/>
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
-        <result column="category_level" jdbcType="TINYINT" property="categoryLevel"/>
+        <result column="first_level_id" jdbcType="BIGINT" property="firstLevelId"/>
         <result column="sale_value" jdbcType="DOUBLE" property="saleValue"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
@@ -616,10 +616,10 @@
     </select>
    
     
-<!--     2021/04/16 added by sasaki for sale -->
-<insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
-        insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,category_level,sale_value,start_date,end_date)
-        values ({saleId,jdbcType=BIGINT},{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{categoryLevel,jdbcType=TINYINT},
+	<!--     2021/04/16 added by sasaki for sale -->
+	<insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
+        insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date)
+        values (#{saleId,jdbcType=BIGINT},#{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{firstLevelId,jdbcType=BIGINT},
         #{saleValue,jdbcType=DOUBLE}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
     </insert>
     
@@ -630,29 +630,19 @@
         where sale_id = #{saleId,jdbcType=BIGINT}
     </delete>
     
-    <!--     2021/04/17 added by sasaki for sale -->
-    <select id="selectSale" resultMap="GoodsSaleResultMap">
-        select
-        sale_id,goods_id,goods_category_id,parent_id,sale_value,start_date,end_date
-        from goods_sale
-        where sale_id = #{saleId,jdbcType=BIGINT}
-        or    goods_id = #{goodsId,jdbcType=BIGINT}
-        or    (goods_category_id = #{goodsCatgoryId,jdbcType=BIGINT}
-        and    category_level = #{categoryLevel,jdbcType=TINYINT})
-    </select>
     
     <!--     2021/04/17 added by sasaki for sale -->
     <select id="selectBySaleId" resultMap="GoodsSaleResultMap">
         select
-        sale_id,goods_id,goods_category_id,parent_id,sale_value,start_date,end_date
+        sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
         from goods_sale
         where sale_id = #{saleId,jdbcType=BIGINT}
     </select>
     
     <!--     2021/04/21 added by sasaki for sale -->
-    <select id="selectBySaleId" resultMap="GoodsSaleResultMap">
+    <select id="selectByGoodsIdId" resultMap="GoodsSaleResultMap">
         select
-        sale_id,goods_id,goods_category_id,parent_id,sale_value,start_date,end_date
+        sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
         from goods_sale
         where goods_id = #{goodsId,jdbcType=BIGINT}
     </select>
@@ -670,7 +660,7 @@
     <!--     2021/04/21 added by sasaki for sale -->
 <insert id="insertSaleList" parameterType="ltd.newbee.mall.entity.Sale">
         insert tb_sale (sale_id,is_on,start_date,end_date)
-        values ({saleId,jdbcType=BIGINT},#{isOn,jdbcType=TINYINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
+        values (#{saleId,jdbcType=BIGINT},#{isOn,jdbcType=TINYINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
     </insert>
     
     <!--     2021/04/21 added by sasaki for sale -->
