@@ -651,9 +651,17 @@
     <!--     2021/04/21 added by sasaki for sale -->
     <update id="updateSaleBySaleId">
         update goods_sale
-        set sale_value=#{saleValue},
-        	start_date=#{startDate},
-        	end_date=#{endDate}
+        <set>
+            <if test="saleValue != null">
+                sale_value=#{saleValue},
+            </if>
+         	<if test="startDate != null">
+                start_date=#{startDate},
+            </if>
+        	<if test="endDate != null">
+                end_date=#{endDate}
+            </if>
+        	</set>
         where sale_id = #{saleId,jdbcType=BIGINT}
     </update>
     
@@ -673,9 +681,14 @@
     <!--     2021/04/21 added by sasaki for sale -->
     <update id="updateSaleListBySaleId">
         update tb_sale
-        set is_on=#{isOn},
-        	start_date=#{startDate},
-        	end_date=#{endDate}
+        <set>
+         	<if test="startDate != null">
+                start_date=#{startDate},
+            </if>
+        	<if test="endDate != null">
+                end_date=#{endDate}
+            </if>
+        	</set>
         where sale_id = #{saleId,jdbcType=BIGINT}
     </update>
     

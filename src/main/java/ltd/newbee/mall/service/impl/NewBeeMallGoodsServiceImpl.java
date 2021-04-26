@@ -209,7 +209,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	// 2021/04/21 added by sasaki for sale	
 	@Override
 	public String updateSaleGoods(GoodsSale goods) {
-		GoodsSale temp = (GoodsSale) goodsMapper.selectBySaleId(goods.getSaleId());
+		List<GoodsSale> temp = goodsMapper.selectBySaleId(goods.getSaleId());
 		if (temp == null) {
 			return ServiceResultEnum.DATA_NOT_EXIST.getResult();
 		}
@@ -253,7 +253,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		// 2021/04/21 added by sasaki for sale	
 		@Override
 		public String updateSale(Sale sale) {
-			Sale temp = (Sale) goodsMapper.selectSaleListBySaleId(sale.getSaleId());
+			List<Sale> temp = goodsMapper.selectSaleListBySaleId(sale.getSaleId());
 			if (temp == null) {
 				return ServiceResultEnum.DATA_NOT_EXIST.getResult();
 			}
