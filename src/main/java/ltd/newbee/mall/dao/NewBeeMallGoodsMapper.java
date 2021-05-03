@@ -81,8 +81,11 @@ public interface NewBeeMallGoodsMapper {
   //2021/04/17 added by sasaki for sale
     List<GoodsSale> selectBySaleId(Long saleId);
     
-  //2021/04/121 added by sasaki for sale
+  //2021/04/21 added by sasaki for sale
     List<GoodsSale> selectByGoodsId(Long goodsId);
+    
+  //2021/04/29 added by sasaki for sale
+    List<GoodsSale> selectByCategoryIdForSaleGoods(Long goodsCategoryId);
     
   //2021/04/17 added by sasaki for sale
     int updateSaleBySaleId(GoodsSale record);

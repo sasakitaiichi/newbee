@@ -639,11 +639,19 @@
     </select>
     
     <!--     2021/04/21 added by sasaki for sale -->
-    <select id="selectByGoodsIdId" resultMap="GoodsSaleResultMap">
+    <select id="selectByGoodsId" resultMap="GoodsSaleResultMap">
         select
         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
         from goods_sale
         where goods_id = #{goodsId,jdbcType=BIGINT}
+    </select>
+    
+    <!--     2021/04/29 added by sasaki for sale -->
+    <select id="selectByCategoryIdForSaleGoods" resultMap="GoodsSaleResultMap">
+        select
+        sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
+        from goods_sale
+        where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT}
     </select>
     
     

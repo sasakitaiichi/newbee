@@ -13,6 +13,7 @@ import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.*;
 import ltd.newbee.mall.entity.GoodsComment;
+import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
@@ -42,6 +43,8 @@ public class GoodsController {
 
     @GetMapping({"/search", "/search.html"})
     public String searchPage(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+    	Long goodsCategoryId = Long.valueOf((String) params.get("goodsCategoryId"));
+    	List<GoodsSale> saleList = newBeeMallGoodsService.getSaleGoodsByCategoryId(goodsCategoryId);
         if (StringUtils.isEmpty(params.get("page"))) {
             params.put("page", 1);
         }
@@ -71,8 +74,11 @@ public class GoodsController {
         //封装商品数据
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         request.setAttribute("pageResult", newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
+        request.setAttribute("saleGoods", saleList);
         return "mall/search";
     }
+    
+
 
     @GetMapping({"/searchCat", "/search.html"})
     public String searchPageCat(@RequestParam Map<String, Object> params, HttpServletRequest request) {
@@ -190,6 +196,7 @@ public class GoodsController {
         NewBeeMallGoods goods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
         Map goodsImg = newBeeMallGoodsService.searchGoodsImg(goodsId);
         List<GoodsComment> goodsComment = newBeeMallGoodsService.getCommentById(goodsId);
+        int salePrice = newBeeMallGoodsService.getSalePriceById(goodsId);
 
         if (goods == null) {
             NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
@@ -217,6 +224,7 @@ public class GoodsController {
         request.setAttribute("goodsBigImgDetail", newBeeMallSearchGoodsBigVOS);
         request.setAttribute("goodsSmallImgDetail", newBeeMallSearchGoodsSmallVOS);
         request.setAttribute("goodsComment",goodsCommentVOS);
+        request.setAttribute("salePrice",salePrice);
         return "mall/detail";
     }
 

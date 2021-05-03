@@ -222,4 +222,31 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     List<Sale> searchSale(Long saleId);
+    
+  //2021/04/30 added by sasaki for sale
+    /**
+     * 折扣價格
+     *
+     * @param goodsId
+     * @return
+     */
+    int getSalePriceById(Long goodsId);
+    
+    //2021/04/30 added by sasaki for sale
+    /**
+     * 折扣價格
+     *
+     * @param goodsCategoryId
+     * @return
+     */
+    List<Integer> getSalePriceByCategoryId(Long goodsCategoryId);
+    
+  //2021/04/30 added by sasaki for sale
+    /**
+     * 查詢折扣商品
+     *
+     * @param goodsCategoryId
+     * @return
+     */
+    List<GoodsSale> getSaleGoodsByCategoryId(Long goodsCategoryId);
 }

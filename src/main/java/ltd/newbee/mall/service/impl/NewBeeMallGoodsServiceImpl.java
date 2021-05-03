@@ -121,74 +121,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return pageResult;
 	}
 
-//	// 2021/04/17 added by sasaki for sale
-//	@Override
-//	public List<GoodsSaleVO> searchSaleGoods(Long saleId) {
-//		List<NewBeeMallGoods> goodsList = new ArrayList<>();
-//		List<GoodsSaleVO> goodsSaleVOs = new ArrayList<>();
-//		List<GoodsSale> goodsSales = goodsMapper.selectBySaleId(saleId);
-//		for (int i = 0; i < goodsSales.size(); i++) {
-//			if (goodsSales.get(i).getGoodsId() != null) {
-//				NewBeeMallGoods temp =  goodsMapper.selectByPrimaryKey(goodsSales.get(i).getGoodsId());
-//				Integer salePrice = (int) Math.round(temp.getSellingPrice()*goodsSales.get(i).getSaleValue());
-//				temp.setSellingPrice(salePrice);
-//				goodsList.add(temp);
-//			}
-//			else if (goodsSales.get(i).getGoodsCategoryId() != null && goodsSales.get(i).getCategoryLevel() == 3) {
-//				List<NewBeeMallGoods> temp = 
-//						goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsSales.get(i).getGoodsCategoryId());
-//				if (temp != null)
-//				{				for (int j = 0; j < temp.size(); j++) {
-//					if (temp.get(j).getGoodsCategoryId() == goodsSales.get(j).getGoodsCategoryId()) {
-//						Integer salePrice = (int) Math.round(temp.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
-//						temp.get(j).setSellingPrice(salePrice);
-//				goodsList.addAll(temp);
-//					   }
-//					}
-//				}
-//			}
-//			else if (goodsSales.get(i).getGoodsCategoryId() != null && goodsSales.get(i).getCategoryLevel() == 2) {
-//				List<GoodsCategory> secondLevelCategories = 
-//						goodsCategoryMapper.selectByPrimaryKeyParentId(goodsSales.get(i).getGoodsCategoryId());
-//				if (secondLevelCategories != null) {
-//				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
-//				for (int j = 0; j < categoryIds.size(); j++) {
-//					List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(categoryIds.get(j));
-//					for (int k = 0; k < newBeeMallGoods.size(); k++) {
-//						Integer salePrice = (int) Math.round(newBeeMallGoods.get(k).getSellingPrice()*goodsSales.get(i).getSaleValue());
-//						newBeeMallGoods.get(k).setSellingPrice(salePrice);
-//						goodsList.addAll(newBeeMallGoods);
-//					}
-//				   }
-//				}
-//			}
-//			else if (goodsSales.get(i).getGoodsCategoryId() != null && goodsSales.get(i).getCategoryLevel() == 1) {
-//				GoodsCategory firstLevelCategory = 
-//						goodsCategoryMapper.selectByLevelAndId(goodsSales.get(i).getGoodsCategoryId(),goodsSales.get(i).getCategoryLevel());
-//				if (firstLevelCategory != null) {
-//				List<GoodsCategory> secondLevelCategories = 
-//						goodsCategoryMapper.selectByPrimaryKeyParentId(firstLevelCategory.getCategoryId());
-//				List<Long> categoryIds = secondLevelCategories.stream().map(GoodsCategory::getCategoryId).collect(Collectors.toList());
-//				List<NewBeeMallGoods> temp = goodsMapper.selectByCategoryId(categoryIds);
-//				for (int j = 0; j < temp.size(); j++) {
-//					if (temp.get(j).getGoodsCategoryId() == categoryIds.get(j)) {
-//						Integer salePrice = (int) Math.round(temp.get(j).getSellingPrice()*goodsSales.get(j).getSaleValue());
-//						temp.get(j).setSellingPrice(salePrice);
-//						goodsList.addAll(temp);
-//					   }
-//					}
-//				}
-//			}
-//		}
-//		for (int i = 0; i < goodsList.size(); i++) {
-//			GoodsSaleVO goodsSaleVO = new GoodsSaleVO();
-//			goodsSaleVO.setGoodsId(goodsList.get(i).getGoodsId());
-//			goodsSaleVO.setSalePrice(goodsList.get(i).getSellingPrice());
-//			goodsSaleVO.setSaleValue(goodsSales.get(i).getSaleValue());
-//			goodsSaleVOs.add(goodsSaleVO);
-//		}
-//		return goodsSaleVOs;
-//		}
+
 	
 //	2021/04/21 added by sasaki for sale
 	@Override
@@ -268,6 +201,64 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		public List<Sale> searchSale(Long saleId) {
 			List<Sale> Sales = goodsMapper.selectSaleListBySaleId(saleId);
 			return Sales;
+		}
+		
+//		2021/04/30 added by sasaki for sale
+		@Override
+		public int getSalePriceById(Long goodsId) {
+			Integer salePrice = null;
+			NewBeeMallGoods newBeeMallGoods = goodsMapper.selectByPrimaryKey(goodsId);
+			List<GoodsSale> goodsSale = goodsMapper.selectByGoodsId(goodsId);
+			List<GoodsSale> goodsSaleCategory = goodsMapper.selectByCategoryIdForSaleGoods(newBeeMallGoods.getGoodsCategoryId());
+			if (!goodsSale.isEmpty()) {
+				salePrice = (int) (newBeeMallGoods.getSellingPrice()*goodsSale.get(0).getSaleValue());
+			} 
+			else if (!goodsSaleCategory.isEmpty()) {
+				salePrice = (int) (newBeeMallGoods.getSellingPrice()*goodsSaleCategory.get(0).getSaleValue());
+			}
+			
+			return salePrice;
+		}
+		
+//		2021/04/30 added by sasaki for sale
+		@Override
+		public List<Integer> getSalePriceByCategoryId(Long goodsCategoryId) {
+			Integer salePrice = null;
+			List<GoodsSale> goodsSaleById = new ArrayList<GoodsSale>();
+			List<Integer> salePrices = new ArrayList<Integer>();
+			List<GoodsSale> goodsSale = goodsMapper.selectByCategoryIdForSaleGoods(goodsCategoryId);
+			List<GoodsSale> goodsSalesByCategoryId = goodsMapper.selectByCategoryIdForSaleGoods(goodsCategoryId);
+			List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsCategoryId);
+			List<Long> goodsIds = newBeeMallGoods.stream().map(NewBeeMallGoods::getGoodsId).collect(Collectors.toList());
+			for (int i = 0; i < goodsIds.size(); i++) {
+				goodsSaleById = goodsMapper.selectByGoodsId(goodsIds.get(i));
+				if (!goodsSaleById.isEmpty()) {
+					salePrice = (int) (newBeeMallGoods.get(i).getSellingPrice()*goodsSaleById.get(i).getSaleValue());
+					salePrices.add(salePrice);
+				}
+				else if (!goodsSalesByCategoryId.isEmpty()) {
+					salePrice = (int) (newBeeMallGoods.get(i).getSellingPrice()*goodsSalesByCategoryId.get(i).getSaleValue());
+					salePrices.add(salePrice);
+				}
+			}
+			return salePrices;
+		}
+		
+//		2021/04/30 added by sasaki for sale
+		@Override
+		public List<GoodsSale> getSaleGoodsByCategoryId(Long goodsCategoryId) {
+			List<GoodsSale> saleGoods = new ArrayList<GoodsSale>();
+			saleGoods = goodsMapper.selectByCategoryIdForSaleGoods(goodsCategoryId);
+			if (saleGoods.isEmpty()) {
+				List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goodsCategoryId);
+				for (int i = 0; i < newBeeMallGoods.size(); i++) {
+					List<GoodsSale> temp = goodsMapper.selectByGoodsId(newBeeMallGoods.get(i).getGoodsId());
+					if (!temp.isEmpty()) {
+						saleGoods.addAll(temp);
+					}
+				}
+			}
+			return saleGoods;
 		}
 	
 		

@@ -70,6 +70,18 @@
                                                th:text="${goods.goodsName}">newbee.ltd</a></div>
                     <div class="item_sub_intro" th:text="${goods.goodsIntro}">newbee.ltd</div>
                     <div class="item_price" th:text="${goods.sellingPrice+'.00元'}">1299.00元</div>
+                    <div class="sale_price">
+                    <th:block th:unless="${#lists.isEmpty(saleGoods)}">
+                    	<th:block th:each="saleGoods : ${saleGoods}">
+                    		<th:block th:if="${null == saleGoods.goodsId}">
+								<th:block th:text="${saleGoods.saleValue*100}+'%OFF セール中'"></th:block>
+							</th:block>
+							<th:block th:if="${null != saleGoods.goodsId && saleGoods.goodsId == goods.goodsId}">
+								<th:block th:text="${saleGoods.saleValue*100}+'%OFF セール中'"></th:block>
+							</th:block>
+						</th:block>
+					</th:block>
+					</div>
                 </div>
             </th:block>
         </th:block>
