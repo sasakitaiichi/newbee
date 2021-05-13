@@ -31,20 +31,63 @@
     </resultMap>
     
 <!--     2021/04/16 added by sasaki for sale -->
-    <resultMap id="GoodsSaleResultMap" type="ltd.newbee.mall.entity.GoodsSale">
-        <id column="sale_id" jdbcType="BIGINT" property="saleId"/>
-        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
-        <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/>
-        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
-        <result column="first_level_id" jdbcType="BIGINT" property="firstLevelId"/>
-        <result column="sale_value" jdbcType="DOUBLE" property="saleValue"/>
+<!--     <resultMap id="GoodsSaleResultMap" type="ltd.newbee.mall.entity.GoodsSale"> -->
+<!--         <id column="sale_id" jdbcType="BIGINT" property="saleId"/> -->
+<!--         <result column="goods_id" jdbcType="BIGINT" property="goodsId"/> -->
+<!--         <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/> -->
+<!--         <result column="parent_id" jdbcType="BIGINT" property="parentId"/> -->
+<!--         <result column="first_level_id" jdbcType="BIGINT" property="firstLevelId"/> -->
+<!--         <result column="sale_value" jdbcType="DOUBLE" property="saleValue"/> -->
+<!--         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/> -->
+<!--         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/> -->
+<!--     </resultMap> -->
+    
+    <!--     2021/05/08 added by sasaki for searchHistroy -->
+    <resultMap id="HistroyResultMap" type="ltd.newbee.mall.entity.SearchHistroy">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+    </resultMap>
+    
+    
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <resultMap id="SaleResultMap" type="ltd.newbee.mall.entity.Sale">
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
     </resultMap>
     
-    <!--     2021/04/21 added by sasaki for sale -->
-    <resultMap id="SaleResultMap" type="ltd.newbee.mall.entity.Sale">
-        <id column="sale_id" jdbcType="BIGINT" property="saleId"/>
+    <!--     2021/05/13 added by sasaki for sale -->
+    <resultMap id="CategorySaleResultMap" type="ltd.newbee.mall.entity.CategorySale">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+    </resultMap>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <resultMap id="GoodsSaleResultMap" type="ltd.newbee.mall.entity.GoodsSale">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="campaign" jdbcType="VARCHAR" property="campaign"/>
+        <result column="content1" jdbcType="VARCHAR" property="content1"/>
+        <result column="content2" jdbcType="VARCHAR" property="content2"/>
+        <result column="content3" jdbcType="VARCHAR" property="content3"/>
+        <result column="content4" jdbcType="VARCHAR" property="content4"/>
+        <result column="content5" jdbcType="VARCHAR" property="content5"/>
+        <result column="flag" jdbcType="VARCHAR" property="flag"/>
+    </resultMap>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <resultMap id="GoodsCouponResultMap" type="ltd.newbee.mall.entity.GoodsCoupon">
+        <id column="coupon_id" jdbcType="BIGINT" property="couponId"/>
+        <result column="coupon_name" jdbcType="VARCHAR" property="couponName"/>
+        <result column="flag" jdbcType="VARCHAR" property="flag"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
     </resultMap>
@@ -616,94 +659,174 @@
    
     
 	<!--     2021/04/16 added by sasaki for sale -->
-	<insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
-        insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date)
-        values (#{saleId,jdbcType=BIGINT},#{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{firstLevelId,jdbcType=BIGINT},
-        #{saleValue,jdbcType=DOUBLE}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
+<!-- 	<insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale"> -->
+<!--         insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date) -->
+<!--         values (#{saleId,jdbcType=BIGINT},#{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{firstLevelId,jdbcType=BIGINT}, -->
+<!--         #{saleValue,jdbcType=DOUBLE}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP}) -->
+<!--     </insert> -->
+    
+<!--         2021/04/17 added by sasaki for sale -->
+<!--     <delete id="deleteById" parameterType="java.lang.Long"> -->
+<!--         delete -->
+<!--         from goods_sale -->
+<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
+<!--     </delete> -->
+    
+    
+<!--         2021/04/17 added by sasaki for sale -->
+<!--     <select id="selectBySaleId" resultMap="GoodsSaleResultMap"> -->
+<!--         select -->
+<!--         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
+<!--         from goods_sale -->
+<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
+<!--     </select> -->
+    
+<!--         2021/04/21 added by sasaki for sale -->
+<!--     <select id="selectByGoodsId" resultMap="GoodsSaleResultMap"> -->
+<!--         select -->
+<!--         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
+<!--         from goods_sale -->
+<!--         where goods_id = #{goodsId,jdbcType=BIGINT} -->
+<!--     </select> -->
+    
+<!--         2021/04/29 added by sasaki for sale -->
+<!--     <select id="selectByCategoryIdForSaleGoods" resultMap="GoodsSaleResultMap"> -->
+<!--         select -->
+<!--         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
+<!--         from goods_sale -->
+<!--         where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT} -->
+<!--     </select> -->
+    
+    
+<!--         2021/04/21 added by sasaki for sale -->
+<!--     <update id="updateSaleBySaleId"> -->
+<!--         update goods_sale -->
+<!--         <set> -->
+<!--             <if test="saleValue != null"> -->
+<!--                 sale_value=#{saleValue}, -->
+<!--             </if> -->
+<!--          	<if test="startDate != null"> -->
+<!--                 start_date=#{startDate}, -->
+<!--             </if> -->
+<!--         	<if test="endDate != null"> -->
+<!--                 end_date=#{endDate} -->
+<!--             </if> -->
+<!--         	</set> -->
+<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
+<!--     </update> -->
+    
+<!--         2021/04/21 added by sasaki for sale -->
+<!-- <insert id="insertSaleList" parameterType="ltd.newbee.mall.entity.Sale"> -->
+<!--         insert tb_sale (sale_id,start_date,end_date) -->
+<!--         values (#{saleId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP}) -->
+<!--     </insert> -->
+    
+<!--         2021/04/21 added by sasaki for sale -->
+<!--     <delete id="deleteSaleListById" parameterType="java.lang.Long"> -->
+<!--         delete -->
+<!--         from tb_sale -->
+<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
+<!--     </delete> -->
+    
+<!--         2021/04/21 added by sasaki for sale -->
+<!--     <update id="updateSaleListBySaleId"> -->
+<!--         update tb_sale -->
+<!--         <set> -->
+<!--          	<if test="startDate != null"> -->
+<!--                 start_date=#{startDate}, -->
+<!--             </if> -->
+<!--         	<if test="endDate != null"> -->
+<!--                 end_date=#{endDate} -->
+<!--             </if> -->
+<!--         	</set> -->
+<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
+<!--     </update> -->
+    
+<!--         2021/04/21 added by sasaki for sale -->
+<!--     <select id="selectSaleListBySaleId" resultMap="SaleResultMap"> -->
+<!--         select -->
+<!--         sale_id,start_date,end_date -->
+<!--         from tb_sale -->
+<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
+<!--     </select> -->
+    
+    <!--     2021/05/07 added by sasaki for searchHistroy -->
+    <select id="findGoodsByName" resultMap="SaleResultMap">
+        select
+        <include refid="Base_Column_List"/>
+		from newbee_mall_db.tb_newbee_mall_goods_info
+		where goods_name like  like CONCAT('%',#{keyword},'%')
+		limit 5
+    </select>
+    
+     <!--     2021/05/08 added by sasaki for searchHistroy -->
+<insert id="insertHistroy" parameterType="ltd.newbee.mall.entity.SearchHistroy">
+        insert search_histroy (id,user_id,keyword,date)
+        values (#{id,jdbcType=BIGINT},#{userId,jdbcType=BIGINT}, #{keyword,jdbcType=VARCHAR},#{date,jdbcType=TIMESTAMP})
     </insert>
     
-    <!--     2021/04/17 added by sasaki for sale -->
-    <delete id="deleteById" parameterType="java.lang.Long">
-        delete
-        from goods_sale
-        where sale_id = #{saleId,jdbcType=BIGINT}
-    </delete>
-    
-    
-    <!--     2021/04/17 added by sasaki for sale -->
-    <select id="selectBySaleId" resultMap="GoodsSaleResultMap">
+    <select id="selectHistroy" resultMap="HistroyResultMap">
         select
-        sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
-        from goods_sale
-        where sale_id = #{saleId,jdbcType=BIGINT}
+        goods_id,user_id,keyword,date
+        from search_histroy
+        where user_id = #{userId,jdbcType=BIGINT}
+        order by date desc
+        limit 10
     </select>
     
-    <!--     2021/04/21 added by sasaki for sale -->
-    <select id="selectByGoodsId" resultMap="GoodsSaleResultMap">
-        select
-        sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
-        from goods_sale
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </select>
-    
-    <!--     2021/04/29 added by sasaki for sale -->
-    <select id="selectByCategoryIdForSaleGoods" resultMap="GoodsSaleResultMap">
-        select
-        sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date
-        from goods_sale
-        where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT}
-    </select>
-    
-    
-    <!--     2021/04/21 added by sasaki for sale -->
-    <update id="updateSaleBySaleId">
-        update goods_sale
-        <set>
-            <if test="saleValue != null">
-                sale_value=#{saleValue},
-            </if>
-         	<if test="startDate != null">
-                start_date=#{startDate},
-            </if>
-        	<if test="endDate != null">
-                end_date=#{endDate}
-            </if>
-        	</set>
-        where sale_id = #{saleId,jdbcType=BIGINT}
-    </update>
-    
-    <!--     2021/04/21 added by sasaki for sale -->
-<insert id="insertSaleList" parameterType="ltd.newbee.mall.entity.Sale">
-        insert tb_sale (sale_id,start_date,end_date)
-        values (#{saleId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
+	<!--     2021/05/13 added by sasaki for sale -->
+    <insert id="insertSale" parameterType="ltd.newbee.mall.entity.Sale">
+        insert tb_sale (id,name,start_date,end_date)
+        values (#{id,jdbcType=BIGINT},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP})
     </insert>
     
-    <!--     2021/04/21 added by sasaki for sale -->
-    <delete id="deleteSaleListById" parameterType="java.lang.Long">
-        delete
-        from tb_sale
-        where sale_id = #{saleId,jdbcType=BIGINT}
-    </delete>
-    
-    <!--     2021/04/21 added by sasaki for sale -->
-    <update id="updateSaleListBySaleId">
-        update tb_sale
-        <set>
-         	<if test="startDate != null">
-                start_date=#{startDate},
-            </if>
-        	<if test="endDate != null">
-                end_date=#{endDate}
-            </if>
-        	</set>
-        where sale_id = #{saleId,jdbcType=BIGINT}
-    </update>
-    
-    <!--     2021/04/21 added by sasaki for sale -->
-    <select id="selectSaleListBySaleId" resultMap="SaleResultMap">
+    <!--     2021/05/13 added by sasaki for sale -->
+    <select id="findSale" resultMap="SaleResultMap">
         select
-        sale_id,start_date,end_date
-        from tb_sale
-        where sale_id = #{saleId,jdbcType=BIGINT}
+        id,name,start_date,end_date
+		from tb_sale
+		where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <insert id="insertCategorySale" parameterType="ltd.newbee.mall.entity.CategorySale">
+        insert tb_sale (id,category_id,start_date,end_date)
+        values (#{id,jdbcType=BIGINT},#{category_id,jdbcType=BIGINT},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <select id="findCategorySale" resultMap="CategorySaleResultMap">
+        select
+        id,category_id,start_date,end_date
+		from tb_category
+		where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <insert id="insertGoodsSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
+        insert goods_sale (id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag)
+        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP},#{campaign,jdbcType=VARCHAR},#{content1,jdbcType=VARCHAR},
+        #{content2,jdbcType=VARCHAR},#{content3,jdbcType=VARCHAR},#{content4,jdbcType=VARCHAR},#{content5,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR})
+    </insert>
+    
+    <select id="findGoodsSaleSale" resultMap="GoodsSaleResultMap">
+        select
+        id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag
+		from tb_category
+		where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <insert id="insertGoodsCoupon" parameterType="ltd.newbee.mall.entity.GoodsCoupon">
+        insert tb_sale (coupon_id,coupon_name,flag,start_date,end_date)
+        values (#{coupon_id,jdbcType=BIGINT},#{coupon_name,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <!--     2021/05/13 added by sasaki for sale -->
+    <select id="findGoodsCoupon" resultMap="GoodsCouponResultMap">
+        select
+        coupon_id,coupon_name,flag,start_date,end_date
+		from goods_coupon
+		where coupon_id = #{coupon_id,jdbcType=BIGINT}
     </select>
 </mapper>

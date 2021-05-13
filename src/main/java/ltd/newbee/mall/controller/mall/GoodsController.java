@@ -15,22 +15,41 @@ import ltd.newbee.mall.controller.vo.*;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.SearchHistroy;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
+import ltd.newbee.mall.util.Result;
+import ltd.newbee.mall.util.ResultGenerator;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 @Controller
 public class GoodsController {
@@ -43,8 +62,10 @@ public class GoodsController {
 
     @GetMapping({"/search", "/search.html"})
     public String searchPage(@RequestParam Map<String, Object> params, HttpServletRequest request) {
-    	Long goodsCategoryId = Long.valueOf((String) params.get("goodsCategoryId"));
-    	List<GoodsSale> saleList = newBeeMallGoodsService.getSaleGoodsByCategoryId(goodsCategoryId);
+//    	if(!StringUtils.isEmpty(params.get("goodsCategoryId"))) {
+//    	Long goodsCategoryId = Long.valueOf((String) params.get("goodsCategoryId"));
+//    	List<GoodsSale> saleList = newBeeMallGoodsService.getSaleGoodsByCategoryId(goodsCategoryId);
+//    	}
         if (StringUtils.isEmpty(params.get("page"))) {
             params.put("page", 1);
         }
@@ -74,9 +95,69 @@ public class GoodsController {
         //封装商品数据
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         request.setAttribute("pageResult", newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
-        request.setAttribute("saleGoods", saleList);
+//        request.setAttribute("saleGoods", saleList);
         return "mall/search";
     }
+    
+    @RequestMapping(value = "/searchHistory/getSearchHistory", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getSearchHistory(HttpSession httpSession) {
+    	
+//    	NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+//    	if(user!=null) {
+//    		goodsReviewHelpNum.setUserId(user.getUserId());
+//    	}
+    	List<NewBeeMallGoods> list = new ArrayList<NewBeeMallGoods>();
+    	NewBeeMallGoods goods1 = new NewBeeMallGoods();
+    	NewBeeMallGoods goods2 = new NewBeeMallGoods();
+    	NewBeeMallGoods goods3 = new NewBeeMallGoods();
+    	goods1.setGoodsId(10700L);
+    	goods1.setGoodsName("iphone10");
+    	list.add(goods1);
+    	goods2.setGoodsId(10003L);
+    	goods2.setGoodsName("无印良品 MUJI 基础润肤化妆水");
+    	list.add(goods2);
+    	goods3.setGoodsId(10004L);
+    	goods3.setGoodsName("无印良品 MUJI 柔和洁面泡沫");
+    	list.add(goods3);
+    	return ResultGenerator.genSuccessResult(list);
+	    
+    }
+    
+//    @RequestMapping(value = "/goods/search", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Result getHitGoodsList(@RequestBody String goodsName) {
+//    	Map<String, Object> params = new HashMap<String, Object>();
+//    	params.put("keyword", goodsName);
+//    	params.put("page", 1);
+//    	params.put("limit", 9);
+//        PageQueryUtil pageUtil = new PageQueryUtil(params);
+//        return ResultGenerator.genSuccessResult(newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
+//    }
+    
+    
+    
+    
+//    @RequestMapping(value = "/searchHistroy/save", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Result saveSearchHistroy(@RequestBody SearchHistroy searchHistroy) {
+//        if (Objects.isNull(searchHistroy.getGoodsId())
+//                || Objects.isNull(searchHistroy.getUserId())
+//                || Objects.isNull(searchHistroy.getKeyword())
+//                || Objects.isNull(searchHistroy.getDate())
+//        ) {
+//            return ResultGenerator.genFailResult("参数异常！");
+//        }
+//        String result = newBeeMallGoodsService.saveSearchHistroy(searchHistroy);
+//        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+//            return ResultGenerator.genSuccessResult();
+//        } else {
+//            return ResultGenerator.genFailResult(result);
+//        }
+//    }
+//    
+
+    
     
 
 
@@ -196,7 +277,7 @@ public class GoodsController {
         NewBeeMallGoods goods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
         Map goodsImg = newBeeMallGoodsService.searchGoodsImg(goodsId);
         List<GoodsComment> goodsComment = newBeeMallGoodsService.getCommentById(goodsId);
-        int salePrice = newBeeMallGoodsService.getSalePriceById(goodsId);
+//        int salePrice = newBeeMallGoodsService.getSalePriceById(goodsId);
 
         if (goods == null) {
             NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
@@ -224,8 +305,38 @@ public class GoodsController {
         request.setAttribute("goodsBigImgDetail", newBeeMallSearchGoodsBigVOS);
         request.setAttribute("goodsSmallImgDetail", newBeeMallSearchGoodsSmallVOS);
         request.setAttribute("goodsComment",goodsCommentVOS);
-        request.setAttribute("salePrice",salePrice);
+//        request.setAttribute("salePrice",salePrice);
         return "mall/detail";
     }
-
+    
+    @RequestMapping(value = "/goods/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Result insertHistroy(HttpSession httpSession,@RequestBody String key) {
+    	
+    	NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+    	Long userId = user.getUserId();
+    	
+    	Random r = new Random();
+    	Long randomId = (long) r.nextInt(100);
+    	
+    	SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
+        Date date = new Date();
+        
+        SearchHistroy searchHistroy = new SearchHistroy();
+        searchHistroy.setId(randomId);
+        searchHistroy.setUserId(userId);
+        searchHistroy.setKeyword(key);
+        searchHistroy.setDate(date);
+        
+    	String result = newBeeMallGoodsService.saveSearchHistroy(searchHistroy);
+        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult(result);
+        }
+    }
+    
+    
+    
 }

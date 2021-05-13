@@ -15,6 +15,7 @@ import ltd.newbee.mall.controller.vo.NewBeeMallIndexCategoryVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexConfigGoodsVO;
 import ltd.newbee.mall.service.NewBeeMallCarouselService;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
+import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.service.NewBeeMallIndexConfigService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -35,6 +36,9 @@ public class IndexController {
 
     @Resource
     private NewBeeMallCategoryService newBeeMallCategoryService;
+    
+    @Resource
+    private NewBeeMallGoodsService newBeeMallGoodsService;
 
     @GetMapping({"/index", "/", "/index.html"})
     public String indexPage(HttpServletRequest request) {
@@ -53,4 +57,6 @@ public class IndexController {
         request.setAttribute("recommendGoodses", recommendGoodses);//推荐商品
         return "mall/index";
     }
+    
+    
 }

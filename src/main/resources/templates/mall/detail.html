@@ -176,10 +176,10 @@
             <div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
 				<div class="item_price mr40 ml20 mt10">
 
-					<th:block th:if="salePrice != null">
+					<th:block th:if="${salePrice != null}">
 						<th:block th:text="${salePrice}+'.00 元'"></th:block>
 					</th:block>
-					<th:block th:if="salePrice == null">
+					<th:block th:if="${salePrice == null}">
 						<th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
 					</th:block>
 					<del>

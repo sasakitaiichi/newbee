@@ -12,6 +12,7 @@ import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
+import ltd.newbee.mall.entity.SearchHistroy;
 import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -154,99 +155,144 @@ public interface NewBeeMallGoodsService {
 //     */
 //    List<GoodsSaleVO> searchSaleGoods(Long saleId);
     
-  //2021/04/21 added by sasaki for sale
+//  //2021/04/21 added by sasaki for sale
+//    /**
+//     * 折扣商品搜索
+//     *
+//     * @param pageUtil
+//     * @return
+//     */
+//    List<GoodsSale> searchSaleGoods(Long saleId);
+//    
+//    //2021/04/21 added by sasaki for sale
+//    /**
+//     * 添加折扣商品
+//     *
+//     * @param goods
+//     * @return
+//     */
+//    String saveSalesGoods(GoodsSale goods);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    Boolean deleteSaleGoods(Long goodsId);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    /**
+//     * 修改打折商品信息
+//     *
+//     * @param goods
+//     * @return
+//     */
+//    String updateSaleGoods(GoodsSale goods);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    /**
+//     * 判斷是否打折
+//     *
+//     * @param goodsId
+//     * @return
+//     */
+//    Boolean isSale(Long goodsId);
+//
+//    //2021/04/21 added by sasaki for sale
+//    Boolean deleteSale(Long saleId);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    /**
+//     * 修改打折キャンペーン信息
+//     *
+//     * @param sale
+//     * @return
+//     */
+//    String updateSale(Sale sale);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    /**
+//     * 添加折扣キャンペーン
+//     *
+//     * @param sale
+//     * @return
+//     */
+//    String saveSales(Sale sale);
+//    
+//    //2021/04/21 added by sasaki for sale
+//    /**
+//     * 折扣キャンペーン搜索
+//     *
+//     * @param saleId
+//     * @return
+//     */
+//    List<Sale> searchSale(Long saleId);
+//    
+//  //2021/04/30 added by sasaki for sale
+//    /**
+//     * 折扣價格
+//     *
+//     * @param goodsId
+//     * @return
+//     */
+//    int getSalePriceById(Long goodsId);
+//    
+//    //2021/04/30 added by sasaki for sale
+//    /**
+//     * 折扣價格
+//     *
+//     * @param goodsCategoryId
+//     * @return
+//     */
+//    List<Integer> getSalePriceByCategoryId(Long goodsCategoryId);
+//    
+//  //2021/04/30 added by sasaki for sale
+//    /**
+//     * 查詢折扣商品
+//     *
+//     * @param goodsCategoryId
+//     * @return
+//     */
+//    List<GoodsSale> getSaleGoodsByCategoryId(Long goodsCategoryId);
+    
+//  //2021/05/07 added by sasaki for searchHistroy
+//    /**
+//     * 搜索欄提示
+//     *
+//     * @param pageUtil
+//     * @return
+//     */
+//    List<String> getGoodsNameForSearch(String keyword);
+    
+  //2021/05/08 added by sasaki for searchHistroy
     /**
-     * 折扣商品搜索
+     * 插入搜索欄歷史
      *
-     * @param pageUtil
+     * @param searchHistroy
      * @return
      */
-    List<GoodsSale> searchSaleGoods(Long saleId);
+    String saveSearchHistroy(SearchHistroy searchHistroy);
     
-    //2021/04/21 added by sasaki for sale
+//  //2021/05/08 added by sasaki for searchHistroy
+//    /**
+//     * 插入搜索欄歷史
+//     *
+//     * @param userId
+//     * @return
+//     */
+//    List<SearchHistroy> getSearchHistroy(Long userId);
+    
+//  //2021/05/08 added by sasaki for searchHistroy
+//    /**
+//     * あいまい検索
+//     *
+//     * @param 
+//     * @return
+//     */
+//    PageResult getHitGoodsPage(PageQueryUtil pageUtil);
+    
+    //2021/05/13 added by sasaki for sale
     /**
-     * 添加折扣商品
-     *
-     * @param goods
-     * @return
-     */
-    String saveSalesGoods(GoodsSale goods);
-    
-  //2021/04/21 added by sasaki for sale
-    Boolean deleteSaleGoods(Long goodsId);
-    
-  //2021/04/21 added by sasaki for sale
-    /**
-     * 修改打折商品信息
-     *
-     * @param goods
-     * @return
-     */
-    String updateSaleGoods(GoodsSale goods);
-    
-  //2021/04/21 added by sasaki for sale
-    /**
-     * 判斷是否打折
-     *
-     * @param goodsId
-     * @return
-     */
-    Boolean isSale(Long goodsId);
-
-    //2021/04/21 added by sasaki for sale
-    Boolean deleteSale(Long saleId);
-    
-  //2021/04/21 added by sasaki for sale
-    /**
-     * 修改打折キャンペーン信息
+     * 新增キャンペーン
      *
      * @param sale
      * @return
      */
-    String updateSale(Sale sale);
-    
-  //2021/04/21 added by sasaki for sale
-    /**
-     * 添加折扣キャンペーン
-     *
-     * @param sale
-     * @return
-     */
-    String saveSales(Sale sale);
-    
-    //2021/04/21 added by sasaki for sale
-    /**
-     * 折扣キャンペーン搜索
-     *
-     * @param saleId
-     * @return
-     */
-    List<Sale> searchSale(Long saleId);
-    
-  //2021/04/30 added by sasaki for sale
-    /**
-     * 折扣價格
-     *
-     * @param goodsId
-     * @return
-     */
-    int getSalePriceById(Long goodsId);
-    
-    //2021/04/30 added by sasaki for sale
-    /**
-     * 折扣價格
-     *
-     * @param goodsCategoryId
-     * @return
-     */
-    List<Integer> getSalePriceByCategoryId(Long goodsCategoryId);
-    
-  //2021/04/30 added by sasaki for sale
-    /**
-     * 查詢折扣商品
-     *
-     * @param goodsCategoryId
-     * @return
-     */
-    List<GoodsSale> getSaleGoodsByCategoryId(Long goodsCategoryId);
+    List<Sale> saveSaleByUpload(List<Sale> sale);
 }

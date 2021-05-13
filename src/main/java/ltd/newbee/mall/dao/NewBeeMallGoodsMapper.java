@@ -8,11 +8,14 @@
  */
 package ltd.newbee.mall.dao;
 
+import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsComment;
+import ltd.newbee.mall.entity.GoodsCoupon;
 import ltd.newbee.mall.entity.GoodsIdCatId;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
+import ltd.newbee.mall.entity.SearchHistroy;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
@@ -72,33 +75,69 @@ public interface NewBeeMallGoodsMapper {
 //    2021/04/15 added by sasaki for categorySearch
     int getTotalNewBeeMallGoodsByCategory(PageQueryUtil pageUtil);
     
-    //2021/04/16 added by sasaki for sale
-    int insertSale(GoodsSale record);
+//    //2021/04/16 added by sasaki for sale
+//    int insertSale(GoodsSale record);
+//    
+//  //2021/04/16 added by sasaki for sale
+//    int deleteById(Long saleId);
+//    
+//  //2021/04/17 added by sasaki for sale
+//    List<GoodsSale> selectBySaleId(Long saleId);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    List<GoodsSale> selectByGoodsId(Long goodsId);
+//    
+//  //2021/04/29 added by sasaki for sale
+//    List<GoodsSale> selectByCategoryIdForSaleGoods(Long goodsCategoryId);
+//    
+//  //2021/04/17 added by sasaki for sale
+//    int updateSaleBySaleId(GoodsSale record);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    int insertSaleList(Sale record);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    int deleteSaleListById(Long saleId);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    int updateSaleListBySaleId(Sale record);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    List<Sale> selectSaleListBySaleId(Long saleId);
+//    
+//  //2021/04/21 added by sasaki for sale
+//    List<NewBeeMallGoods> findGoodsByName(String keyword);
     
-  //2021/04/16 added by sasaki for sale
-    int deleteById(Long saleId);
+  //2021/05/08 added by sasaki for searchHistroy
+    int insertHistroy(SearchHistroy searchHistroy);
     
-  //2021/04/17 added by sasaki for sale
-    List<GoodsSale> selectBySaleId(Long saleId);
+  //2021/05/08 added by sasaki for searchHistroy
+    List<SearchHistroy> selectHistroy(Long userId);
     
-  //2021/04/21 added by sasaki for sale
-    List<GoodsSale> selectByGoodsId(Long goodsId);
+//   // 2021/05/09 added by sasaki for あいまい検索
+//    List<NewBeeMallGoods> findHitGoodsList(PageQueryUtil pageUtil);
     
-  //2021/04/29 added by sasaki for sale
-    List<GoodsSale> selectByCategoryIdForSaleGoods(Long goodsCategoryId);
+  //2021/05/13 added by sasaki for sale
+    List<Sale> insertSale(List<Sale> sale);
     
-  //2021/04/17 added by sasaki for sale
-    int updateSaleBySaleId(GoodsSale record);
+  //2021/05/13 added by sasaki for sale
+    List<Sale> findSale(Long id);
     
-  //2021/04/21 added by sasaki for sale
-    int insertSaleList(Sale record);
+  //2021/05/13 added by sasaki for sale
+    List<CategorySale> insertCategorySale(List<CategorySale> categorySale);
     
-  //2021/04/21 added by sasaki for sale
-    int deleteSaleListById(Long saleId);
+  //2021/05/13 added by sasaki for sale
+    List<CategorySale> findCategorySale(Long id);
     
-  //2021/04/21 added by sasaki for sale
-    int updateSaleListBySaleId(Sale record);
+  //2021/05/13 added by sasaki for sale
+    List<GoodsSale> insertGoodsSale(List<GoodsSale> goodsSale);
     
-  //2021/04/21 added by sasaki for sale
-    List<Sale> selectSaleListBySaleId(Long saleId);
+  //2021/05/13 added by sasaki for sale
+    List<GoodsSale> findGoodsSaleSale(Long id);
+    
+  //2021/05/13 added by sasaki for sale
+    List<GoodsCoupon> insertGoodsCoupon(List<GoodsCoupon> goodsCoupon);
+    
+  //2021/05/13 added by sasaki for sale
+    List<GoodsCoupon> findGoodsCoupon(Long couponId);
 }

@@ -200,6 +200,14 @@
     color: #1baeae;
 }
 
+.goods_item .main .item_card_frame .sale_price {
+    font-size: 14px;
+    color: #ff0000;
+    font-size: 14px;
+    color: #333;
+    padding: 0 8px 0 8px;
+}
+
 .goods_item .pages {
     display: flex;
     align-items: center;
