@@ -829,4 +829,51 @@
 		from goods_coupon
 		where coupon_id = #{coupon_id,jdbcType=BIGINT}
     </select>
+    
+    <!--     2021/05/15 added by sasaki for sale -->
+    <select id="findSalesByLikeSearch" resultMap="SaleResultMap">
+        select
+        id,name,start_date,end_date
+		from tb_sale
+		where name like  like CONCAT(#{keyword},'%')
+		limit 5
+    </select>
+    
+    <!--     2021/05/17 added by sasaki for sale -->
+    <select id="findSalesByLikeSearch" resultMap="SaleResultMap">
+        select
+        id,name,start_date,end_date
+		from tb_sale
+		 <where>
+            <if test="keyword!=null and keyword!=''">
+                and (name like CONCAT('%',#{keyword},'%'))
+            </if>
+         </where> 
+         <!-- order by #{orderBy} #{desAsc} -->
+		<if test="orderBy!=null and orderBy!=''">
+            <choose>
+                <when test="orderBy == 'stratDateUp'">
+                    order by start_date asc
+                </when>
+                <when test="orderBy == 'stratDateDown'">
+                    order by start_date desc
+                </when>
+                <when test="orderBy == 'endDateUp'">
+                    order by end_date asc
+                </when>
+                <when test="orderBy == 'endDateDown'">
+                    order by end_date desc
+                </when>
+                <when test="orderBy == 'idDown'">
+                    order by end id desc
+                </when>
+                <otherwise>
+                    order by id asc
+                </otherwise>
+            </choose>
+        </if>
+		<if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
 </mapper>

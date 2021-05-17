@@ -140,4 +140,7 @@ public interface NewBeeMallGoodsMapper {
     
   //2021/05/13 added by sasaki for sale
     List<GoodsCoupon> findGoodsCoupon(Long couponId);
+    
+  //2021/05/15 added by sasaki for sale
+    List<Sale> findSalesByLikeSearch(String keyword);
 }

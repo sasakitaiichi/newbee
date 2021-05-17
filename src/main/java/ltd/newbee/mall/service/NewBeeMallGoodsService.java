@@ -295,4 +295,34 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     List<Sale> saveSaleByUpload(List<Sale> sale);
+    
+  //2021/05/14 added by sasaki for download
+    /**
+     * 获取商品详情
+     * 
+     *
+     * @param ids
+     * @return
+     */
+    List<NewBeeMallGoods> getNewBeeMallGoodsByIds(List<Long> ids);
+
+  //2021/05/14 added by sasaki for download
+    /**
+     * download
+     * 
+     *
+     * @param
+     * @return
+     */
+    void fileWriter(List<NewBeeMallGoods> list);
+    
+  //2021/05/15 added by sasaki for sale
+    /**
+     * sale
+     * 
+     *
+     * @param
+     * @return
+     */
+    List<Sale> getSalesByLikeSearch(PageQueryUtil pageUtil);
 }

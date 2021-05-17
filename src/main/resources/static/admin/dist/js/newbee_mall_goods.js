@@ -190,3 +190,40 @@ function putDownGoods() {
     )
     ;
 }
+
+function download() {
+	 var ids = getSelectedRows();
+    if (ids == null) {
+        return;
+    }
+    swal({
+        title: "确认弹框",
+        text: "确认要执行下载操作吗?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    $.ajax({
+                    type: "POST",
+                    url: "/admin/goods/download",
+                    contentType: "application/json",
+                    data: JSON.stringify(ids),
+                    success: function (r) {
+                        if (r.resultCode == 200) {
+                            swal("下载成功", {
+                                icon: "success",
+                                });
+                            $("#jqGrid").trigger("reloadGrid");
+                            Download(r.data);
+                        } else {
+                            swal(r.message, {
+                                icon: "error",
+                            });
+                        }
+                    }
+                });
+}
+
+function Download(url) {
+    document.getElementById('my_iframe').src = url;
+};

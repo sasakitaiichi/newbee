@@ -57,9 +57,14 @@
                             <button class="btn btn-danger" onclick="putDownGoods()"><i
                                     class="fa fa-arrow-down"></i>&nbsp;下架商品
                             </button>
+                            <button class="btn btn-info" onclick="download()"><i
+                                    class="fa fa-plus"></i>&nbsp;下载
+                            </button>
+                            <iframe id="my_iframe" style="display:none;"></iframe>
                         </div>
                         <table id="jqGrid" class="table table-bordered">
                         </table>
+                        
                         <div id="jqGridPager"></div>
                     </div><!-- /.card-body -->
                 </div>
