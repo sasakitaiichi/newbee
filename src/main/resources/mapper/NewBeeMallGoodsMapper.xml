@@ -147,7 +147,7 @@
         from tb_newbee_mall_goods_info
         <where>
             <if test="goodsName!=null and goodsName!=''">
-                and goods_name like CONCAT('%','#{goodsName}','%')
+                and goods_name like CONCAT('%',#{goodsName},'%')
             </if>
             <if test="goodsSellStatus!=null and goodsSellStatus!=''">
                 and goods_sell_status = #{goodsSellStatus}
@@ -809,7 +809,7 @@
         #{content2,jdbcType=VARCHAR},#{content3,jdbcType=VARCHAR},#{content4,jdbcType=VARCHAR},#{content5,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR})
     </insert>
     
-    <select id="findGoodsSaleSale" resultMap="GoodsSaleResultMap">
+    <select id="findGoodsSale" resultMap="GoodsSaleResultMap">
         select
         id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag
 		from tb_category
@@ -829,50 +829,76 @@
 		from goods_coupon
 		where coupon_id = #{coupon_id,jdbcType=BIGINT}
     </select>
-    
-    <!--     2021/05/15 added by sasaki for sale -->
-    <select id="findSalesByLikeSearch" resultMap="SaleResultMap">
-        select
-        id,name,start_date,end_date
-		from tb_sale
-		where name like  like CONCAT(#{keyword},'%')
-		limit 5
-    </select>
+ 
     
     <!--     2021/05/17 added by sasaki for sale -->
-    <select id="findSalesByLikeSearch" resultMap="SaleResultMap">
+    <select id="findSalesByLikeSearch" parameterType="Map" resultMap="SaleResultMap">
+        select id,name,start_date,end_date
+  		from tb_sale
+  		<where>
+    		<if test="keyword!=null and keyword!=''">
+		      	name like CONCAT('%',#{keyword},'%')
+			</if>
+		 </where>
+		<if test="orderBy!=null and orderBy!='' and descAsc!=null and descAsc!=''">
+		    	order by #{orderBy} #{descAsc}
+		 </if> 
+		 <if test="start != null and limit != null">
+		    limit #{start},#{limit}
+		 </if>
+	</select>
+   
+   <!--     2021/05/17 added by sasaki for sale -->
+   <select id="getTotalSalesBySearch" parameterType="Map" resultType="int">
+        select count(*) from tb_sale
+        <where>
+            <if test="keyword!=null and keyword!=''">
+		      	name like CONCAT('%',#{keyword},'%')
+			</if>        
+		</where>
+    </select>
+   
+   
+   <!--     2021/05/17 added by sasaki for sale -->
+    <select id="findSalesById" resultMap="SaleResultMap">
         select
         id,name,start_date,end_date
-		from tb_sale
-		 <where>
-            <if test="keyword!=null and keyword!=''">
-                and (name like CONCAT('%',#{keyword},'%'))
-            </if>
-         </where> 
-         <!-- order by #{orderBy} #{desAsc} -->
-		<if test="orderBy!=null and orderBy!=''">
-            <choose>
-                <when test="orderBy == 'stratDateUp'">
-                    order by start_date asc
-                </when>
-                <when test="orderBy == 'stratDateDown'">
-                    order by start_date desc
-                </when>
-                <when test="orderBy == 'endDateUp'">
-                    order by end_date asc
-                </when>
-                <when test="orderBy == 'endDateDown'">
-                    order by end_date desc
-                </when>
-                <when test="orderBy == 'idDown'">
-                    order by end id desc
-                </when>
-                <otherwise>
-                    order by id asc
-                </otherwise>
-            </choose>
+        from tb_sale  
+        where id = #{id,jdbcType=BIGINT}
+        <if test="orderBy!=null and orderBy!=''"> 
+         order by #{orderBy} #{desAsc}
         </if>
-		<if test="start!=null and limit!=null">
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+   </select>
+   
+   <!--     2021/05/17 added by sasaki for sale -->
+    <select id="findSales" resultMap="SaleResultMap">
+        select
+        id,name,start_date,end_date
+        from tb_sale  
+        where id = #{id,jdbcType=BIGINT}
+        <if test="orderBy!=null and orderBy!=''"> 
+         order by #{orderBy} #{desAsc}
+        </if>
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+   </select>
+   
+   <!--     2021/05/19 added by sasaki for sale -->
+   <select id="findSalesList" parameterType="Map" resultMap="SaleResultMap">
+        select
+        id,name,start_date,end_date
+        from tb_sale
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                name like CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+        order by start_date asc
+        <if test="start!=null and limit!=null">
             limit #{start},#{limit}
         </if>
     </select>

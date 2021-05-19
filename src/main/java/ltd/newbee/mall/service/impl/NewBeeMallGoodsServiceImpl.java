@@ -10,7 +10,6 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
-import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallGoodsImgDetailVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.GoodsCommentMapper;
@@ -492,28 +491,26 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     }
 
 	@Override
-	public List<Sale> getSalesByLikeSearch(PageQueryUtil pageUtil) {
-		int total = 0;
-		int start = 0;
-		List<Sale> pageList = new ArrayList<Sale>();
-		String keyword = (String) pageUtil.get("keyword");
-		List<Sale> temp = goodsMapper.findSalesByLikeSearch(keyword);
-		if(!temp.isEmpty()) {
-			int currPage = (int) pageUtil.get("page");// 当前页
-			int pageSize = (int) pageUtil.get("limit");// 每页几条
-			start = (currPage - 1) * pageSize;// 开始下标
-			int end = currPage * pageSize;// 结束下标
-			total = temp.size();// list总条数
-			int pageCount = 0;// 总页数
-			if (currPage == pageCount) {
-				end = total;
-		}
-			pageList = temp.subList(start, end);
-		}
-		
-		PageResult pageResult = new PageResult(pageList, total, pageUtil.getLimit(),
+	public PageResult getSalesByLikeSearch(PageQueryUtil pageUtil) {
+		List<Sale> sales = goodsMapper.findSalesByLikeSearch(pageUtil);
+		int total = goodsMapper.getTotalSalesBySearch(pageUtil);
+		PageResult pageResult = new PageResult(sales, total, pageUtil.getLimit(),
 				pageUtil.getPage());
-		return (List<Sale>) pageResult;
+		return  pageResult;
+	}
+	
+	@Override
+	public List<Sale> getSalesById(Long id) {
+		List<Sale> sales = goodsMapper.findSalesById(id);
+		return  sales;
+	}
+
+	@Override
+	public PageResult getSalesPage(PageQueryUtil pageUtil) {
+		List<Sale> saleList = goodsMapper.findSalesList(pageUtil);
+		int total = goodsMapper.getTotalSalesBySearch(pageUtil);
+		PageResult pageResult = new PageResult(saleList, total, pageUtil.getLimit(), pageUtil.getPage());
+		return pageResult;
 	}
 
 //	@Override

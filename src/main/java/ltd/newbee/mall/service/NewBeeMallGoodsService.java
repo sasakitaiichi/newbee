@@ -8,7 +8,7 @@
  */
 package ltd.newbee.mall.service;
 
-import ltd.newbee.mall.controller.vo.GoodsSaleVO;
+ 
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
@@ -324,5 +324,24 @@ public interface NewBeeMallGoodsService {
      * @param
      * @return
      */
-    List<Sale> getSalesByLikeSearch(PageQueryUtil pageUtil);
+    PageResult getSalesByLikeSearch(PageQueryUtil pageUtil);
+    
+  //2021/05/15 added by sasaki for sale
+    /**
+     * sale
+     * 
+     *
+     * @param
+     * @return
+     */
+    List<Sale> getSalesById(Long id);
+    
+    /**
+     * 
+     *
+     * @param pageUtil
+     * @return
+     */
+    PageResult getSalesPage(PageQueryUtil pageUtil);
+
 }

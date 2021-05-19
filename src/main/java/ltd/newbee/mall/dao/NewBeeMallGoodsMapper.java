@@ -133,7 +133,7 @@ public interface NewBeeMallGoodsMapper {
     List<GoodsSale> insertGoodsSale(List<GoodsSale> goodsSale);
     
   //2021/05/13 added by sasaki for sale
-    List<GoodsSale> findGoodsSaleSale(Long id);
+    List<GoodsSale> findGoodsSale(Long id);
     
   //2021/05/13 added by sasaki for sale
     List<GoodsCoupon> insertGoodsCoupon(List<GoodsCoupon> goodsCoupon);
@@ -142,5 +142,14 @@ public interface NewBeeMallGoodsMapper {
     List<GoodsCoupon> findGoodsCoupon(Long couponId);
     
   //2021/05/15 added by sasaki for sale
-    List<Sale> findSalesByLikeSearch(String keyword);
+    List<Sale> findSalesByLikeSearch(PageQueryUtil pageUtil);
+    
+  //2021/05/15 added by sasaki for sale
+    int getTotalSalesBySearch(PageQueryUtil pageUtil);
+    
+  //2021/05/15 added by sasaki for sale
+    List<Sale> findSalesById(Long id);
+    
+    //2021/05/19 added by sasaki for sale
+    List<Sale> findSalesList(PageQueryUtil pageUtil);
 }
