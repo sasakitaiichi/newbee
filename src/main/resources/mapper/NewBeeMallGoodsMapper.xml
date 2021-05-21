@@ -902,4 +902,14 @@
             limit #{start},#{limit}
         </if>
     </select>
+    
+    <!--     2021/05/21 added by sasaki for sale -->
+   <select id="selectBySaleIds" parameterType="java.lang.Long" resultMap="SaleResultMap">
+      select id, name, start_date, end_date
+      from tb_sale
+      where id in 
+      <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+      </foreach>
+  </select>
 </mapper>

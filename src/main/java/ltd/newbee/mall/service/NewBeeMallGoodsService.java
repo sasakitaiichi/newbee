@@ -305,16 +305,6 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     List<NewBeeMallGoods> getNewBeeMallGoodsByIds(List<Long> ids);
-
-  //2021/05/14 added by sasaki for download
-    /**
-     * download
-     * 
-     *
-     * @param
-     * @return
-     */
-    void fileWriter(List<NewBeeMallGoods> list);
     
   //2021/05/15 added by sasaki for sale
     /**
@@ -344,4 +334,23 @@ public interface NewBeeMallGoodsService {
      */
     PageResult getSalesPage(PageQueryUtil pageUtil);
 
+  //2021/05/21 added by sasaki for sale
+    /**
+     * 获取キャンペーン
+     * 
+     *
+     * @param ids
+     * @return
+     */
+    List<Sale> getSalesByIds(Integer[] ids);
+    
+  //2021/05/21 added by sasaki for sale download
+    /**
+     * download
+     * 
+     *
+     * @param
+     * @return
+     */
+    void fileWriter(List<Sale> list);
 }

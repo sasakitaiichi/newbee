@@ -459,36 +459,8 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         return newBeeMallGoods;
     }
 
-    /**
-     * 获取商品详情
-     *
-     * @param list@return
-     */
-    @Override
-    public void fileWriter(List<NewBeeMallGoods> list) {
-        final String comma = ",";
-        String header = "goods_id" + "," + " goods_name" + "," + "goods_intro" + "," + "goods_category_id" + "," + "goods_cover_img" + "," + "goods_carousel" + "," + "goods_detail_content" + "," + "original_price"
-                + "," + "selling_price" + "," + "stock_num" + "," + "tag" + "," + "goods_sell_status" + "," + "create_user" + "," + "create_time" + "," + "update_user" + "," + "update_time\r\n";
-        try {
-            File file = new File("c:\\download\\test.csv");
-
-            FileWriter filewriter = new FileWriter(file);
-
-            filewriter.write(header);
-            list.forEach(goods -> {
-                try {
-                    String str = goods.getGoodsId() + comma + goods.getGoodsName() + comma + goods.getGoodsIntro() + comma + goods.getGoodsCategoryId() + comma + goods.getGoodsCoverImg() + comma + goods.getGoodsCarousel() + comma + goods.getGoodsDetailContent() + comma + goods.getOriginalPrice()
-                            + comma + goods.getSellingPrice() + comma + goods.getStockNum() + comma + goods.getTag() + comma + goods.getGoodsSellStatus() + comma + goods.getCreateUser() + comma + goods.getCreateTime() + comma + goods.getUpdateUser() + comma + goods.getUpdateTime();
-                    filewriter.write(str + "\r\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            filewriter.close();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
+	
+    
 
 	@Override
 	public PageResult getSalesByLikeSearch(PageQueryUtil pageUtil) {
@@ -512,6 +484,37 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		PageResult pageResult = new PageResult(saleList, total, pageUtil.getLimit(), pageUtil.getPage());
 		return pageResult;
 	}
+	
+	@Override
+    public List<Sale> getSalesByIds(Integer[] ids) {
+        List<Sale> sales = goodsMapper.selectBySaleIds(ids);
+        return sales;
+    }
+
+	@Override
+    public void fileWriter(List<Sale> list) {
+        final String comma = ",";
+        String header = "id" + "," + " name" + "," + "start_date" + "," + "end=date\r\n";
+        try {
+            File file = new File("c:\\download\\test.csv");
+
+            FileWriter filewriter = new FileWriter(file);
+
+            filewriter.write(header);
+            list.forEach(sales -> {
+                try {
+                    String str = sales.getId() + comma + sales.getName() + comma + sales.getStartDate() + comma + sales.getEndDate();
+                    filewriter.write(str + "\r\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            filewriter.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
 
 //	@Override
 //	public List<SearchHistroy> getSearchHistroy(Long userId) {

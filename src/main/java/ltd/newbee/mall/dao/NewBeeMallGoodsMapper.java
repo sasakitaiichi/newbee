@@ -152,4 +152,7 @@ public interface NewBeeMallGoodsMapper {
     
     //2021/05/19 added by sasaki for sale
     List<Sale> findSalesList(PageQueryUtil pageUtil);
+    
+  //2021/05/21 added by sasaki for sale
+    List<Sale> selectBySaleIds(Integer[] ids);
 }
