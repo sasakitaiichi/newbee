@@ -446,11 +446,11 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	}
 
 	@Override
-	public List<Sale> saveSaleByUpload(List<Sale> sale) {
-		if (!CollectionUtils.isEmpty(sale)) {
-            goodsMapper.insertSale(sale);
-        }
-        return sale;
+	public String saveSale(Sale sale) {
+		if (goodsMapper.insertSale(sale) > 0) {
+			return ServiceResultEnum.SUCCESS.getResult();
+		}
+		return ServiceResultEnum.DB_ERROR.getResult();
 	}
 	
 	@Override
@@ -478,7 +478,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	}
 
 	@Override
-	public PageResult getSalesPage(PageQueryUtil pageUtil) {
+	public PageResult getSales(PageQueryUtil pageUtil) {
 		List<Sale> saleList = goodsMapper.findSalesList(pageUtil);
 		int total = goodsMapper.getTotalSalesBySearch(pageUtil);
 		PageResult pageResult = new PageResult(saleList, total, pageUtil.getLimit(), pageUtil.getPage());
@@ -489,6 +489,14 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     public List<Sale> getSalesByIds(Integer[] ids) {
         List<Sale> sales = goodsMapper.selectBySaleIds(ids);
         return sales;
+    }
+	
+	@Override
+    public PageResult goodsSalePagAndSort(PageQueryUtil pageUtil) {
+        List<Sale> goodsList = goodsMapper.findSalesByLikeSearch(pageUtil);
+        int total = goodsMapper.getTotalSalesBySearch(pageUtil);
+        PageResult pageResult = new PageResult(goodsList, total, pageUtil.getLimit(), pageUtil.getPage());
+        return pageResult;
     }
 
 	@Override

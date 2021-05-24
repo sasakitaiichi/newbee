@@ -118,7 +118,7 @@ public interface NewBeeMallGoodsMapper {
 //    List<NewBeeMallGoods> findHitGoodsList(PageQueryUtil pageUtil);
     
   //2021/05/13 added by sasaki for sale
-    List<Sale> insertSale(List<Sale> sale);
+    int insertSale(Sale sale);
     
   //2021/05/13 added by sasaki for sale
     List<Sale> findSale(Long id);

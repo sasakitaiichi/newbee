@@ -294,7 +294,7 @@ public interface NewBeeMallGoodsService {
      * @param sale
      * @return
      */
-    List<Sale> saveSaleByUpload(List<Sale> sale);
+    String saveSale(Sale sale);
     
   //2021/05/14 added by sasaki for download
     /**
@@ -332,7 +332,15 @@ public interface NewBeeMallGoodsService {
      * @param pageUtil
      * @return
      */
-    PageResult getSalesPage(PageQueryUtil pageUtil);
+    PageResult getSales(PageQueryUtil pageUtil);
+    
+    /**
+     * 
+     *
+     * @param pageUtil
+     * @return
+     */
+    PageResult goodsSalePagAndSort(PageQueryUtil pageUtil);
 
   //2021/05/21 added by sasaki for sale
     /**

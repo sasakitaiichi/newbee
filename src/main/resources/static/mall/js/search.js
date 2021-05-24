@@ -49,8 +49,6 @@ $( "#keyword" ).focus(function() {
                 });
             }
         });
-        
-        
 });
 //delete elements when focus out
 $( "#keyword").focusout(function() {
