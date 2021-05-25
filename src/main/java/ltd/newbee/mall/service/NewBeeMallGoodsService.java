@@ -361,4 +361,14 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     void fileWriter(List<Sale> list);
+    
+  //2021/05/25 added by sasaki for sale sort
+    /**
+     * sale
+     * 
+     *
+     * @param
+     * @return
+     */
+    PageResult getSalesBySort(PageQueryUtil pageUtil,String orderBy,String ascOrDesc);
 }

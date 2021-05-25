@@ -56,6 +56,7 @@
     <!--     2021/05/13 added by sasaki for sale -->
     <resultMap id="SaleResultMap" type="ltd.newbee.mall.entity.Sale">
         <id column="id" jdbcType="BIGINT" property="id"/>
+         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
     </resultMap>
@@ -777,7 +778,7 @@
 	<!--     2021/05/13 added by sasaki for sale -->
     <insert id="insertSale" parameterType="ltd.newbee.mall.entity.Sale">
         insert tb_sale (id,name,start_date,end_date)
-        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP})
+        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP})
     </insert>
     
     <!--     2021/05/13 added by sasaki for sale -->
@@ -914,4 +915,15 @@
             #{id}
       </foreach>
   </select>
+  
+  <!--     2021/05/25 added by sasaki for sale sort -->
+    <select id="findSalesBySort" parameterType="Map" resultMap="SaleResultMap">
+        select id,name,start_date,end_date from tb_sale
+         <if test="orderBy!=null and orderBy!='' and ascOrDesc!=null and ascOrDesc!=''"> 
+         order by #{orderBy} #{ascOrDesc}
+         </if>
+         <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+            </if>
+   </select>
 </mapper>

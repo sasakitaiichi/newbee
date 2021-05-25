@@ -523,6 +523,14 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         }
     }
 
+	@Override
+	public PageResult getSalesBySort(PageQueryUtil pageUtil,String orderBy, String ascOrDesc) {
+		List<Sale> sales = goodsMapper.findSalesBySort(orderBy, ascOrDesc);
+		int total = goodsMapper.getTotalSalesBySearch(pageUtil);
+		PageResult pageResult = new PageResult(sales, total, pageUtil.getLimit(), pageUtil.getPage());
+		return pageResult;
+	}
+
 
 //	@Override
 //	public List<SearchHistroy> getSearchHistroy(Long userId) {

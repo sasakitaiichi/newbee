@@ -155,4 +155,7 @@ public interface NewBeeMallGoodsMapper {
     
   //2021/05/21 added by sasaki for sale
     List<Sale> selectBySaleIds(Integer[] ids);
+    
+  //2021/05/25 added by sasaki for sale sort
+    List<Sale> findSalesBySort(String orderBy,String ascOrDesc);
 }
