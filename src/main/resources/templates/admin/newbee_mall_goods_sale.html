@@ -1,0 +1,219 @@
+<!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+         <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">キャンペーン管理</h3>
+                    </div> <!-- /.card-body -->
+                    <div class="card-body">
+                        <div class="grid-btn">
+                            <button class="btn btn-info" id="saleDownload" onclick="saleAdd()"><i class="fa fa-plus"></i>&nbsp;新規追加
+                            </button>
+                            <button class="btn btn-info" id="csvUpload"><i class="fa fa-pencil-square-o"></i>&nbsp;CSV登録
+                            </button>
+                        </div>
+                        <br>
+                        <div>
+	                        <div style="float:left; width:30%;height:50px;">
+	                        	<span>
+	                        		<b>すべて(0)</b>
+	                        	</span>
+	                        </div>
+	                        <div style="float:left;width:30%;height:50px;">
+	                        	<span>
+	                        		<b>クローズ(0)</b>
+	                        	</span>
+	                        </div>
+	                        </div>
+                        <br>
+                        <div>
+	                        <div class="campaignDownload"  style="float:left; width:50%;height:50px;">
+	                        	<form name="input" action="" method="get">
+									<select type="text" name="キャンペーン名" id="saleName" style="width:200px"></select>
+									<button type="button" id="download">Download</button>
+									<iframe id="my_iframe" style="display:none;"></iframe>
+								</form>
+	                        </div>
+	                        <div class="campaignSearch"  style="float:left;width:50%;height:50px;">
+	                        	<input type="search" id="keywordSale" >
+								<button id="search">絞り込み検索</button>
+	                        </div>
+	                        
+                        </div>
+                        <br>
+                        <div class="campaignTable">
+	                        <table id="table" border="1" style="width:1200px;">
+	                        	<thead>
+						            <tr>
+						                <th style="width:20px">
+						                    <input type="checkbox" id="checkAll"/>
+						                </th>
+						                <th id="campaignId" style="width:120px">キャンペーンID
+						                <button id="idUp" th:onclick="|sort('${id}','${asc}')|">▲</button>
+						                <button id="idDown" th:onclick="|sort('${id}','${desc}')|">▼</button>
+						                </th>
+						                <th id="campaignName" style="width:120px">キャンペーン名
+						                <button id="nameUp" th:onclick="|sort('${name}','${asc}')|">▲</button>
+						                <button id="nameDown" th:onclick="|sort('${name}','${desc}')|">▼</button>
+						                </th>
+						                <th id="startDate" style="width:150px">開始時間
+						                <button id="startUp" th:onclick="|sort('${startDate}','${asc}')|">▲</button>
+						                <button id="startDown" th:onclick="|sort('${startDate}','${desc}')|">▼</button>
+						                </th>
+						                <th id="endDate" style="width:150px">終了時間
+						                <button id="endUp" th:onclick="|sort('${endDate}','${asc}')|">▲</button>
+						                <button id="endDown" th:onclick="|sort('${endDate}','${desc}')|">▼</button>
+						                </th>
+						                <th id="state" style="width:80px">ステータス
+						                </th>
+						            </tr>
+						        </thead>
+						        
+						        <th:block th:unless="${#lists.isEmpty(pageResult.list)}">
+						             	<th:block th:each="saleList : ${pageResult.list}">
+						             	<tbody>
+								            <tr>
+									                <td>
+									                    <input type="checkbox"/>
+									                </td>
+									                <td><th:block th:text="${saleList.id}"></th:block></td>
+									                <td><th:block th:text="${saleList.name}"></td>
+									                <td><th:block th:text="${#dates.format(saleList.startDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+									                <td><th:block th:text="${#dates.format(saleList.endDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+									                <td></td>
+									       </tr>
+							       		</tbody>
+							             </th:block>
+						             </th:block>
+								<br>
+							</table>
+						</div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+         <div class="pages">
+        <div class="page_wrap">
+            <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
+            <span class="page_span1">
+                 <a th:href="@{${pageResult.currPage==1}?'##':'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-1}+'&orderBy='+${orderBy==null?'':orderBy}}">
+                                    < 上一页
+                                </a>
+                <th:block th:if="${pageResult.currPage-2 >=1}"><a
+                        th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-2}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                        th:text="${pageResult.currPage -2}">1</a></th:block>
+                <th:block th:if="${pageResult.currPage-1 >=1}"><a
+                        th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-1}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                        th:text="${pageResult.currPage -1}">1</a></th:block>
+                <a href="##" class="active" th:text="${pageResult.currPage}">1</a>
+                <th:block th:if="${pageResult.currPage+1<=pageResult.totalPage}"><a
+                        th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+1}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                        th:text="${pageResult.currPage +1}">1</a></th:block>
+                <th:block th:if="${pageResult.currPage+2<=pageResult.totalPage}"><a
+                        th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+2}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                        th:text="${pageResult.currPage +2}">1</a></th:block>
+                 <a th:href="@{${pageResult.currPage>=pageResult.totalPage}?'##':'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+1}+'&orderBy='+${orderBy==null?'':orderBy}}">
+                                    下一页 >
+                                </a>
+					</span>
+            </th:block>
+        </div>
+        <ul id ="searchResultUl">
+			<li class="dumyLi searchLi">
+				 <a>
+					
+				</a>
+			</li>
+		</ul>
+		<div class="content">
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="saleModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="categoryModalLabel">Modal</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="categoryForm">
+                                <div class="form-group">
+                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                        错误信息展示栏。
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" id="categoryId" name="categoryId">
+                                <input type="hidden" id="categoryLevel" th:value="${categoryLevel}">
+                                <input type="hidden" id="parentId" th:value="${parentId}">
+                                <input type="hidden" id="backParentId" th:value="${backParentId}">
+                                <div class="form-group">
+                                    <label for="saleId" class="control-label">キャンペーンID:</label>
+                                    <input type="text" class="form-control" id="addId" name="addId"
+                                           placeholder="请输入キャンペーンID" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="saleName" class="control-label">キャンペーン名称:</label>
+                                    <input type="text" class="form-control" id="addName" name="addName"
+                                           placeholder="请输入キャンペーン名称" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="startDate" class="control-label">开始时间</label>
+                                    <input type="date" class="form-control" id="addStartDate" name="addStartDate"
+                                           placeholder="请输入开始时间" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="endDate" class="control-label">结束时间</label>
+                                    <input type="date" class="form-control" id="addEndDate" name="addEndDate"
+                                           placeholder="请输入结束时间" required="true">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<!-- ajaxupload -->
+<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
+<!-- wangEditor -->
+<script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/dist/js/sale.js}"></script>
+<!-- <link rel="stylesheet" th:href="@{/admin/dist/css/ｓale.css}"> -->
+</body>
+</html>

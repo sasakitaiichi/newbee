@@ -1,0 +1,218 @@
+<!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default">注册</button>
+            <button type="button" class="btn btn-default">登录</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    选项
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">返回首页</a></li>
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <table class="table" border="1">
+                <thead>
+                <tr>
+                    <th>check</th>
+                    <th>照片</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>自己アピール</th>
+                    <th>履历</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tr id="1">
+                    <td><input type="checkbox" name="check"></td>
+                    <td>
+                        <img src="https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png" height="60"
+                             width="60" alt="photo"/><br>
+                    </td>
+                    <td>
+                        <label for="name">姓名</label><br>
+                        <input type="text" id="name" placeholder="请输入姓名">
+                    </td>
+                    <td>
+                        <input type="radio" name="sex" value="male">男<br>
+                        <input type="radio" name="sex" value="female">女
+                    </td>
+                    <td>
+                        <span>3</span>
+                        <button class="plus">+</button>
+                        <button class="minus">-</button>
+                    </td>
+                    <td>
+                        <label for="name">自己アピール</label><br>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </td>
+                    <td>
+                        <a href="https://gitee.com/newbee-ltd/newbee-mall">Git</a>
+                    </td>
+                    <td>
+                        <button class="delete">删除</button>
+                    </td>
+                </tr>
+                <tr id="2">
+                    <td><input type="checkbox" name="check"></td>
+                    <td>
+                        <img src="https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png" height="60"
+                             width="60" alt="photo"/><br>
+                    </td>
+                    <td>
+                        <label for="name">姓名</label><br>
+                        <input type="text" id="name" placeholder="请输入姓名">
+                    </td>
+                    <td>
+                        <input type="radio" name="sex" value="male">男<br>
+                        <input type="radio" name="sex" value="female">女
+                    </td>
+                    <td>
+                        <span>4</span>
+                        <button class="plus">+</button>
+                        <button class="minus">-</button>
+                    </td>
+                    <td>
+                        <label for="name">自己アピール</label><br>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </td>
+                    <td>
+                        <a href="https://gitee.com/newbee-ltd/newbee-mall">Git</a>
+                    </td>
+                    <td>
+                        <button class="delete">删除</button>
+                    </td>
+                </tr>
+                <tr id="3">
+                    <td><input type="checkbox" name="check"></td>
+                    <td>
+                        <img src="https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png" height="60"
+                             width="60" alt="photo"/><br>
+                    </td>
+                    <td>
+                        <label for="name">姓名</label><br>
+                        <input type="text" id="name" placeholder="请输入姓名">
+                    </td>
+                    <td>
+                        <input type="radio" name="sex" value="male">男<br>
+                        <input type="radio" name="sex" value="female">女
+                    </td>
+                    <td>
+                        <span>5</span>
+                        <button class="plus">+</button>
+                        <button class="minus">-</button>
+                    </td>
+                    <td>
+                        <label for="name">自己アピール</label><br>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </td>
+                    <td>
+                        <a href="https://gitee.com/newbee-ltd/newbee-mall">Git</a>
+                    </td>
+                    <td>
+                        <button class="delete">删除</button>
+                    </td>
+                </tr>
+            </table>
+
+            <form>
+                First name: <input type="text" name="firstname"><br>
+                Last name: <input type="text" name="lastname"><br>
+                Password: <input type="password" name="pwd"><br>
+                <label class="sr-only" for="inputfile">文件输入</label><br>
+                <input type="file" id="inputfile"><br>
+                <input type="submit" value="Submit" onclick="alert('已提交')">
+            </form>
+
+            <h1>无序列表</h1>
+            <ul>
+                <li>張三 男 3嵗</li>
+                <li>李四 女 4嵗</li>
+                <li>王五 男 5嵗</li>
+            </ul>
+
+            <h2>有序列表</h2>
+            <ol>
+                <li>張三 男 3嵗</li>
+                <li>李四 女 4嵗</li>
+                <li>王五 男 5嵗</li>
+            </ol>
+
+            <h3>自定义列表</h3>
+            <dl>
+                <dt>張三</dt>
+                <dd>- 男</dd>
+                <dd>- 3嵗</dd>
+                <dt>李四</dt>
+                <dd>- 女</dd>
+                <dd>- 4嵗</dd>
+                <dt>王五</dt>
+                <dd>- 男</dd>
+                <dd>- 5嵗</dd>
+            </dl>
+
+            <h4>html段落</h4>
+            <p>这个<br>换行<br>段落</p>
+
+
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $('.plus').click(function () {
+            var span = $(this).closest("tr").find("span");
+            var age = parseInt(span.eq(0).text());
+            age += 1;
+            span.html(age);
+            console.log(age);
+        })
+
+        $('.minus').click(function () {
+            var span = $(this).closest("tr").find("span");
+            var age = parseInt(span.eq(0).text());
+            age -= 1
+            span.html(age);
+            console.log(age);
+        })
+
+        $('.delete').click(function () {
+            $(this).closest('tr').remove();
+        })
+    })
+</script>
+</html>

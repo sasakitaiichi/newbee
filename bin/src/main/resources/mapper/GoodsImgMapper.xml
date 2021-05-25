@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.newbee.mall.dao.GoodsImgMapper">
+    <resultMap id="BaseResultMap" type="ltd.newbee.mall.entity.GoodsImg">
+        <id column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <id column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="img_status" jdbcType="TINYINT" property="imgStatus"/>
+        <result column="orderby" jdbcType="TINYINT" property="orderby"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        goods_id
+        , img, img_status, orderby
+    </sql>
+
+
+    <select id="selectGoodsImg" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_img
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="selectGoodsBigImg" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_img
+        where goods_id = #{goodsId,jdbcType=BIGINT} and img_status = 0
+    </select>
+    <select id="selectGoodsSmallImg" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_img
+        where goods_id = #{goodsId,jdbcType=BIGINT} and img_status = 1
+    </select>
+    <select id="selectGoodsImgBylimitFive" parameterType="java.lang.Long" resultType="java.lang.String">
+        select img
+        from tb_newbee_mall_goods_img
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+          and img_status = 1 limit 5
+    </select>
+
+    <select id="selectGoodsIdOrderby" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_img
+        where orderby = #{orderby,jdbcType=TINYINT}
+    </select>
+
+    <insert id="ImgInsert" parameterType="ltd.newbee.mall.entity.GoodsImg">
+        INSERT INTO tb_newbee_mall_goods_img(goods_id, img, img_status, orderby)
+        VALUES (#{goodsId,jdbcType=BIGINT}, #{img,jdbcType=VARCHAR}, #{imgStatus,jdbcType=TINYINT},
+                #{orderby,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insert" parameterType="ltd.newbee.mall.entity.GoodsImg">
+        insert into tb_newbee_mall_goods_img (goods_id, img, img_status, orderby)
+        values (#{goodsId,jdbcType=BIGINT}, #{img,jdbcType=VARCHAR}, #{img_status,jdbcType=TINYINT},
+                #{orderby,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" parameterType="ltd.newbee.mall.entity.GoodsImg">
+        insert into tb_newbee_mall_goods_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+            <if test="imgStatus != null">
+                img_status,
+            </if>
+            <if test="orderby != null">
+                orderby,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=BIGINT},
+            </if>
+            <if test="Img != null">
+                #{Img,jdbcType=VARCHAR},
+            </if>
+            <if test="imgStatus != null">
+                #{imgStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderby != null">
+                #{orderby,jdbcType=TINYINT},
+            </if>
+
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="ltd.newbee.mall.entity.GoodsImg">
+        update tb_newbee_mall_goods_img
+        <set>
+            <if test="img != null">
+                img = #{Img,jdbcType=VARCHAR},
+            </if>
+            <if test="imgStatus != null">
+                img_status = #{imgStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderby != null">
+                orderby = #{orderby,jdbcType=TINYINT},
+            </if>
+
+        </set>
+        where goods_id = #{goodsId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="ltd.newbee.mall.entity.GoodsImg">
+        update tb_newbee_mall_goods_img
+        set img        = #{Img,jdbcType=VARCHAR},
+            img_status = #{imgStatus,jdbcType=TINYINT},
+            order      = #{orderby,jdbcType=TINYINT},
+            where goods_id = #{goodsId,jdbcType=BIGINT}
+    </update>
+</mapper>
