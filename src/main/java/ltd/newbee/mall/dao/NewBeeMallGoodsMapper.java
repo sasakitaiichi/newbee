@@ -130,7 +130,7 @@ public interface NewBeeMallGoodsMapper {
     List<CategorySale> findCategorySale(Long id);
     
   //2021/05/13 added by sasaki for sale
-    List<GoodsSale> insertGoodsSale(List<GoodsSale> goodsSale);
+    int insertGoodsSale(GoodsSale goodsSale);
     
   //2021/05/13 added by sasaki for sale
     List<GoodsSale> findGoodsSale(Long id);
@@ -158,4 +158,7 @@ public interface NewBeeMallGoodsMapper {
     
   //2021/05/25 added by sasaki for sale sort
     List<Sale> findSalesBySort(String orderBy,String ascOrDesc);
+    
+  //2021/05/26 added by sasaki for sale insert
+    Long  insertSaleId();
 }

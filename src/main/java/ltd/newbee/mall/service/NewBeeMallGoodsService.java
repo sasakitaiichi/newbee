@@ -370,5 +370,23 @@ public interface NewBeeMallGoodsService {
      * @param
      * @return
      */
-    PageResult getSalesBySort(PageQueryUtil pageUtil,String orderBy,String ascOrDesc);
+    List<Sale> getSalesBySort(String orderBy,String ascOrDesc);
+    
+  //2021/05/26 added by sasaki for sale insert
+    /**
+     * sale
+     * 
+     *
+     * @param
+     * @return
+     */
+    Long getGoodsSaleId();
+    
+    /**
+     * 新增キャンペーン
+     *
+     * @param sale
+     * @return
+     */
+    String saveSaleGoods(GoodsSale goodsSale);
 }

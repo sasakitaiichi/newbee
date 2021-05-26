@@ -46,40 +46,45 @@
                         <div>
 	                        <div class="campaignDownload"  style="float:left; width:50%;height:50px;">
 	                        	<form name="input" action="" method="get">
-									<select type="text" name="キャンペーン名" id="saleName" style="width:200px"></select>
+									<select type="text" name="キャンペーン名" id="selectfile" style="width:200px">
+										<option value="chose">请选择格式</option>
+										<option value="txt">TXT</option>
+										<option value="csv">CSV</option>
+									</select>
 									<button type="button" id="download">Download</button>
 									<iframe id="my_iframe" style="display:none;"></iframe>
 								</form>
 	                        </div>
 	                        <div class="campaignSearch"  style="float:left;width:50%;height:50px;">
-	                        	<input type="search" id="keywordSale" >
+	                        	<input type="search" class="light-table-filter" data-table="order-table" id="keywordSale" >
 								<button id="search">絞り込み検索</button>
 	                        </div>
 	                        
                         </div>
                         <br>
                         <div class="campaignTable">
-	                        <table id="table" border="1" style="width:1200px;">
+                        <body>
+	                        <table class="order-table" id="table" border="1" style="width:1200px;">
 	                        	<thead>
 						            <tr>
 						                <th style="width:20px">
-						                    <input type="checkbox" id="checkAll"/>
+						                    <input type="checkbox" id="selectAll"/>
 						                </th>
-						                <th id="campaignId" style="width:120px">キャンペーンID
-						                <button id="idUp" th:onclick="|sort('${id}','${asc}')|">▲</button>
-						                <button id="idDown" th:onclick="|sort('${id}','${desc}')|">▼</button>
+						                <th id="campaignId" style="width:120px">CAMPAIGN ID
+						                <button id="idUp" onclick="sort('id','asc')">▲</button>
+						                <button id="idDown" onclick="sort('id','desc')">▼</button>
 						                </th>
-						                <th id="campaignName" style="width:120px">キャンペーン名
-						                <button id="nameUp" th:onclick="|sort('${name}','${asc}')|">▲</button>
-						                <button id="nameDown" th:onclick="|sort('${name}','${desc}')|">▼</button>
+						                <th id="campaignName" style="width:120px">CAMPAIGN NAME
+						                <button id="nameUp" onclick="sort('name','asc')">▲</button>
+						                <button id="nameDown"onclick="sort('name','desc')">▼</button>
 						                </th>
 						                <th id="startDate" style="width:150px">開始時間
-						                <button id="startUp" th:onclick="|sort('${startDate}','${asc}')|">▲</button>
-						                <button id="startDown" th:onclick="|sort('${startDate}','${desc}')|">▼</button>
+						                <button id="startUp" onclick="sort('start_date','asc')">▲</button>
+						                <button id="startDown" onclick="sort('start_date','desc')">▼</button>
 						                </th>
 						                <th id="endDate" style="width:150px">終了時間
-						                <button id="endUp" th:onclick="|sort('${endDate}','${asc}')|">▲</button>
-						                <button id="endDown" th:onclick="|sort('${endDate}','${desc}')|">▼</button>
+						                <button id="endUp" onclick="sort('end_date','asc')">▲</button>
+						                <button id="endDown" onclick="sort('end_date','desc')">▼</button>
 						                </th>
 						                <th id="state" style="width:80px">ステータス
 						                </th>
@@ -91,7 +96,7 @@
 						             	<tbody>
 								            <tr>
 									                <td>
-									                    <input type="checkbox"/>
+									                    <input type="checkbox" />
 									                </td>
 									                <td><th:block th:text="${saleList.id}"></th:block></td>
 									                <td><th:block th:text="${saleList.name}"></td>
@@ -104,6 +109,7 @@
 						             </th:block>
 								<br>
 							</table>
+							</body>
 						</div>
                     </div><!-- /.card-body -->
                 </div>
@@ -144,7 +150,7 @@
 		</ul>
 		<div class="content">
             <!-- 模态框（Modal） -->
-            <div class="modal fade" id="saleModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel">
+            <div class="modal fade" id="saleModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" style="overflow: auto;">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -182,6 +188,41 @@
                                     <label for="endDate" class="control-label">结束时间</label>
                                     <input type="date" class="form-control" id="addEndDate" name="addEndDate"
                                            placeholder="请输入结束时间" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="saleCampaign" class="control-label">キャンペーン内容</label>
+                                    <input type="text" class="form-control" id="addSaleCampaign" name="addSaleCampaign"
+                                           placeholder="请输入キャンペーン内容" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content1" class="control-label">キャンペーン内容</label>
+                                    <input type="text" class="form-control" id="addContent1" name="addContent1"
+                                           placeholder="请输入キャンペーン内容" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content2" class="control-label">キャンペーン内容</label>
+                                    <input type="text" class="form-control" id="addContent2" name="addContent2"
+                                           placeholder="请输入キャンペーン内容" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content3" class="control-label">キャンペーン内容</label>
+                                    <input type="text" class="form-control" id="addContent3" name="addContent3"
+                                           placeholder="请输入キャンペーン内容" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content4" class="control-label">キャンペーン内容</label>
+                                    <input type="text" class="form-control" id="addContent4" name="addContent4"
+                                           placeholder="请输入キャンペーン内容" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content5" class="control-label">キャンペーン内容</label>
+                                    <input type="text" class="form-control" id="addContent5" name="addContent5"
+                                           placeholder="请输入キャンペーン内容" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="flag" class="control-label">是否上线</label>
+                                    <input type="text" class="form-control" id="addFlag" name="addFlag"
+                                           placeholder="请输入是否上线" required="true">
                                 </div>
                             </form>
                         </div>

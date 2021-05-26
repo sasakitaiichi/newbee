@@ -806,7 +806,7 @@
     <!--     2021/05/13 added by sasaki for sale -->
     <insert id="insertGoodsSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
         insert goods_sale (id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag)
-        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP},#{campaign,jdbcType=VARCHAR},#{content1,jdbcType=VARCHAR},
+        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},#{campaign,jdbcType=VARCHAR},#{content1,jdbcType=VARCHAR},
         #{content2,jdbcType=VARCHAR},#{content3,jdbcType=VARCHAR},#{content4,jdbcType=VARCHAR},#{content5,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR})
     </insert>
     
@@ -918,12 +918,12 @@
   
   <!--     2021/05/25 added by sasaki for sale sort -->
     <select id="findSalesBySort" parameterType="Map" resultMap="SaleResultMap">
-        select id,name,start_date,end_date from tb_sale
-         <if test="orderBy!=null and orderBy!='' and ascOrDesc!=null and ascOrDesc!=''"> 
+        select id,name,start_date,end_date 
+        from tb_sale
          order by #{orderBy} #{ascOrDesc}
-         </if>
-         <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-            </if>
    </select>
+   
+   <select id="insertSaleId" parameterType="java.lang.Long" resultType= "java.lang.Long">      
+   select max(id) from goods_sale    
+  </select> 
 </mapper>

@@ -15,6 +15,7 @@ import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
 import ltd.newbee.mall.entity.GoodsImg;
+import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -33,8 +34,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -119,17 +123,43 @@ public class SaleController {
     
     @RequestMapping(value = "/sale/download", method = RequestMethod.POST)
     @ResponseBody
-    public Result download(@RequestBody Integer[] ids) {
+    public Result download(@RequestParam Map<String, Object> params) {
+    	Integer[] ids = null;
+    	String format = " ";
+    	final String comma = ",";
+    	File file = new File("");
+        String header = "id" + "," + " name" + "," + "start_date" + "," + "end=date\r\n";
+    	if (params.containsKey("ids") && !StringUtils.isEmpty(params.get("ids") + "")) {
+    		ids = (Integer[]) params.get(ids);
+        }
+        if (params.containsKey("format") && !StringUtils.isEmpty(params.get("format") + "")) {
+        	format = params.get("format") + "";
+        }
+        List<Sale> list = newBeeMallGoodsService.getSalesByIds(ids);
+       
+        try {
+        	if(format == "csv") {
+        		file = new File(Constants.FILE_DOWNLOAD_CSV);
+        	}
+        	if(format == "txt") {
+        		file = new File(Constants.FILE_DOWNLOAD_TXT);
+        	}
+            FileWriter filewriter = new FileWriter(file);
+            filewriter.write(header);
+            list.forEach(sales -> {
+                try {
+                    String str = sales.getId() + comma + sales.getName() + comma + sales.getStartDate() + comma + sales.getEndDate();
+                    filewriter.write(str + "\r\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            filewriter.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
 
-        List<Sale> sales = newBeeMallGoodsService.getSalesByIds(ids);
-        newBeeMallGoodsService.fileWriter(sales);
-
-//        return ResultGenerator.genSuccessResult("/upload/test.csv");
-        Result resultSuccess = ResultGenerator.genSuccessResult();
-        resultSuccess.setData("/upload/test.csv");
-        return resultSuccess;
-        
-        
+        return ResultGenerator.genSuccessResult();
     }
     
     @GetMapping({"/goods/sale", "/newbee_mall_goods_sale.html"})
@@ -169,14 +199,21 @@ public class SaleController {
     
     @RequestMapping(value = "/sale/save", method = RequestMethod.POST)
     @ResponseBody
-    public Result insertSale(@RequestBody Sale sale) {
-        Sale list = new Sale();
-        
-        list.setId(sale.getId());
-        list.setName(sale.getName());
-        list.setStartDate(sale.getStartDate());
-        list.setEndDate(sale.getEndDate());
-        String result = newBeeMallGoodsService.saveSale(list);
+    public Result insertSale(@RequestBody GoodsSale goodsSale) {
+    	Long maxId = newBeeMallGoodsService.getGoodsSaleId();
+        GoodsSale list = new GoodsSale();
+        list.setId(maxId);
+        list.setName(goodsSale.getName());
+        list.setStartDate(goodsSale.getStartDate());
+        list.setEndDate(goodsSale.getEndDate());
+        list.setCampaign(goodsSale.getCampaign());
+        list.setContent1(goodsSale.getContent1());
+        list.setContent2(goodsSale.getContent2());
+        list.setContent3(goodsSale.getContent3());
+        list.setContent4(goodsSale.getContent4());
+        list.setContent5(goodsSale.getContent5());
+        list.setFlag(goodsSale.getFlag());
+        String result = newBeeMallGoodsService.saveSaleGoods(list);
         if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
             return ResultGenerator.genSuccessResult();
         } else {
@@ -195,13 +232,12 @@ public class SaleController {
         if (params.containsKey("ascOrDesc") && !StringUtils.isEmpty(params.get("ascOrDesc") + "")) {
         	ascOrDesc = params.get("ascOrDesc") + "";
         }
-        PageQueryUtil pageUtil = new PageQueryUtil(params);
-        
-        PageResult saleResult = newBeeMallGoodsService.getSalesBySort(pageUtil,orderBy, ascOrDesc);
+        Map saleResult = new HashMap();
+       List<Sale> sale = newBeeMallGoodsService.getSalesBySort(orderBy, ascOrDesc);
 
-        Result resultSuccess = ResultGenerator.genSuccessResult(saleResult);
-        resultSuccess.setData(saleResult.getList());
-        return resultSuccess;
+        saleResult.put("saleList",sale);
+
+        return ResultGenerator.genSuccessResult(saleResult);
     }
  }
     
