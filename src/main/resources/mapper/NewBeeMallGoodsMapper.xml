@@ -926,4 +926,12 @@
    <select id="insertSaleId" parameterType="java.lang.Long" resultType= "java.lang.Long">      
    select max(id) from goods_sale    
   </select> 
+  
+  <!-- 2021/05/27 added by sasaki for sale name -->
+  <select id="findGoodsSaleName" resultMap="GoodsSaleResultMap">
+        select
+        id,
+        name
+		from goods_sale
+    </select>
 </mapper>

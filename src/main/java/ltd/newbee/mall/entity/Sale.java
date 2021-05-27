@@ -55,10 +55,8 @@ public void setEndDate(Date endDate) {
 
 @Override
 public String toString() {
-	return "Sale [id=" + id + ", name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+ return "\"" + id + "\"" + "," + name + ","  + startDate + "," +  endDate;
 }
-
-
 
 
 

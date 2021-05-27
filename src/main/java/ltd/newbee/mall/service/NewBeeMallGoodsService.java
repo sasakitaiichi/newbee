@@ -385,8 +385,16 @@ public interface NewBeeMallGoodsService {
     /**
      * 新增キャンペーン
      *
-     * @param sale
+     * @param goodsSale
      * @return
      */
     String saveSaleGoods(GoodsSale goodsSale);
+    
+    /**
+     * 查询折扣商品名字
+     *
+     * @param 
+     * @return
+     */
+    List<GoodsSale> findGoodsSaleName();
 }

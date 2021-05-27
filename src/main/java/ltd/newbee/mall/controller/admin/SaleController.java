@@ -11,6 +11,7 @@ package ltd.newbee.mall.controller.admin;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallCategoryLevelEnum;
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.entity.Download;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
@@ -34,9 +35,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -123,44 +123,47 @@ public class SaleController {
     
     @RequestMapping(value = "/sale/download", method = RequestMethod.POST)
     @ResponseBody
-    public Result download(@RequestParam Map<String, Object> params) {
-    	Integer[] ids = null;
-    	String format = " ";
-    	final String comma = ",";
-    	File file = new File("");
-        String header = "id" + "," + " name" + "," + "start_date" + "," + "end=date\r\n";
-    	if (params.containsKey("ids") && !StringUtils.isEmpty(params.get("ids") + "")) {
-    		ids = (Integer[]) params.get(ids);
-        }
-        if (params.containsKey("format") && !StringUtils.isEmpty(params.get("format") + "")) {
-        	format = params.get("format") + "";
-        }
-        List<Sale> list = newBeeMallGoodsService.getSalesByIds(ids);
-       
-        try {
-        	if(format == "csv") {
-        		file = new File(Constants.FILE_DOWNLOAD_CSV);
-        	}
-        	if(format == "txt") {
-        		file = new File(Constants.FILE_DOWNLOAD_TXT);
-        	}
-            FileWriter filewriter = new FileWriter(file);
-            filewriter.write(header);
-            list.forEach(sales -> {
-                try {
-                    String str = sales.getId() + comma + sales.getName() + comma + sales.getStartDate() + comma + sales.getEndDate();
-                    filewriter.write(str + "\r\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            filewriter.close();
+    public Result download(@RequestBody Download download) {
+    	StringBuilder txCv = new StringBuilder();
+        txCv.append("."+ download.getFormat());
+        String test= "test" + txCv;
+          File f = new File(Constants.FILE_UPLOAD_DIC + test);
+     BufferedWriter bw=null;
+     try {
+      bw = new BufferedWriter(new FileWriter(f));
+     } catch (IOException e1) {
+      e1.printStackTrace();
+     }
+     List<Sale> saleList =newBeeMallGoodsService.getSalesByIds(download.getIds());
+               for(int i = 0; i < saleList.size();i++) {
+                 Sale sales = saleList.get(i);
+                if(sales != null) {
+                 try {
+         bw.write(sales.toString());
+         bw.newLine();        
         } catch (IOException e) {
-            System.out.println(e);
+         
+         e.printStackTrace();
         }
+                         
+                 }
+    
+               }
+               
+               try {
+       bw.close();
+      } catch (IOException e) {
+       
+       e.printStackTrace();
+      }
+               
+     
+               Result resultSuccess = ResultGenerator.genSuccessResult();
+               resultSuccess.setData("/upload/"+ test);
+               return resultSuccess;
+                
+      }
 
-        return ResultGenerator.genSuccessResult();
-    }
     
     @GetMapping({"/goods/sale", "/newbee_mall_goods_sale.html"})
     public String searchSalesByLikeSearch(@RequestParam Map<String, Object> params, HttpServletRequest request) {

@@ -34,6 +34,11 @@ public class AdminController {
     private AdminUserService adminUserService;
 
     
+//    @GetMapping({"/saleGoods"})
+//    public String saleGoods() {
+//        return "admin/saleGoods";
+//    }
+//    
     @GetMapping({"/sample"})
     public String sample() {
         return "admin/sample";

@@ -161,4 +161,7 @@ public interface NewBeeMallGoodsMapper {
     
   //2021/05/26 added by sasaki for sale insert
     Long  insertSaleId();
+    
+  //2021/05/27 added by sasaki for goods sale name
+    List<GoodsSale>  findGoodsSaleName();
 }

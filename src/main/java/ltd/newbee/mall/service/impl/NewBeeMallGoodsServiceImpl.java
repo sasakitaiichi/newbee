@@ -547,6 +547,12 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return ServiceResultEnum.DB_ERROR.getResult();
 	}
 
+	@Override
+	public List<GoodsSale> findGoodsSaleName() {
+		List<GoodsSale> goodsSaleName = goodsMapper.findGoodsSaleName();
+		return goodsSaleName;
+	}
+
 
 //	@Override
 //	public List<SearchHistroy> getSearchHistroy(Long userId) {
