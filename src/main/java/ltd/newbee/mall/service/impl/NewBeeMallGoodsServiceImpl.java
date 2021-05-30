@@ -14,11 +14,15 @@ import ltd.newbee.mall.controller.vo.NewBeeMallGoodsImgDetailVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.GoodsCommentMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.entity.AdminUser;
+import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
+import ltd.newbee.mall.entity.SaleIndexCategory;
 import ltd.newbee.mall.entity.SearchHistroy;
+import ltd.newbee.mall.entity.TbGoods;
 import ltd.newbee.mall.dao.GoodsImgMapper;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
@@ -125,8 +129,6 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return pageResult;
 	}
 
-
-	
 ////	2021/04/21 added by sasaki for sale
 //	@Override
 //	public List<GoodsSale> searchSaleGoods(Long saleId) {
@@ -264,8 +266,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 //			}
 //			return saleGoods;
 //		}
-	
-		
+
 	@Override
 	public PageResult searchNewBeeMallGoodsCat(PageQueryUtil pageUtil) {
 		List<NewBeeMallGoods> goodsList = goodsMapper.findNewBeeMallGoodsListBySearchCat(pageUtil);
@@ -452,29 +453,25 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		}
 		return ServiceResultEnum.DB_ERROR.getResult();
 	}
-	
-	@Override
-    public List<NewBeeMallGoods> getNewBeeMallGoodsByIds(List<Long> ids) {
-        List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.selectByPrimaryKeys(ids);
-        return newBeeMallGoods;
-    }
 
-	
-    
+	@Override
+	public List<NewBeeMallGoods> getNewBeeMallGoodsByIds(List<Long> ids) {
+		List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.selectByPrimaryKeys(ids);
+		return newBeeMallGoods;
+	}
 
 	@Override
 	public PageResult getSalesByLikeSearch(PageQueryUtil pageUtil) {
 		List<Sale> sales = goodsMapper.findSalesByLikeSearch(pageUtil);
 		int total = goodsMapper.getTotalSalesBySearch(pageUtil);
-		PageResult pageResult = new PageResult(sales, total, pageUtil.getLimit(),
-				pageUtil.getPage());
-		return  pageResult;
+		PageResult pageResult = new PageResult(sales, total, pageUtil.getLimit(), pageUtil.getPage());
+		return pageResult;
 	}
-	
+
 	@Override
 	public List<Sale> getSalesById(Long id) {
 		List<Sale> sales = goodsMapper.findSalesById(id);
-		return  sales;
+		return sales;
 	}
 
 	@Override
@@ -484,44 +481,45 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		PageResult pageResult = new PageResult(saleList, total, pageUtil.getLimit(), pageUtil.getPage());
 		return pageResult;
 	}
-	
-	@Override
-    public List<Sale> getSalesByIds(Integer[] ids) {
-        List<Sale> sales = goodsMapper.selectBySaleIds(ids);
-        return sales;
-    }
-	
-	@Override
-    public PageResult goodsSalePagAndSort(PageQueryUtil pageUtil) {
-        List<Sale> goodsList = goodsMapper.findSalesByLikeSearch(pageUtil);
-        int total = goodsMapper.getTotalSalesBySearch(pageUtil);
-        PageResult pageResult = new PageResult(goodsList, total, pageUtil.getLimit(), pageUtil.getPage());
-        return pageResult;
-    }
 
 	@Override
-    public void fileWriter(List<Sale> list) {
-        final String comma = ",";
-        String header = "id" + "," + " name" + "," + "start_date" + "," + "end=date\r\n";
-        try {
-            File file = new File("c:\\download\\test.csv");
+	public List<Sale> getSalesByIds(Integer[] ids) {
+		List<Sale> sales = goodsMapper.selectBySaleIds(ids);
+		return sales;
+	}
 
-            FileWriter filewriter = new FileWriter(file);
+	@Override
+	public PageResult goodsSalePagAndSort(PageQueryUtil pageUtil) {
+		List<Sale> goodsList = goodsMapper.findSalesByLikeSearch(pageUtil);
+		int total = goodsMapper.getTotalSalesBySearch(pageUtil);
+		PageResult pageResult = new PageResult(goodsList, total, pageUtil.getLimit(), pageUtil.getPage());
+		return pageResult;
+	}
 
-            filewriter.write(header);
-            list.forEach(sales -> {
-                try {
-                    String str = sales.getId() + comma + sales.getName() + comma + sales.getStartDate() + comma + sales.getEndDate();
-                    filewriter.write(str + "\r\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            filewriter.close();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
+	@Override
+	public void fileWriter(List<Sale> list) {
+		final String comma = ",";
+		String header = "id" + "," + " name" + "," + "start_date" + "," + "end=date\r\n";
+		try {
+			File file = new File("c:\\download\\test.csv");
+
+			FileWriter filewriter = new FileWriter(file);
+
+			filewriter.write(header);
+			list.forEach(sales -> {
+				try {
+					String str = sales.getId() + comma + sales.getName() + comma + sales.getStartDate() + comma
+							+ sales.getEndDate();
+					filewriter.write(str + "\r\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+			filewriter.close();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+	}
 
 	@Override
 	public List<Sale> getSalesBySort(String orderBy, String ascOrDesc) {
@@ -530,15 +528,15 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	}
 
 	@Override
-    public Long getGoodsSaleId() {
+	public Long getGoodsSaleId() {
 		Long maxId = goodsMapper.insertSaleId();
-	     if(maxId !=null) {
-	     return maxId + 1;
-	     }else {
-	       return 1L;
-	     }
-    }
-	
+		if (maxId != null) {
+			return maxId + 1;
+		} else {
+			return 1L;
+		}
+	}
+
 	@Override
 	public String saveSaleGoods(GoodsSale goodsSale) {
 		if (goodsMapper.insertGoodsSale(goodsSale) > 0) {
@@ -553,6 +551,106 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return goodsSaleName;
 	}
 
+	@Override
+	public Boolean booleanCategoryIds(List<Long> categoryId) {
+		List<CategorySale> categorySalets = goodsMapper.findCategorySaleByIds(categoryId);
+
+		if (!categorySalets.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean booleanGoodsIds(List<Long> goodsId) {
+		List<TbGoods> tbGoods = goodsMapper.findSaleGoodsByIds(goodsId);
+
+		if (!tbGoods.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<GoodsSale> getSaleListByCategoryIds(List<Long> categoryId) {
+		List<GoodsSale> goodsSales = new ArrayList<GoodsSale>();
+		List<CategorySale> categorySales = goodsMapper.findCategorySaleByIds(categoryId);
+		List<Long> ids = categorySales.stream().map(CategorySale::getId).collect(Collectors.toList());
+		for (int i = 0; i < ids.size(); i++) {
+			List<GoodsSale> temp = goodsMapper.findGoodsSaleById(ids);
+			goodsSales.addAll(temp);
+		}
+		return goodsSales;
+	}
+
+	@Override
+	public List<GoodsSale> getSaleListByGoodsIds(List<Long> goodsId) {
+		List<GoodsSale> goodsSales = new ArrayList<GoodsSale>();
+		List<TbGoods> tbGoods = goodsMapper.findSaleGoodsByIds(goodsId);
+		List<Long> ids = tbGoods.stream().map(TbGoods::getId).collect(Collectors.toList());
+		for (int i = 0; i < ids.size(); i++) {
+			List<GoodsSale> temp = goodsMapper.findGoodsSaleById(ids);
+			goodsSales.addAll(temp);
+		}
+		return goodsSales;
+	}
+
+	@Override
+	public Boolean booleanCategoryId(Long categoryId) {
+		List<CategorySale> categorySalets = goodsMapper.findCategorySaleById(categoryId);
+
+		if (!categorySalets.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean booleanGoodsId(Long goodsId) {
+		List<TbGoods> tbGoods = goodsMapper.findSaleGoodsById(goodsId);
+
+		if (!tbGoods.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<GoodsSale> getSaleListByCategoryId(Long categoryId) {
+		List<GoodsSale> goodsSale = new ArrayList<GoodsSale>();
+		List<CategorySale> categorySales = goodsMapper.findCategorySaleById(categoryId);
+		List<Long> ids = categorySales.stream().map(CategorySale::getId).collect(Collectors.toList());
+		if (!ids.isEmpty()) {
+			goodsSale = goodsMapper.findGoodsSaleById(ids);
+		}
+
+		return goodsSale;
+	}
+
+	@Override
+	public List<GoodsSale> getSaleListByGoodsId(Long goodsId) {
+		List<GoodsSale> goodsSale = new ArrayList<GoodsSale>();
+		List<TbGoods> tbGoods = goodsMapper.findSaleGoodsById(goodsId);
+		List<Long> ids = tbGoods.stream().map(TbGoods::getId).collect(Collectors.toList());
+		if (!ids.isEmpty()) {
+			goodsSale = goodsMapper.findGoodsSaleById(ids);
+		}
+		return goodsSale;
+	}
+
+	@Override
+	public List<GoodsSale> selectAllSale() {
+		List<GoodsSale> goodsSales = goodsMapper.selectAllSale();
+		return goodsSales;
+	}
+
+	@Override
+	public Boolean deleteCategoryByCateId(Long categoryId) {
+		return goodsMapper.deleteCategoryByCategoryId(categoryId) > 0;
+	};
+
+	
+}
 
 //	@Override
 //	public List<SearchHistroy> getSearchHistroy(Long userId) {
@@ -561,8 +659,6 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 //		
 //		return searchHistroys ;
 //	}
-
-	
 
 //	@Override
 //	public PageResult getHitGoodsPage(PageQueryUtil pageUtil) {
@@ -584,4 +680,3 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 //				pageUtil.getPage());
 //		return pageResult;
 //	}
-}

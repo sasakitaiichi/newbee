@@ -253,4 +253,31 @@
             update_user    = #{updateUser,jdbcType=INTEGER}
         where category_id = #{categoryId,jdbcType=BIGINT}
     </update>
+    
+    <select id="selectByCategoryIdAndLevel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_category
+        where category_id in
+        <foreach item="categoryId" collection="categoryIds" open="(" separator="," close=")">
+            #{categoryId,jdbcType=BIGINT}
+        </foreach>
+        and category_level = #{categoryLevel,jdbcType=TINYINT}
+    </select>
+    
+    <select id="selectFirstLevel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_goods_category
+        where parent_id = 0
+    </select>
+    
+   <select id="selectForIndex"  resultType="ltd.newbee.mall.entity.SaleIndexCategory">
+   		select 
+   		tb_newbee_mall_goods_category.category_id,tb_newbee_mall_goods_category.category_name,tb_newbee_mall_goods_category.parent_id,
+   		tb_category.id,tb_category.category_id,tb_category.start_date,tb_category.end_date
+        from tb_newbee_mall_goods_category left join tb_category
+        on tb_newbee_mall_goods_category.category_id = tb_category.category_id 
+        where parent_id = 0
+      </select>
 </mapper>

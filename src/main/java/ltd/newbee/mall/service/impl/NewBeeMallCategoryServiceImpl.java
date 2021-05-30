@@ -16,6 +16,7 @@ import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.SaleIndexCategory;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -247,4 +248,22 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
 
         return pageResult;
     }
+
+	@Override
+	public List<GoodsCategory> selectByCategoryIdAndLevel(List<Long> categoryId, int categoryLevel) {
+		List<GoodsCategory> goodsCategories = goodsCategoryMapper.selectByCategoryIdAndLevel(categoryId,categoryLevel);
+		return goodsCategories;
+	}
+
+	@Override
+	public List<GoodsCategory> getFirstLevelCategory() {
+		List<GoodsCategory> firstLevelCategory = goodsCategoryMapper.selectFirstLevel();
+		return firstLevelCategory;
+	}
+	
+	@Override
+	public List<SaleIndexCategory> getCategoryForIndex() {
+		List<SaleIndexCategory> saleList = goodsCategoryMapper.selectForIndex();
+		return saleList;
+	}
 }

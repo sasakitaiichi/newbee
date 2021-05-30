@@ -1,937 +1,1197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ltd.newbee.mall.dao.NewBeeMallGoodsMapper">
-    <resultMap id="BaseResultMap" type="ltd.newbee.mall.entity.NewBeeMallGoods">
-        <id column="goods_id" jdbcType="BIGINT" property="goodsId"/>
-        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
-        <result column="goods_intro" jdbcType="VARCHAR" property="goodsIntro"/>
-        <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/>
-        <result column="goods_cover_img" jdbcType="VARCHAR" property="goodsCoverImg"/>
-        <result column="goods_carousel" jdbcType="VARCHAR" property="goodsCarousel"/>
-        <result column="original_price" jdbcType="INTEGER" property="originalPrice"/>
-        <result column="selling_price" jdbcType="INTEGER" property="sellingPrice"/>
-        <result column="stock_num" jdbcType="INTEGER" property="stockNum"/>
-        <result column="tag" jdbcType="VARCHAR" property="tag"/>
-        <result column="goods_sell_status" jdbcType="TINYINT" property="goodsSellStatus"/>
-        <result column="create_user" jdbcType="INTEGER" property="createUser"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_user" jdbcType="INTEGER" property="updateUser"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
+	<resultMap id="BaseResultMap"
+		type="ltd.newbee.mall.entity.NewBeeMallGoods">
+		<id column="goods_id" jdbcType="BIGINT" property="goodsId" />
+		<result column="goods_name" jdbcType="VARCHAR"
+			property="goodsName" />
+		<result column="goods_intro" jdbcType="VARCHAR"
+			property="goodsIntro" />
+		<result column="goods_category_id" jdbcType="BIGINT"
+			property="goodsCategoryId" />
+		<result column="goods_cover_img" jdbcType="VARCHAR"
+			property="goodsCoverImg" />
+		<result column="goods_carousel" jdbcType="VARCHAR"
+			property="goodsCarousel" />
+		<result column="original_price" jdbcType="INTEGER"
+			property="originalPrice" />
+		<result column="selling_price" jdbcType="INTEGER"
+			property="sellingPrice" />
+		<result column="stock_num" jdbcType="INTEGER"
+			property="stockNum" />
+		<result column="tag" jdbcType="VARCHAR" property="tag" />
+		<result column="goods_sell_status" jdbcType="TINYINT"
+			property="goodsSellStatus" />
+		<result column="create_user" jdbcType="INTEGER"
+			property="createUser" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_user" jdbcType="INTEGER"
+			property="updateUser" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+	</resultMap>
 
-    <resultMap id="CommentResultMap" type="ltd.newbee.mall.entity.GoodsComment">
-        <id column="goods_id" jdbcType="BIGINT" property="goodsId"/>
-        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
-        <result column="goods_img" jdbcType="VARCHAR" property="goodsImg"/>
-        <result column="goods_comment_title" jdbcType="VARCHAR" property="goodsCommentTitle"/>
-        <result column="goods_comment" jdbcType="VARCHAR" property="goodsComment"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    </resultMap>
-    
-<!--     2021/04/16 added by sasaki for sale -->
-<!--     <resultMap id="GoodsSaleResultMap" type="ltd.newbee.mall.entity.GoodsSale"> -->
-<!--         <id column="sale_id" jdbcType="BIGINT" property="saleId"/> -->
-<!--         <result column="goods_id" jdbcType="BIGINT" property="goodsId"/> -->
-<!--         <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/> -->
-<!--         <result column="parent_id" jdbcType="BIGINT" property="parentId"/> -->
-<!--         <result column="first_level_id" jdbcType="BIGINT" property="firstLevelId"/> -->
-<!--         <result column="sale_value" jdbcType="DOUBLE" property="saleValue"/> -->
-<!--         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/> -->
-<!--         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/> -->
-<!--     </resultMap> -->
-    
-    <!--     2021/05/08 added by sasaki for searchHistroy -->
-    <resultMap id="HistroyResultMap" type="ltd.newbee.mall.entity.SearchHistroy">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
-        <result column="date" jdbcType="TIMESTAMP" property="date"/>
-    </resultMap>
-    
-    
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <resultMap id="SaleResultMap" type="ltd.newbee.mall.entity.Sale">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
-        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
-    </resultMap>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <resultMap id="CategorySaleResultMap" type="ltd.newbee.mall.entity.CategorySale">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
-        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
-        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
-    </resultMap>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <resultMap id="GoodsSaleResultMap" type="ltd.newbee.mall.entity.GoodsSale">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
-        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
-        <result column="campaign" jdbcType="VARCHAR" property="campaign"/>
-        <result column="content1" jdbcType="VARCHAR" property="content1"/>
-        <result column="content2" jdbcType="VARCHAR" property="content2"/>
-        <result column="content3" jdbcType="VARCHAR" property="content3"/>
-        <result column="content4" jdbcType="VARCHAR" property="content4"/>
-        <result column="content5" jdbcType="VARCHAR" property="content5"/>
-        <result column="flag" jdbcType="VARCHAR" property="flag"/>
-    </resultMap>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <resultMap id="GoodsCouponResultMap" type="ltd.newbee.mall.entity.GoodsCoupon">
-        <id column="coupon_id" jdbcType="BIGINT" property="couponId"/>
-        <result column="coupon_name" jdbcType="VARCHAR" property="couponName"/>
-        <result column="flag" jdbcType="VARCHAR" property="flag"/>
-        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
-        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
-    </resultMap>
+	<resultMap id="CommentResultMap"
+		type="ltd.newbee.mall.entity.GoodsComment">
+		<id column="goods_id" jdbcType="BIGINT" property="goodsId" />
+		<result column="goods_name" jdbcType="VARCHAR"
+			property="goodsName" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="nick_name" jdbcType="VARCHAR"
+			property="nickName" />
+		<result column="goods_img" jdbcType="VARCHAR"
+			property="goodsImg" />
+		<result column="goods_comment_title" jdbcType="VARCHAR"
+			property="goodsCommentTitle" />
+		<result column="goods_comment" jdbcType="VARCHAR"
+			property="goodsComment" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+	</resultMap>
 
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="ltd.newbee.mall.entity.NewBeeMallGoods">
-        <result column="goods_detail_content" jdbcType="LONGVARCHAR" property="goodsDetailContent"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        goods_id
-        , goods_name, goods_intro,goods_category_id, goods_cover_img, goods_carousel, original_price,
-    selling_price, stock_num, tag, goods_sell_status, create_user, create_time, update_user, 
-    update_time
-    </sql>
-    <sql id="Blob_Column_List">
-        goods_detail_content
-    </sql>
+	<!-- 2021/04/16 added by sasaki for sale -->
+	<!-- <resultMap id="GoodsSaleResultMap" type="ltd.newbee.mall.entity.GoodsSale"> -->
+	<!-- <id column="sale_id" jdbcType="BIGINT" property="saleId"/> -->
+	<!-- <result column="goods_id" jdbcType="BIGINT" property="goodsId"/> -->
+	<!-- <result column="goods_category_id" jdbcType="BIGINT" property="goodsCategoryId"/> -->
+	<!-- <result column="parent_id" jdbcType="BIGINT" property="parentId"/> -->
+	<!-- <result column="first_level_id" jdbcType="BIGINT" property="firstLevelId"/> -->
+	<!-- <result column="sale_value" jdbcType="DOUBLE" property="saleValue"/> -->
+	<!-- <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/> -->
+	<!-- <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/> -->
+	<!-- </resultMap> -->
 
-    <insert id="batchInsert">
-        INSERT INTO tb_newbee_mall_goods_info(goods_name, goods_intro, goods_category_id,goods_cover_img,
-        goods_carousel,
-        goods_detail_content,original_price,
-        selling_price, stock_num)
-        VALUES
-        <foreach collection="newBeeMallGoodsList" item="goods" separator=",">
-            (#{goods.goodsName},#{goods.goodsIntro},#{goods.goodsCategoryId},#{goods.goodsCoverImg},#{goods.goodsCarousel},#{goods.goodsDetailContent},#{goods.originalPrice},#{goods.sellingPrice},#{goods.stockNum})
-        </foreach>
-    </insert>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-        select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        from tb_newbee_mall_goods_info
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </select>
-    <update id="updateStockNum">
-        <foreach collection="stockNumDTOS" item="stockNumDTO">
-            update tb_newbee_mall_goods_info set stock_num = stock_num-#{stockNumDTO.goodsCount}
-            where goods_id = #{stockNumDTO.goodsId} and stock_num>=#{stockNumDTO.goodsCount} and goods_sell_status = 0;
-        </foreach>
-    </update>
-    <update id="batchUpdateSellStatus">
-        update tb_newbee_mall_goods_info
-        set goods_sell_status=#{sellStatus},update_time=now() where goods_id in
-        <foreach item="id" collection="orderIds" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </update>
-    <update id="updateGoods">
-        update tb_newbee_mall_goods_info
-        set goods_name=#{goodsName}
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </update>
-    <select id="findNewBeeMallGoodsList" parameterType="Map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from tb_newbee_mall_goods_info
-        <where>
-            <if test="goodsName!=null and goodsName!=''">
-                and goods_name like CONCAT('%',#{goodsName},'%')
-            </if>
-            <if test="goodsSellStatus!=null and goodsSellStatus!=''">
-                and goods_sell_status = #{goodsSellStatus}
-            </if>
-            <if test="startTime != null and startTime.trim() != ''">
-                and create_time &gt; #{startTime}
-            </if>
-            <if test="endTime != null and endTime.trim() != ''">
-                and create_time &lt; #{endTime}
-            </if>
-        </where>
-        order by goods_id desc
-        <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-        </if>
-    </select>
+	<!-- 2021/05/08 added by sasaki for searchHistroy -->
+	<resultMap id="HistroyResultMap"
+		type="ltd.newbee.mall.entity.SearchHistroy">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="keyword" jdbcType="VARCHAR" property="keyword" />
+		<result column="date" jdbcType="TIMESTAMP" property="date" />
+	</resultMap>
 
-    <select id="findNewBeeMallGoodsListBySearch" parameterType="Map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from tb_newbee_mall_goods_info
-        <where>
-            <if test="keyword!=null and keyword!=''">
-                and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
-            </if>
-            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
-                and goods_category_id = #{goodsCategoryId}
-            </if>
-            <if test="goodsSellStatus!=null">
-                and goods_sell_status = #{goodsSellStatus}
-            </if>
-        </where>
-        <if test="orderBy!=null and orderBy!=''">
-            <choose>
-                <when test="orderBy == 'new'">
-                    <!-- 按照发布时间倒序排列 -->
-                    order by goods_id desc
-                </when>
-                <when test="orderBy == 'price'">
-                    <!-- 按照售价从小到大排列 -->
-                    order by selling_price asc
-                </when>
-                <otherwise>
-                    <!-- 默认按照库存数量从大到小排列 -->
-                    order by stock_num desc
-                </otherwise>
-            </choose>
-        </if>
-        <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-        </if>
-    </select>
 
-    <select id="findNewBeeMallGoodsListBySearchCat" parameterType="Map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from
-        ((select * from tb_newbee_mall_goods_info
-        where goods_category_id = 45
 
-        <if test="orderBy!=null and orderBy!=''">
-            <choose>
-                <when test="orderBy == 'new'">
-                    <!-- 按照发布时间倒序排列 -->
-                    order by goods_id desc
-                </when>
-                <when test="orderBy == 'price'">
-                    <!-- 按照售价从小到大排列 -->
-                    order by selling_price desc
-                </when>
-                <otherwise>
-                    <!-- 默认按照库存数量从大到小排列 -->
-                    order by stock_num desc
-                </otherwise>
-            </choose>
-        </if>
-        limit 5)
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<resultMap id="SaleResultMap"
+		type="ltd.newbee.mall.entity.Sale">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+	</resultMap>
 
-        union all
-        (select *
-        from tb_newbee_mall_goods_info
-        where goods_category_id = 46
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<resultMap id="CategorySaleResultMap"
+		type="ltd.newbee.mall.entity.CategorySale">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="category_id" jdbcType="BIGINT"
+			property="categoryId" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+	</resultMap>
 
-        <if test="orderBy!=null and orderBy!=''">
-            <choose>
-                <when test="orderBy == 'new'">
-                    <!-- 按照发布时间倒序排列 -->
-                    order by goods_id desc
-                </when>
-                <when test="orderBy == 'price'">
-                    <!-- 按照售价从小到大排列 -->
-                    order by selling_price desc
-                </when>
-                <otherwise>
-                    <!-- 默认按照库存数量从大到小排列 -->
-                    order by stock_num desc
-                </otherwise>
-            </choose>
-        </if>
-        limit 5)
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<resultMap id="TbGoodsResultMap"
+		type="ltd.newbee.mall.entity.TbGoods">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+	</resultMap>
 
-        union all
-        (select *
-        from tb_newbee_mall_goods_info
-        where goods_category_id = 47
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<resultMap id="GoodsSaleResultMap"
+		type="ltd.newbee.mall.entity.GoodsSale">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+		<result column="campaign" jdbcType="VARCHAR"
+			property="campaign" />
+		<result column="content1" jdbcType="VARCHAR"
+			property="content1" />
+		<result column="content2" jdbcType="VARCHAR"
+			property="content2" />
+		<result column="content3" jdbcType="VARCHAR"
+			property="content3" />
+		<result column="content4" jdbcType="VARCHAR"
+			property="content4" />
+		<result column="content5" jdbcType="VARCHAR"
+			property="content5" />
+		<result column="flag" jdbcType="VARCHAR" property="flag" />
+	</resultMap>
 
-        <if test="orderBy!=null and orderBy!=''">
-            <choose>
-                <when test="orderBy == 'new'">
-                    <!-- 按照发布时间倒序排列 -->
-                    order by goods_id desc
-                </when>
-                <when test="orderBy == 'price'">
-                    <!-- 按照售价从小到大排列 -->
-                    order by selling_price desc
-                </when>
-                <otherwise>
-                    <!-- 默认按照库存数量从大到小排列 -->
-                    order by stock_num desc
-                </otherwise>
-            </choose>
-        </if>
-        limit 5)
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<resultMap id="GoodsCouponResultMap"
+		type="ltd.newbee.mall.entity.GoodsCoupon">
+		<id column="coupon_id" jdbcType="BIGINT" property="couponId" />
+		<result column="coupon_name" jdbcType="VARCHAR"
+			property="couponName" />
+		<result column="flag" jdbcType="VARCHAR" property="flag" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+	</resultMap>
 
-        union all
-        (select *
-        from tb_newbee_mall_goods_info
-        where goods_category_id = 51
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="ltd.newbee.mall.entity.NewBeeMallGoods">
+		<result column="goods_detail_content" jdbcType="LONGVARCHAR"
+			property="goodsDetailContent" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		goods_id
+		, goods_name, goods_intro,goods_category_id,
+		goods_cover_img,
+		goods_carousel, original_price,
+		selling_price,
+		stock_num, tag, goods_sell_status, create_user, create_time,
+		update_user,
+		update_time
+	</sql>
+	<sql id="Blob_Column_List">
+		goods_detail_content
+	</sql>
 
-        <if test="orderBy!=null and orderBy!=''">
-            <choose>
-                <when test="orderBy == 'new'">
-                    <!-- 按照发布时间倒序排列 -->
-                    order by goods_id desc
-                </when>
-                <when test="orderBy == 'price'">
-                    <!-- 按照售价从小到大排列 -->
-                    order by selling_price desc
-                </when>
-                <otherwise>
-                    <!-- 默认按照库存数量从大到小排列 -->
-                    order by stock_num desc
-                </otherwise>
-            </choose>
-        </if>
-        limit 5)) as temp
-
-        <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-        </if>
-    </select>
-    
-    <select id="searchSecondLevel" parameterType="Map" resultMap="BaseResultMap">
-        select goods_id,
-               goods_name,
-               goods_intro,
-               goods_category_id,
-               goods_cover_img,
-               goods_carousel,
-               original_price,
-               selling_price,
-               stock_num,
-               tag,
-               goods_sell_status,
-               create_user,
-               create_time,
-               update_user,
-               update_time
-        from (
-                 (select *
-                  from newbee_mall_db.tb_newbee_mall_goods_info
-                  where goods_category_id = 45
-                  order by selling_price limit 5)
-                 union all
-                 (select *
-                  from newbee_mall_db.tb_newbee_mall_goods_info
-                  where goods_category_id = 46
-                  order by selling_price limit 5)
-                 union all
-                 (select *
-                  from newbee_mall_db.tb_newbee_mall_goods_info
-                  where goods_category_id = 47
-                  order by selling_price limit 5)
-                 union all
-                 (select *
-                  from newbee_mall_db.tb_newbee_mall_goods_info
-                  where goods_category_id = 51
-                  order by selling_price limit 5)
-             ) as temp
-    </select>
-    
-    <select id="selectByCategoryId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from tb_newbee_mall_goods_info
-        where goods_category_id in
-        <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-        order by field(goods_category_id,
-        <foreach item="id" collection="list" separator=",">
-            #{id}
-        </foreach>
-        ); 
-    </select>
-
-    <select id="findNewBeeMallGoodsListByGoodsCategoryId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select
-        <include refid="Base_Column_List"/>
-        from
-        tb_newbee_mall_goods_info
-        where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT}
-        limit 5
-        </select>
-        
-    <select id="findNewBeeMallGoodsListByGoodsId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select 
-        <include refid="Base_Column_List"/>
-        from 
-        tb_newbee_mall_goods_info
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-  	</select>
-
-    <select id="getTotalNewBeeMallGoodsBySearch" parameterType="Map" resultType="int">
-        select count(*) from tb_newbee_mall_goods_info
-        <where>
-            <if test="keyword!=null and keyword!=''">
-                and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
-            </if>
-            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
-                and goods_category_id = #{goodsCategoryId}
-            </if>
-            <if test="goodsSellStatus!=null">
-                and goods_sell_status = #{goodsSellStatus}
-            </if>
-        </where>
-    </select>
-
-    <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from tb_newbee_mall_goods_info
-        where goods_id in
-        <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-        order by field(goods_id,
-        <foreach item="id" collection="list" separator=",">
-            #{id}
-        </foreach>
-        );
-    </select>
-    <select id="getTotalNewBeeMallGoods" parameterType="Map" resultType="int">
-        select count(*) from tb_newbee_mall_goods_info
-        <where>
-            <if test="goodsName!=null and goodsName!=''">
-                and goods_name like CONCAT('%','#{goodsName}','%')
-            </if>
-            <if test="goodsSellStatus!=null and goodsSellStatus!=''">
-                and goods_sell_status = #{goodsSellStatus}
-            </if>
-            <if test="startTime != null and startTime.trim() != ''">
-                and create_time &gt; #{startTime}
-            </if>
-            <if test="endTime != null and endTime.trim() != ''">
-                and create_time &lt; #{endTime}
-            </if>
-        </where>
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete
-        from tb_newbee_mall_goods_info
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </delete>
-    <insert id="insert" parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
-        insert into tb_newbee_mall_goods_info (goods_id, goods_name, goods_intro,
-                                               goods_cover_img, goods_carousel, original_price,
-                                               selling_price, stock_num, tag,
-                                               goods_sell_status, create_user, create_time,
-                                               update_user, update_time, goods_detail_content)
-        values (#{goodsId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{goodsIntro,jdbcType=VARCHAR},
-                #{goodsCoverImg,jdbcType=VARCHAR}, #{goodsCarousel,jdbcType=VARCHAR}, #{originalPrice,jdbcType=INTEGER},
-                #{sellingPrice,jdbcType=INTEGER}, #{stockNum,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR},
-                #{goodsSellStatus,jdbcType=TINYINT}, #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-                #{updateUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
-                #{goodsDetailContent,jdbcType=LONGVARCHAR})
-    </insert>
-    <insert id="insertSelective" parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
-        insert into tb_newbee_mall_goods_info
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="goodsId != null">
-                goods_id,
-            </if>
-            <if test="goodsName != null">
-                goods_name,
-            </if>
-            <if test="goodsIntro != null">
-                goods_intro,
-            </if>
-            <if test="goodsCategoryId != null">
-                goods_category_id,
-            </if>
-            <if test="goodsCoverImg != null">
-                goods_cover_img,
-            </if>
-            <if test="goodsCarousel != null">
-                goods_carousel,
-            </if>
-            <if test="originalPrice != null">
-                original_price,
-            </if>
-            <if test="sellingPrice != null">
-                selling_price,
-            </if>
-            <if test="stockNum != null">
-                stock_num,
-            </if>
-            <if test="tag != null">
-                tag,
-            </if>
-            <if test="goodsSellStatus != null">
-                goods_sell_status,
-            </if>
-            <if test="createUser != null">
-                create_user,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateUser != null">
-                update_user,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="goodsDetailContent != null">
-                goods_detail_content,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="goodsId != null">
-                #{goodsId,jdbcType=BIGINT},
-            </if>
-            <if test="goodsName != null">
-                #{goodsName,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsIntro != null">
-                #{goodsIntro,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsIntro != null">
-                #{goodsCategoryId,jdbcType=BIGINT},
-            </if>
-            <if test="goodsCoverImg != null">
-                #{goodsCoverImg,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsCarousel != null">
-                #{goodsCarousel,jdbcType=VARCHAR},
-            </if>
-            <if test="originalPrice != null">
-                #{originalPrice,jdbcType=INTEGER},
-            </if>
-            <if test="sellingPrice != null">
-                #{sellingPrice,jdbcType=INTEGER},
-            </if>
-            <if test="stockNum != null">
-                #{stockNum,jdbcType=INTEGER},
-            </if>
-            <if test="tag != null">
-                #{tag,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsSellStatus != null">
-                #{goodsSellStatus,jdbcType=TINYINT},
-            </if>
-            <if test="createUser != null">
-                #{createUser,jdbcType=INTEGER},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateUser != null">
-                #{updateUser,jdbcType=INTEGER},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="goodsDetailContent != null">
-                #{goodsDetailContent,jdbcType=LONGVARCHAR},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
-        update tb_newbee_mall_goods_info
-        <set>
-            <if test="goodsName != null">
-                goods_name = #{goodsName,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsIntro != null">
-                goods_intro = #{goodsIntro,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsCategoryId != null">
-                goods_category_id = #{goodsCategoryId,jdbcType=BIGINT},
-            </if>
-            <if test="goodsCoverImg != null">
-                goods_cover_img = #{goodsCoverImg,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsCarousel != null">
-                goods_carousel = #{goodsCarousel,jdbcType=VARCHAR},
-            </if>
-            <if test="originalPrice != null">
-                original_price = #{originalPrice,jdbcType=INTEGER},
-            </if>
-            <if test="sellingPrice != null">
-                selling_price = #{sellingPrice,jdbcType=INTEGER},
-            </if>
-            <if test="stockNum != null">
-                stock_num = #{stockNum,jdbcType=INTEGER},
-            </if>
-            <if test="tag != null">
-                tag = #{tag,jdbcType=VARCHAR},
-            </if>
-            <if test="goodsSellStatus != null">
-                goods_sell_status = #{goodsSellStatus,jdbcType=TINYINT},
-            </if>
-            <if test="createUser != null">
-                create_user = #{createUser,jdbcType=INTEGER},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateUser != null">
-                update_user = #{updateUser,jdbcType=INTEGER},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="goodsDetailContent != null">
-                goods_detail_content = #{goodsDetailContent,jdbcType=LONGVARCHAR},
-            </if>
-        </set>
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
-        update tb_newbee_mall_goods_info
-        set goods_name           = #{goodsName,jdbcType=VARCHAR},
-            goods_intro          = #{goodsIntro,jdbcType=VARCHAR},
-            goods_cover_img      = #{goodsCoverImg,jdbcType=VARCHAR},
-            goods_carousel       = #{goodsCarousel,jdbcType=VARCHAR},
-            original_price       = #{originalPrice,jdbcType=INTEGER},
-            selling_price        = #{sellingPrice,jdbcType=INTEGER},
-            stock_num            = #{stockNum,jdbcType=INTEGER},
-            tag                  = #{tag,jdbcType=VARCHAR},
-            goods_sell_status    = #{goodsSellStatus,jdbcType=TINYINT},
-            create_user          = #{createUser,jdbcType=INTEGER},
-            create_time          = #{createTime,jdbcType=TIMESTAMP},
-            update_user          = #{updateUser,jdbcType=INTEGER},
-            update_time          = #{updateTime,jdbcType=TIMESTAMP},
-            goods_detail_content = #{goodsDetailContent,jdbcType=LONGVARCHAR}
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
-        update tb_newbee_mall_goods_info
-        set goods_name        = #{goodsName,jdbcType=VARCHAR},
-            goods_intro       = #{goodsIntro,jdbcType=VARCHAR},
-            goods_cover_img   = #{goodsCoverImg,jdbcType=VARCHAR},
-            goods_carousel    = #{goodsCarousel,jdbcType=VARCHAR},
-            original_price    = #{originalPrice,jdbcType=INTEGER},
-            selling_price     = #{sellingPrice,jdbcType=INTEGER},
-            stock_num         = #{stockNum,jdbcType=INTEGER},
-            tag               = #{tag,jdbcType=VARCHAR},
-            goods_sell_status = #{goodsSellStatus,jdbcType=TINYINT},
-            create_user       = #{createUser,jdbcType=INTEGER},
-            create_time       = #{createTime,jdbcType=TIMESTAMP},
-            update_user       = #{updateUser,jdbcType=INTEGER},
-            update_time       = #{updateTime,jdbcType=TIMESTAMP}
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </update>
-
-<!--    2021/04/06 added by sasaki for comment-->
-    <select id="selectById" resultMap="CommentResultMap">
-        select user_id,nick_name,goods_id,goods_name,goods_img,goods_comment_title,goods_comment,create_time
-        from tb_newbee_mall_goods_comment
-        where goods_id = #{goodsId,jdbcType=BIGINT}
-    </select>
-
-    <!--    2021/04/06 added by sasaki for comment-->
-    <insert id="insertComment" parameterType="ltd.newbee.mall.entity.GoodsComment">
-        insert into tb_newbee_mall_goods_comment (user_id,nick_name,goods_id,goods_name,goods_img,goods_comment_title,goods_comment,create_time)
-        values (#{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT},
-                #{goodsName,jdbcType=VARCHAR}, #{goodsImg,jdbcType=VARCHAR}, #{goodsCommentTitle,jdbcType=VARCHAR},
-                #{goodsComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
-    </insert>
-    
-<!--     2021/04/15 added by sasaki for categorySearch -->
-    <select id="getTotalNewBeeMallGoodsByCategory" parameterType="Map" resultType="int">
-        select count(*) from tb_newbee_mall_goods_info
-        <where>
-            <if test="keyword!=null and keyword!=''">
-                and (goods_name like CONCAT('%',#{keyword},'%') or goods_intro like CONCAT('%',#{keyword},'%'))
-            </if>
-            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
-                and goods_category_id = any
-              (select category_id from newbee_mall_db.tb_newbee_mall_goods_category where parent_id = #{goodsCategoryId} )
-            </if>
-            <if test="goodsSellStatus!=null">
-                and goods_sell_status = #{goodsSellStatus}
-            </if>
-        </where>
-    </select>
-   
-    
-	<!--     2021/04/16 added by sasaki for sale -->
-<!-- 	<insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale"> -->
-<!--         insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date) -->
-<!--         values (#{saleId,jdbcType=BIGINT},#{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{firstLevelId,jdbcType=BIGINT}, -->
-<!--         #{saleValue,jdbcType=DOUBLE}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP}) -->
-<!--     </insert> -->
-    
-<!--         2021/04/17 added by sasaki for sale -->
-<!--     <delete id="deleteById" parameterType="java.lang.Long"> -->
-<!--         delete -->
-<!--         from goods_sale -->
-<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
-<!--     </delete> -->
-    
-    
-<!--         2021/04/17 added by sasaki for sale -->
-<!--     <select id="selectBySaleId" resultMap="GoodsSaleResultMap"> -->
-<!--         select -->
-<!--         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
-<!--         from goods_sale -->
-<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
-<!--     </select> -->
-    
-<!--         2021/04/21 added by sasaki for sale -->
-<!--     <select id="selectByGoodsId" resultMap="GoodsSaleResultMap"> -->
-<!--         select -->
-<!--         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
-<!--         from goods_sale -->
-<!--         where goods_id = #{goodsId,jdbcType=BIGINT} -->
-<!--     </select> -->
-    
-<!--         2021/04/29 added by sasaki for sale -->
-<!--     <select id="selectByCategoryIdForSaleGoods" resultMap="GoodsSaleResultMap"> -->
-<!--         select -->
-<!--         sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
-<!--         from goods_sale -->
-<!--         where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT} -->
-<!--     </select> -->
-    
-    
-<!--         2021/04/21 added by sasaki for sale -->
-<!--     <update id="updateSaleBySaleId"> -->
-<!--         update goods_sale -->
-<!--         <set> -->
-<!--             <if test="saleValue != null"> -->
-<!--                 sale_value=#{saleValue}, -->
-<!--             </if> -->
-<!--          	<if test="startDate != null"> -->
-<!--                 start_date=#{startDate}, -->
-<!--             </if> -->
-<!--         	<if test="endDate != null"> -->
-<!--                 end_date=#{endDate} -->
-<!--             </if> -->
-<!--         	</set> -->
-<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
-<!--     </update> -->
-    
-<!--         2021/04/21 added by sasaki for sale -->
-<!-- <insert id="insertSaleList" parameterType="ltd.newbee.mall.entity.Sale"> -->
-<!--         insert tb_sale (sale_id,start_date,end_date) -->
-<!--         values (#{saleId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP}) -->
-<!--     </insert> -->
-    
-<!--         2021/04/21 added by sasaki for sale -->
-<!--     <delete id="deleteSaleListById" parameterType="java.lang.Long"> -->
-<!--         delete -->
-<!--         from tb_sale -->
-<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
-<!--     </delete> -->
-    
-<!--         2021/04/21 added by sasaki for sale -->
-<!--     <update id="updateSaleListBySaleId"> -->
-<!--         update tb_sale -->
-<!--         <set> -->
-<!--          	<if test="startDate != null"> -->
-<!--                 start_date=#{startDate}, -->
-<!--             </if> -->
-<!--         	<if test="endDate != null"> -->
-<!--                 end_date=#{endDate} -->
-<!--             </if> -->
-<!--         	</set> -->
-<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
-<!--     </update> -->
-    
-<!--         2021/04/21 added by sasaki for sale -->
-<!--     <select id="selectSaleListBySaleId" resultMap="SaleResultMap"> -->
-<!--         select -->
-<!--         sale_id,start_date,end_date -->
-<!--         from tb_sale -->
-<!--         where sale_id = #{saleId,jdbcType=BIGINT} -->
-<!--     </select> -->
-    
-    <!--     2021/05/07 added by sasaki for searchHistroy -->
-    <select id="findGoodsByName" resultMap="SaleResultMap">
-        select
-        <include refid="Base_Column_List"/>
-		from newbee_mall_db.tb_newbee_mall_goods_info
-		where goods_name like  like CONCAT('%',#{keyword},'%')
-		limit 5
-    </select>
-    
-     <!--     2021/05/08 added by sasaki for searchHistroy -->
-<insert id="insertHistroy" parameterType="ltd.newbee.mall.entity.SearchHistroy">
-        insert search_histroy (id,user_id,keyword,date)
-        values (#{id,jdbcType=BIGINT},#{userId,jdbcType=BIGINT}, #{keyword,jdbcType=VARCHAR},#{date,jdbcType=TIMESTAMP})
-    </insert>
-    
-    <select id="selectHistroy" resultMap="HistroyResultMap">
-        select
-        goods_id,user_id,keyword,date
-        from search_histroy
-        where user_id = #{userId,jdbcType=BIGINT}
-        order by date desc
-        limit 10
-    </select>
-    
-	<!--     2021/05/13 added by sasaki for sale -->
-    <insert id="insertSale" parameterType="ltd.newbee.mall.entity.Sale">
-        insert tb_sale (id,name,start_date,end_date)
-        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP})
-    </insert>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <select id="findSale" resultMap="SaleResultMap">
-        select
-        id,name,start_date,end_date
-		from tb_sale
-		where id = #{id,jdbcType=BIGINT}
-    </select>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <insert id="insertCategorySale" parameterType="ltd.newbee.mall.entity.CategorySale">
-        insert tb_sale (id,category_id,start_date,end_date)
-        values (#{id,jdbcType=BIGINT},#{category_id,jdbcType=BIGINT},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP})
-    </insert>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <select id="findCategorySale" resultMap="CategorySaleResultMap">
-        select
-        id,category_id,start_date,end_date
-		from tb_category
-		where id = #{id,jdbcType=BIGINT}
-    </select>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <insert id="insertGoodsSale" parameterType="ltd.newbee.mall.entity.GoodsSale">
-        insert goods_sale (id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag)
-        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},#{campaign,jdbcType=VARCHAR},#{content1,jdbcType=VARCHAR},
-        #{content2,jdbcType=VARCHAR},#{content3,jdbcType=VARCHAR},#{content4,jdbcType=VARCHAR},#{content5,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR})
-    </insert>
-    
-    <select id="findGoodsSale" resultMap="GoodsSaleResultMap">
-        select
-        id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag
-		from tb_category
-		where id = #{id,jdbcType=BIGINT}
-    </select>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <insert id="insertGoodsCoupon" parameterType="ltd.newbee.mall.entity.GoodsCoupon">
-        insert tb_sale (coupon_id,coupon_name,flag,start_date,end_date)
-        values (#{coupon_id,jdbcType=BIGINT},#{coupon_name,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR},#{start_date,jdbcType=TIMESTAMP}, #{start_date,jdbcType=TIMESTAMP})
-    </insert>
-    
-    <!--     2021/05/13 added by sasaki for sale -->
-    <select id="findGoodsCoupon" resultMap="GoodsCouponResultMap">
-        select
-        coupon_id,coupon_name,flag,start_date,end_date
-		from goods_coupon
-		where coupon_id = #{coupon_id,jdbcType=BIGINT}
-    </select>
- 
-    
-    <!--     2021/05/17 added by sasaki for sale -->
-    <select id="findSalesByLikeSearch" parameterType="Map" resultMap="SaleResultMap">
-        select id,name,start_date,end_date from tb_sale
-        <where>
-            <if test="keyword!=null and keyword!=''">
-                and name like CONCAT('%',#{keyword},'%')
-            </if>
-        </where>     
-         <if test="orderBy!=null and orderBy!='' and ascOrDesc!=null and ascOrDesc!=''"> 
-         order by #{orderBy} #{ascOrDesc}
-         </if>
-         <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-            </if>
-   </select>
-   <select id="getGoodsSaleTotal" parameterType="Map" resultType="int">
-        select count(*) from goods_sale
-  </select>
-   
-   <!--     2021/05/17 added by sasaki for sale -->
-   <select id="getTotalSalesBySearch" parameterType="Map" resultType="int">
-        select count(*) from tb_sale
-        <where>
-            <if test="keyword!=null and keyword!=''">
-		      	name like CONCAT('%',#{keyword},'%')
-			</if>        
+	<insert id="batchInsert">
+		INSERT INTO tb_newbee_mall_goods_info(goods_name, goods_intro,
+		goods_category_id,goods_cover_img,
+		goods_carousel,
+		goods_detail_content,original_price,
+		selling_price, stock_num)
+		VALUES
+		<foreach collection="newBeeMallGoodsList" item="goods"
+			separator=",">
+			(#{goods.goodsName},#{goods.goodsIntro},#{goods.goodsCategoryId},#{goods.goodsCoverImg},#{goods.goodsCarousel},#{goods.goodsDetailContent},#{goods.originalPrice},#{goods.sellingPrice},#{goods.stockNum})
+		</foreach>
+	</insert>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from tb_newbee_mall_goods_info
+		where goods_id =
+		#{goodsId,jdbcType=BIGINT}
+	</select>
+	<update id="updateStockNum">
+		<foreach collection="stockNumDTOS" item="stockNumDTO">
+			update
+			tb_newbee_mall_goods_info set stock_num =
+			stock_num-#{stockNumDTO.goodsCount}
+			where goods_id =
+			#{stockNumDTO.goodsId} and
+			stock_num>=#{stockNumDTO.goodsCount} and
+			goods_sell_status = 0;
+		</foreach>
+	</update>
+	<update id="batchUpdateSellStatus">
+		update tb_newbee_mall_goods_info
+		set
+		goods_sell_status=#{sellStatus},update_time=now() where goods_id in
+		<foreach item="id" collection="orderIds" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	<update id="updateGoods">
+		update tb_newbee_mall_goods_info
+		set
+		goods_name=#{goodsName}
+		where goods_id = #{goodsId,jdbcType=BIGINT}
+	</update>
+	<select id="findNewBeeMallGoodsList" parameterType="Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_newbee_mall_goods_info
+		<where>
+			<if test="goodsName!=null and goodsName!=''">
+				and goods_name like CONCAT('%',#{goodsName},'%')
+			</if>
+			<if test="goodsSellStatus!=null and goodsSellStatus!=''">
+				and goods_sell_status = #{goodsSellStatus}
+			</if>
+			<if test="startTime != null and startTime.trim() != ''">
+				and create_time &gt; #{startTime}
+			</if>
+			<if test="endTime != null and endTime.trim() != ''">
+				and create_time &lt; #{endTime}
+			</if>
 		</where>
-    </select>
-   
-   
-   <!--     2021/05/17 added by sasaki for sale -->
-    <select id="findSalesById" resultMap="SaleResultMap">
-        select
-        id,name,start_date,end_date
-        from tb_sale  
-        where id = #{id,jdbcType=BIGINT}
-        <if test="orderBy!=null and orderBy!=''"> 
-         order by #{orderBy} #{desAsc}
-        </if>
-        <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-        </if>
-   </select>
-   
-   <!--     2021/05/17 added by sasaki for sale -->
-    <select id="findSales" resultMap="SaleResultMap">
-        select
-        id,name,start_date,end_date
-        from tb_sale  
-        where id = #{id,jdbcType=BIGINT}
-        <if test="orderBy!=null and orderBy!=''"> 
-         order by #{orderBy} #{desAsc}
-        </if>
-        <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-        </if>
-   </select>
-   
-   <!--     2021/05/19 added by sasaki for sale -->
-   <select id="findSalesList" parameterType="Map" resultMap="SaleResultMap">
-        select
-        id,name,start_date,end_date
-        from tb_sale
-        <where>
-            <if test="keyword!=null and keyword!=''">
-                name like CONCAT('%',#{keyword},'%')
-            </if>
-        </where>
-        order by id asc
-        <if test="start!=null and limit!=null">
-            limit #{start},#{limit}
-        </if>
-    </select>
-    
-    <!--     2021/05/21 added by sasaki for sale -->
-   <select id="selectBySaleIds" parameterType="java.lang.Long" resultMap="SaleResultMap">
-      select id, name, start_date, end_date
-      from tb_sale
-      where id in 
-      <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
-      </foreach>
-  </select>
-  
-  <!--     2021/05/25 added by sasaki for sale sort -->
-    <select id="findSalesBySort" parameterType="Map" resultMap="SaleResultMap">
-        select id,name,start_date,end_date 
-        from tb_sale
-         order by #{orderBy} #{ascOrDesc}
-   </select>
-   
-   <select id="insertSaleId" parameterType="java.lang.Long" resultType= "java.lang.Long">      
-   select max(id) from goods_sale    
-  </select> 
-  
-  <!-- 2021/05/27 added by sasaki for sale name -->
-  <select id="findGoodsSaleName" resultMap="GoodsSaleResultMap">
-        select
-        id,
-        name
+		order by goods_id desc
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findNewBeeMallGoodsListBySearch" parameterType="Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_newbee_mall_goods_info
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				and (goods_name like CONCAT('%',#{keyword},'%') or
+				goods_intro like
+				CONCAT('%',#{keyword},'%'))
+			</if>
+			<if test="goodsCategoryId!=null and goodsCategoryId!=''">
+				and goods_category_id = #{goodsCategoryId}
+			</if>
+			<if test="goodsSellStatus!=null">
+				and goods_sell_status = #{goodsSellStatus}
+			</if>
+		</where>
+		<if test="orderBy!=null and orderBy!=''">
+			<choose>
+				<when test="orderBy == 'new'">
+					<!-- 按照发布时间倒序排列 -->
+					order by goods_id desc
+				</when>
+				<when test="orderBy == 'price'">
+					<!-- 按照售价从小到大排列 -->
+					order by selling_price asc
+				</when>
+				<otherwise>
+					<!-- 默认按照库存数量从大到小排列 -->
+					order by stock_num desc
+				</otherwise>
+			</choose>
+		</if>
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="findNewBeeMallGoodsListBySearchCat"
+		parameterType="Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		((select * from tb_newbee_mall_goods_info
+		where goods_category_id =
+		45
+
+		<if test="orderBy!=null and orderBy!=''">
+			<choose>
+				<when test="orderBy == 'new'">
+					<!-- 按照发布时间倒序排列 -->
+					order by goods_id desc
+				</when>
+				<when test="orderBy == 'price'">
+					<!-- 按照售价从小到大排列 -->
+					order by selling_price desc
+				</when>
+				<otherwise>
+					<!-- 默认按照库存数量从大到小排列 -->
+					order by stock_num desc
+				</otherwise>
+			</choose>
+		</if>
+		limit 5)
+
+		union all
+		(select *
+		from tb_newbee_mall_goods_info
+		where
+		goods_category_id = 46
+
+		<if test="orderBy!=null and orderBy!=''">
+			<choose>
+				<when test="orderBy == 'new'">
+					<!-- 按照发布时间倒序排列 -->
+					order by goods_id desc
+				</when>
+				<when test="orderBy == 'price'">
+					<!-- 按照售价从小到大排列 -->
+					order by selling_price desc
+				</when>
+				<otherwise>
+					<!-- 默认按照库存数量从大到小排列 -->
+					order by stock_num desc
+				</otherwise>
+			</choose>
+		</if>
+		limit 5)
+
+		union all
+		(select *
+		from tb_newbee_mall_goods_info
+		where
+		goods_category_id = 47
+
+		<if test="orderBy!=null and orderBy!=''">
+			<choose>
+				<when test="orderBy == 'new'">
+					<!-- 按照发布时间倒序排列 -->
+					order by goods_id desc
+				</when>
+				<when test="orderBy == 'price'">
+					<!-- 按照售价从小到大排列 -->
+					order by selling_price desc
+				</when>
+				<otherwise>
+					<!-- 默认按照库存数量从大到小排列 -->
+					order by stock_num desc
+				</otherwise>
+			</choose>
+		</if>
+		limit 5)
+
+		union all
+		(select *
+		from tb_newbee_mall_goods_info
+		where
+		goods_category_id = 51
+
+		<if test="orderBy!=null and orderBy!=''">
+			<choose>
+				<when test="orderBy == 'new'">
+					<!-- 按照发布时间倒序排列 -->
+					order by goods_id desc
+				</when>
+				<when test="orderBy == 'price'">
+					<!-- 按照售价从小到大排列 -->
+					order by selling_price desc
+				</when>
+				<otherwise>
+					<!-- 默认按照库存数量从大到小排列 -->
+					order by stock_num desc
+				</otherwise>
+			</choose>
+		</if>
+		limit 5)) as temp
+
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<select id="searchSecondLevel" parameterType="Map"
+		resultMap="BaseResultMap">
+		select goods_id,
+		goods_name,
+		goods_intro,
+		goods_category_id,
+		goods_cover_img,
+		goods_carousel,
+		original_price,
+		selling_price,
+		stock_num,
+		tag,
+		goods_sell_status,
+		create_user,
+		create_time,
+		update_user,
+		update_time
+		from (
+		(select *
+		from
+		newbee_mall_db.tb_newbee_mall_goods_info
+		where goods_category_id = 45
+		order by selling_price limit 5)
+		union all
+		(select *
+		from
+		newbee_mall_db.tb_newbee_mall_goods_info
+		where goods_category_id = 46
+		order by selling_price limit 5)
+		union all
+		(select *
+		from
+		newbee_mall_db.tb_newbee_mall_goods_info
+		where goods_category_id = 47
+		order by selling_price limit 5)
+		union all
+		(select *
+		from
+		newbee_mall_db.tb_newbee_mall_goods_info
+		where goods_category_id = 51
+		order by selling_price limit 5)
+		) as temp
+	</select>
+
+	<select id="selectByCategoryId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_newbee_mall_goods_info
+		where goods_category_id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+		order by field(goods_category_id,
+		<foreach item="id" collection="list" separator=",">
+			#{id}
+		</foreach>
+		);
+	</select>
+
+	<select id="findNewBeeMallGoodsListByGoodsCategoryId"
+		resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from
+		tb_newbee_mall_goods_info
+		where goods_category_id =
+		#{goodsCategoryId,jdbcType=BIGINT}
+		limit 5
+	</select>
+
+	<select id="findNewBeeMallGoodsListByGoodsId"
+		resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from
+		tb_newbee_mall_goods_info
+		where goods_id =
+		#{goodsId,jdbcType=BIGINT}
+	</select>
+
+	<select id="getTotalNewBeeMallGoodsBySearch" parameterType="Map"
+		resultType="int">
+		select count(*) from tb_newbee_mall_goods_info
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				and (goods_name like CONCAT('%',#{keyword},'%') or
+				goods_intro like
+				CONCAT('%',#{keyword},'%'))
+			</if>
+			<if test="goodsCategoryId!=null and goodsCategoryId!=''">
+				and goods_category_id = #{goodsCategoryId}
+			</if>
+			<if test="goodsSellStatus!=null">
+				and goods_sell_status = #{goodsSellStatus}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_newbee_mall_goods_info
+		where goods_id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+		order by field(goods_id,
+		<foreach item="id" collection="list" separator=",">
+			#{id}
+		</foreach>
+		);
+	</select>
+	<select id="getTotalNewBeeMallGoods" parameterType="Map"
+		resultType="int">
+		select count(*) from tb_newbee_mall_goods_info
+		<where>
+			<if test="goodsName!=null and goodsName!=''">
+				and goods_name like CONCAT('%','#{goodsName}','%')
+			</if>
+			<if test="goodsSellStatus!=null and goodsSellStatus!=''">
+				and goods_sell_status = #{goodsSellStatus}
+			</if>
+			<if test="startTime != null and startTime.trim() != ''">
+				and create_time &gt; #{startTime}
+			</if>
+			<if test="endTime != null and endTime.trim() != ''">
+				and create_time &lt; #{endTime}
+			</if>
+		</where>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete
+		from
+		tb_newbee_mall_goods_info
+		where goods_id = #{goodsId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
+		insert into tb_newbee_mall_goods_info (goods_id,
+		goods_name, goods_intro,
+		goods_cover_img, goods_carousel,
+		original_price,
+		selling_price, stock_num, tag,
+		goods_sell_status,
+		create_user, create_time,
+		update_user, update_time,
+		goods_detail_content)
+		values (#{goodsId,jdbcType=BIGINT},
+		#{goodsName,jdbcType=VARCHAR},
+		#{goodsIntro,jdbcType=VARCHAR},
+		#{goodsCoverImg,jdbcType=VARCHAR}, #{goodsCarousel,jdbcType=VARCHAR},
+		#{originalPrice,jdbcType=INTEGER},
+		#{sellingPrice,jdbcType=INTEGER},
+		#{stockNum,jdbcType=INTEGER},
+		#{tag,jdbcType=VARCHAR},
+		#{goodsSellStatus,jdbcType=TINYINT}, #{createUser,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{updateUser,jdbcType=INTEGER},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{goodsDetailContent,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
+		insert into tb_newbee_mall_goods_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="goodsId != null">
+				goods_id,
+			</if>
+			<if test="goodsName != null">
+				goods_name,
+			</if>
+			<if test="goodsIntro != null">
+				goods_intro,
+			</if>
+			<if test="goodsCategoryId != null">
+				goods_category_id,
+			</if>
+			<if test="goodsCoverImg != null">
+				goods_cover_img,
+			</if>
+			<if test="goodsCarousel != null">
+				goods_carousel,
+			</if>
+			<if test="originalPrice != null">
+				original_price,
+			</if>
+			<if test="sellingPrice != null">
+				selling_price,
+			</if>
+			<if test="stockNum != null">
+				stock_num,
+			</if>
+			<if test="tag != null">
+				tag,
+			</if>
+			<if test="goodsSellStatus != null">
+				goods_sell_status,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateUser != null">
+				update_user,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="goodsDetailContent != null">
+				goods_detail_content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="goodsId != null">
+				#{goodsId,jdbcType=BIGINT},
+			</if>
+			<if test="goodsName != null">
+				#{goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsIntro != null">
+				#{goodsIntro,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsIntro != null">
+				#{goodsCategoryId,jdbcType=BIGINT},
+			</if>
+			<if test="goodsCoverImg != null">
+				#{goodsCoverImg,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsCarousel != null">
+				#{goodsCarousel,jdbcType=VARCHAR},
+			</if>
+			<if test="originalPrice != null">
+				#{originalPrice,jdbcType=INTEGER},
+			</if>
+			<if test="sellingPrice != null">
+				#{sellingPrice,jdbcType=INTEGER},
+			</if>
+			<if test="stockNum != null">
+				#{stockNum,jdbcType=INTEGER},
+			</if>
+			<if test="tag != null">
+				#{tag,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsSellStatus != null">
+				#{goodsSellStatus,jdbcType=TINYINT},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				#{updateUser,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="goodsDetailContent != null">
+				#{goodsDetailContent,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
+		update tb_newbee_mall_goods_info
+		<set>
+			<if test="goodsName != null">
+				goods_name = #{goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsIntro != null">
+				goods_intro = #{goodsIntro,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsCategoryId != null">
+				goods_category_id = #{goodsCategoryId,jdbcType=BIGINT},
+			</if>
+			<if test="goodsCoverImg != null">
+				goods_cover_img = #{goodsCoverImg,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsCarousel != null">
+				goods_carousel = #{goodsCarousel,jdbcType=VARCHAR},
+			</if>
+			<if test="originalPrice != null">
+				original_price = #{originalPrice,jdbcType=INTEGER},
+			</if>
+			<if test="sellingPrice != null">
+				selling_price = #{sellingPrice,jdbcType=INTEGER},
+			</if>
+			<if test="stockNum != null">
+				stock_num = #{stockNum,jdbcType=INTEGER},
+			</if>
+			<if test="tag != null">
+				tag = #{tag,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsSellStatus != null">
+				goods_sell_status = #{goodsSellStatus,jdbcType=TINYINT},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUser != null">
+				update_user = #{updateUser,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="goodsDetailContent != null">
+				goods_detail_content =
+				#{goodsDetailContent,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where goods_id = #{goodsId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
+		update tb_newbee_mall_goods_info
+		set goods_name =
+		#{goodsName,jdbcType=VARCHAR},
+		goods_intro =
+		#{goodsIntro,jdbcType=VARCHAR},
+		goods_cover_img =
+		#{goodsCoverImg,jdbcType=VARCHAR},
+		goods_carousel =
+		#{goodsCarousel,jdbcType=VARCHAR},
+		original_price =
+		#{originalPrice,jdbcType=INTEGER},
+		selling_price =
+		#{sellingPrice,jdbcType=INTEGER},
+		stock_num =
+		#{stockNum,jdbcType=INTEGER},
+		tag = #{tag,jdbcType=VARCHAR},
+		goods_sell_status = #{goodsSellStatus,jdbcType=TINYINT},
+		create_user =
+		#{createUser,jdbcType=INTEGER},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_user =
+		#{updateUser,jdbcType=INTEGER},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		goods_detail_content =
+		#{goodsDetailContent,jdbcType=LONGVARCHAR}
+		where goods_id =
+		#{goodsId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="ltd.newbee.mall.entity.NewBeeMallGoods">
+		update tb_newbee_mall_goods_info
+		set goods_name =
+		#{goodsName,jdbcType=VARCHAR},
+		goods_intro =
+		#{goodsIntro,jdbcType=VARCHAR},
+		goods_cover_img =
+		#{goodsCoverImg,jdbcType=VARCHAR},
+		goods_carousel =
+		#{goodsCarousel,jdbcType=VARCHAR},
+		original_price =
+		#{originalPrice,jdbcType=INTEGER},
+		selling_price =
+		#{sellingPrice,jdbcType=INTEGER},
+		stock_num =
+		#{stockNum,jdbcType=INTEGER},
+		tag = #{tag,jdbcType=VARCHAR},
+		goods_sell_status = #{goodsSellStatus,jdbcType=TINYINT},
+		create_user =
+		#{createUser,jdbcType=INTEGER},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_user =
+		#{updateUser,jdbcType=INTEGER},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP}
+		where goods_id =
+		#{goodsId,jdbcType=BIGINT}
+	</update>
+
+	<!-- 2021/04/06 added by sasaki for comment -->
+	<select id="selectById" resultMap="CommentResultMap">
+		select
+		user_id,nick_name,goods_id,goods_name,goods_img,goods_comment_title,goods_comment,create_time
+		from tb_newbee_mall_goods_comment
+		where goods_id =
+		#{goodsId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 2021/04/06 added by sasaki for comment -->
+	<insert id="insertComment"
+		parameterType="ltd.newbee.mall.entity.GoodsComment">
+		insert into tb_newbee_mall_goods_comment
+		(user_id,nick_name,goods_id,goods_name,goods_img,goods_comment_title,goods_comment,create_time)
+		values (#{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR},
+		#{goodsId,jdbcType=BIGINT},
+		#{goodsName,jdbcType=VARCHAR},
+		#{goodsImg,jdbcType=VARCHAR}, #{goodsCommentTitle,jdbcType=VARCHAR},
+		#{goodsComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+
+	<!-- 2021/04/15 added by sasaki for categorySearch -->
+	<select id="getTotalNewBeeMallGoodsByCategory"
+		parameterType="Map" resultType="int">
+		select count(*) from tb_newbee_mall_goods_info
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				and (goods_name like CONCAT('%',#{keyword},'%') or
+				goods_intro like
+				CONCAT('%',#{keyword},'%'))
+			</if>
+			<if test="goodsCategoryId!=null and goodsCategoryId!=''">
+				and goods_category_id = any
+				(select category_id from
+				newbee_mall_db.tb_newbee_mall_goods_category where
+				parent_id =
+				#{goodsCategoryId} )
+			</if>
+			<if test="goodsSellStatus!=null">
+				and goods_sell_status = #{goodsSellStatus}
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 2021/04/16 added by sasaki for sale -->
+	<!-- <insert id="insertSale" parameterType="ltd.newbee.mall.entity.GoodsSale"> -->
+	<!-- insert goods_sale (sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date) -->
+	<!-- values (#{saleId,jdbcType=BIGINT},#{goodsId,jdbcType=BIGINT},#{goodsCategoryId,jdbcType=BIGINT},#{parentId,jdbcType=BIGINT},#{firstLevelId,jdbcType=BIGINT}, -->
+	<!-- #{saleValue,jdbcType=DOUBLE}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP}) -->
+	<!-- </insert> -->
+
+	<!-- 2021/04/17 added by sasaki for sale -->
+	<!-- <delete id="deleteById" parameterType="java.lang.Long"> -->
+	<!-- delete -->
+	<!-- from goods_sale -->
+	<!-- where sale_id = #{saleId,jdbcType=BIGINT} -->
+	<!-- </delete> -->
+
+
+	<!-- 2021/04/17 added by sasaki for sale -->
+	<!-- <select id="selectBySaleId" resultMap="GoodsSaleResultMap"> -->
+	<!-- select -->
+	<!-- sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
+	<!-- from goods_sale -->
+	<!-- where sale_id = #{saleId,jdbcType=BIGINT} -->
+	<!-- </select> -->
+
+	<!-- 2021/04/21 added by sasaki for sale -->
+	<!-- <select id="selectByGoodsId" resultMap="GoodsSaleResultMap"> -->
+	<!-- select -->
+	<!-- sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
+	<!-- from goods_sale -->
+	<!-- where goods_id = #{goodsId,jdbcType=BIGINT} -->
+	<!-- </select> -->
+
+	<!-- 2021/04/29 added by sasaki for sale -->
+	<!-- <select id="selectByCategoryIdForSaleGoods" resultMap="GoodsSaleResultMap"> -->
+	<!-- select -->
+	<!-- sale_id,goods_id,goods_category_id,parent_id,first_level_id,sale_value,start_date,end_date -->
+	<!-- from goods_sale -->
+	<!-- where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT} -->
+	<!-- </select> -->
+
+
+	<!-- 2021/04/21 added by sasaki for sale -->
+	<!-- <update id="updateSaleBySaleId"> -->
+	<!-- update goods_sale -->
+	<!-- <set> -->
+	<!-- <if test="saleValue != null"> -->
+	<!-- sale_value=#{saleValue}, -->
+	<!-- </if> -->
+	<!-- <if test="startDate != null"> -->
+	<!-- start_date=#{startDate}, -->
+	<!-- </if> -->
+	<!-- <if test="endDate != null"> -->
+	<!-- end_date=#{endDate} -->
+	<!-- </if> -->
+	<!-- </set> -->
+	<!-- where sale_id = #{saleId,jdbcType=BIGINT} -->
+	<!-- </update> -->
+
+	<!-- 2021/04/21 added by sasaki for sale -->
+	<!-- <insert id="insertSaleList" parameterType="ltd.newbee.mall.entity.Sale"> -->
+	<!-- insert tb_sale (sale_id,start_date,end_date) -->
+	<!-- values (#{saleId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP}) -->
+	<!-- </insert> -->
+
+	<!-- 2021/04/21 added by sasaki for sale -->
+	<!-- <delete id="deleteSaleListById" parameterType="java.lang.Long"> -->
+	<!-- delete -->
+	<!-- from tb_sale -->
+	<!-- where sale_id = #{saleId,jdbcType=BIGINT} -->
+	<!-- </delete> -->
+
+	<!-- 2021/04/21 added by sasaki for sale -->
+	<!-- <update id="updateSaleListBySaleId"> -->
+	<!-- update tb_sale -->
+	<!-- <set> -->
+	<!-- <if test="startDate != null"> -->
+	<!-- start_date=#{startDate}, -->
+	<!-- </if> -->
+	<!-- <if test="endDate != null"> -->
+	<!-- end_date=#{endDate} -->
+	<!-- </if> -->
+	<!-- </set> -->
+	<!-- where sale_id = #{saleId,jdbcType=BIGINT} -->
+	<!-- </update> -->
+
+	<!-- 2021/04/21 added by sasaki for sale -->
+	<!-- <select id="selectSaleListBySaleId" resultMap="SaleResultMap"> -->
+	<!-- select -->
+	<!-- sale_id,start_date,end_date -->
+	<!-- from tb_sale -->
+	<!-- where sale_id = #{saleId,jdbcType=BIGINT} -->
+	<!-- </select> -->
+
+	<!-- 2021/05/07 added by sasaki for searchHistroy -->
+	<select id="findGoodsByName" resultMap="SaleResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from newbee_mall_db.tb_newbee_mall_goods_info
+		where goods_name like
+		like CONCAT('%',#{keyword},'%')
+		limit 5
+	</select>
+
+	<!-- 2021/05/08 added by sasaki for searchHistroy -->
+	<insert id="insertHistroy"
+		parameterType="ltd.newbee.mall.entity.SearchHistroy">
+		insert search_histroy (id,user_id,keyword,date)
+		values
+		(#{id,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},
+		#{keyword,jdbcType=VARCHAR},#{date,jdbcType=TIMESTAMP})
+	</insert>
+
+	<select id="selectHistroy" resultMap="HistroyResultMap">
+		select
+		goods_id,user_id,keyword,date
+		from search_histroy
+		where user_id =
+		#{userId,jdbcType=BIGINT}
+		order by date desc
+		limit 10
+	</select>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<insert id="insertSale"
+		parameterType="ltd.newbee.mall.entity.Sale">
+		insert tb_sale (id,name,start_date,end_date)
+		values
+		(#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<select id="findSale" resultMap="SaleResultMap">
+		select
+		id,name,start_date,end_date
+		from tb_sale
+		where id =
+		#{id,jdbcType=BIGINT}
+	</select>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<insert id="insertCategorySale"
+		parameterType="ltd.newbee.mall.entity.CategorySale">
+		insert tb_sale (id,category_id,start_date,end_date)
+		values
+		(#{id,jdbcType=BIGINT},#{categoryId,jdbcType=BIGINT},#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<select id="findCategorySale" resultMap="CategorySaleResultMap">
+		select
+		id,category_id,start_date,end_date
+		from tb_category
+		where id =
+		#{id,jdbcType=BIGINT}
+	</select>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<insert id="insertGoodsSale"
+		parameterType="ltd.newbee.mall.entity.GoodsSale">
+		insert goods_sale
+		(id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag)
+		values
+		(#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP},#{campaign,jdbcType=VARCHAR},#{content1,jdbcType=VARCHAR},
+		#{content2,jdbcType=VARCHAR},#{content3,jdbcType=VARCHAR},#{content4,jdbcType=VARCHAR},#{content5,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="findGoodsSale" resultMap="GoodsSaleResultMap">
+		select
+		id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag
+		from tb_category
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<insert id="insertGoodsCoupon"
+		parameterType="ltd.newbee.mall.entity.GoodsCoupon">
+		insert tb_sale
+		(coupon_id,coupon_name,flag,start_date,end_date)
+		values
+		(#{couponId,jdbcType=BIGINT},#{couponName,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP},
+		#{endDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<!-- 2021/05/13 added by sasaki for sale -->
+	<select id="findGoodsCoupon" resultMap="GoodsCouponResultMap">
+		select
+		coupon_id,coupon_name,flag,start_date,end_date
+		from goods_coupon
+		where
+		coupon_id = #{couponId,jdbcType=BIGINT}
+	</select>
+
+
+	<!-- 2021/05/17 added by sasaki for sale -->
+	<select id="findSalesByLikeSearch" parameterType="Map"
+		resultMap="SaleResultMap">
+		select id,name,start_date,end_date from tb_sale
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				and name like CONCAT('%',#{keyword},'%')
+			</if>
+		</where>
+		<if
+			test="orderBy!=null and orderBy!='' and ascOrDesc!=null and ascOrDesc!=''">
+			order by #{orderBy} #{ascOrDesc}
+		</if>
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+	<select id="getGoodsSaleTotal" parameterType="Map"
+		resultType="int">
+		select count(*) from goods_sale
+	</select>
+
+	<!-- 2021/05/17 added by sasaki for sale -->
+	<select id="getTotalSalesBySearch" parameterType="Map"
+		resultType="int">
+		select count(*) from tb_sale
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				       name like CONCAT('%',#{keyword},'%')
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 2021/05/17 added by sasaki for sale -->
+	<select id="findSalesById" resultMap="SaleResultMap">
+		select
+		id,name,start_date,end_date
+		from tb_sale
+		where id =
+		#{id,jdbcType=BIGINT}
+		<if test="orderBy!=null and orderBy!=''">
+			order by #{orderBy} #{desAsc}
+		</if>
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 2021/05/17 added by sasaki for sale -->
+	<select id="findSales" resultMap="SaleResultMap">
+		select
+		id,name,start_date,end_date
+		from tb_sale
+		where id =
+		#{id,jdbcType=BIGINT}
+		<if test="orderBy!=null and orderBy!=''">
+			order by #{orderBy} #{desAsc}
+		</if>
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 2021/05/19 added by sasaki for sale -->
+	<select id="findSalesList" parameterType="Map"
+		resultMap="SaleResultMap">
+		select
+		id,name,start_date,end_date
+		from tb_sale
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				name like CONCAT('%',#{keyword},'%')
+			</if>
+		</where>
+		order by id asc
+		<if test="start!=null and limit!=null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 2021/05/21 added by sasaki for sale -->
+	<select id="selectBySaleIds" parameterType="java.lang.Long"
+		resultMap="SaleResultMap">
+		select id, name, start_date, end_date
+		from tb_sale
+		where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<!-- 2021/05/25 added by sasaki for sale sort -->
+	<select id="findSalesBySort" parameterType="Map"
+		resultMap="SaleResultMap">
+		select id,name,start_date,end_date
+		from tb_sale
+		order by
+		#{orderBy} #{ascOrDesc}
+	</select>
+
+	<select id="insertSaleId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		select max(id) from goods_sale
+	</select>
+
+	<!-- 2021/05/27 added by sasaki for sale name -->
+	<select id="findGoodsSaleName" resultMap="GoodsSaleResultMap">
+		select
+		id,
+		name
+		from
+		goods_sale
+	</select>
+
+	<!-- 2021/05/28 added by sasaki for sale category -->
+	<select id="findCategorySaleByIds"
+		resultMap="CategorySaleResultMap">
+		select
+		id,category_id,start_date,end_date
+		from tb_category
+		where
+		category_id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{categoryId}
+		</foreach>
+	</select>
+
+	<!-- 2021/05/29 added by sasaki for sale category -->
+	<select id="findCategorySaleById"
+		resultMap="CategorySaleResultMap">
+		select
+		id,category_id,start_date,end_date
+		from tb_category
+		where category_id = #{categoryId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 2021/05/28 added by sasaki for tb goods -->
+	<select id="findSaleGoodsByIds" resultMap="TbGoodsResultMap">
+		select
+		id,goods_id,start_date,end_date
+		from tb_goods
+		where goods_id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{goodsId}
+		</foreach>
+	</select>
+
+	<!-- 2021/05/28 added by sasaki for tb goods -->
+	<select id="findSaleGoodsById" resultMap="TbGoodsResultMap">
+		select
+		id,goods_id,start_date,end_date
+		from tb_goods
+		where goods_id =
+		#{goodsId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 2021/05/28 added by sasaki for sale name -->
+	<select id="findGoodsSaleById" resultMap="GoodsSaleResultMap">
+		select
+		id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag
+		name
 		from goods_sale
-    </select>
+		where id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</select>
+
+
+
+	<!-- 2021/05/30 added by sasaki for sale index -->
+	<select id="selectAllSale" resultMap="GoodsSaleResultMap">
+		select *
+		from goods_sale
+	</select>
+
+	<!-- 2021/05/30 added by sasaki for sale delete category -->
+	<delete id="deleteCategoryByCategoryId"
+		parameterType="java.lang.Long">
+		delete
+		from tb_category
+		where category_id =
+		#{categoryId,jdbcType=BIGINT}
+	</delete>
+
 </mapper>

@@ -12,6 +12,7 @@ import ltd.newbee.mall.controller.vo.NewBeeMallIndexCategoryVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.SaleIndexCategory;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
@@ -68,5 +69,23 @@ public interface NewBeeMallCategoryService {
 
     PageResult selectCategoryId(PageQueryUtil pageUtil);
 
-
+    /**
+     * 根据categoryId和level获取分类列表
+     *
+     * @param categoryId
+     * @param categoryLevel
+     * @return
+     */
+    List<GoodsCategory> selectByCategoryIdAndLevel(List<Long> categoryId, int categoryLevel);
+    
+    /**
+     * 抽取第一層category
+     *
+     * @param 
+     * @param 
+     * @return
+     */
+    List<GoodsCategory> getFirstLevelCategory();
+    
+    List<SaleIndexCategory>getCategoryForIndex();
 }

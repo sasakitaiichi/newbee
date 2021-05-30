@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.dao;
 
+import ltd.newbee.mall.controller.vo.SaleIndexVO;
 import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.GoodsCoupon;
@@ -17,6 +18,7 @@ import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
 import ltd.newbee.mall.entity.SearchHistroy;
 import ltd.newbee.mall.entity.StockNumDTO;
+import ltd.newbee.mall.entity.TbGoods;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
@@ -164,4 +166,28 @@ public interface NewBeeMallGoodsMapper {
     
   //2021/05/27 added by sasaki for goods sale name
     List<GoodsSale>  findGoodsSaleName();
+    
+  //2021/05/28 added by sasaki for goods sale category
+    List<CategorySale>  findCategorySaleByIds(List<Long> categoryId);
+    
+  //2021/05/29 added by sasaki for goods sale category
+    List<CategorySale>  findCategorySaleById(Long categoryId);
+    
+  //2021/05/28 added by sasaki for goods sale goods
+    List<TbGoods>  findSaleGoodsByIds(List<Long> goodsId);
+    
+  //2021/05/29 added by sasaki for goods sale goods
+    List<TbGoods>  findSaleGoodsById(Long goodsId);
+    
+  //2021/05/28 added by sasaki for goods sale 
+    List<GoodsSale>  findGoodsSaleById(List<Long> id);
+    
+  //2021/05/30 added by sasaki for goods sale 
+    List<SaleIndexVO>  selectCategoryIdJoin();
+    
+  //2021/05/30 added by sasaki for goods sale 
+    List<GoodsSale>  selectAllSale();
+    
+  //2021/05/30 added by sasaki for sale deleta category
+  int deleteCategoryByCategoryId(Long categoryId);
 }

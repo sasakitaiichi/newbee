@@ -9,9 +9,11 @@
 package ltd.newbee.mall.service;
 
  
+import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.Sale;
+import ltd.newbee.mall.entity.SaleIndexCategory;
 import ltd.newbee.mall.entity.SearchHistroy;
 import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.entity.GoodsSale;
@@ -397,4 +399,84 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     List<GoodsSale> findGoodsSaleName();
+    
+    /**
+     * 判斷是否在tb_category存在
+     *
+     * @param 
+     * @return
+     */
+    Boolean booleanCategoryIds(List<Long> categoryId);
+    
+    /**
+     * 判斷是否在tb_category存在
+     *
+     * @param 
+     * @return
+     */
+    Boolean booleanCategoryId(Long categoryId);
+    
+    /**
+     * 判斷是否在tb_goods存在
+     *
+     * @param 
+     * @return
+     */
+    Boolean booleanGoodsIds(List<Long> goodsId);
+    
+    /**
+     * 判斷是否在tb_goods存在
+     *
+     * @param 
+     * @return
+     */
+    Boolean booleanGoodsId(Long goodsId);
+    
+    /**
+     * 抽出キャンペーン
+     *
+     * @param categoryId
+     * @return
+     */
+    List<GoodsSale> getSaleListByCategoryIds(List<Long> categoryId);
+    
+    /**
+     * 抽出キャンペーン
+     *
+     * @param categoryId
+     * @return
+     */
+    List<GoodsSale> getSaleListByCategoryId(Long categoryId);
+    
+    /**
+     * 抽出キャンペーン
+     *
+     * @param goodsId
+     * @return
+     */
+    List<GoodsSale> getSaleListByGoodsIds(List<Long> goodsId);
+    
+    /**
+     * 抽出キャンペーン
+     *
+     * @param goodsId
+     * @return
+     */
+    List<GoodsSale> getSaleListByGoodsId(Long goodsId);
+    
+    /**
+     * 抽出キャンペーン
+     *
+     * @param goodsId
+     * @return
+     */
+    List<GoodsSale> selectAllSale();
+    
+    /**
+     * 刪除sale category
+     *
+     * @param categoryId
+     * @return
+     */
+    Boolean deleteCategoryByCateId(Long categoryId);
 }

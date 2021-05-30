@@ -11,6 +11,7 @@ package ltd.newbee.mall.dao;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsImg;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.SaleIndexCategory;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
@@ -49,5 +50,14 @@ public interface GoodsCategoryMapper {
     List<GoodsCategory> selectLevelTwoList();
 
     List<GoodsCategory> selectLevelThreeList(Long categoryId);
+    
+    //2021/05/28 add by sasaki for sale category
+    List<GoodsCategory> selectByCategoryIdAndLevel(List<Long> categoryId,Integer categoryLevel);
+    
+  //2021/05/29 add by sasaki for sale category
+    List<GoodsCategory> selectFirstLevel();
+    
+    //2021/05/29 add by sasaki for sale category
+    List<SaleIndexCategory>selectForIndex();  
 }
 
