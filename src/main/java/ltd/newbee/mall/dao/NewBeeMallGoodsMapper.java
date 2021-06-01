@@ -126,7 +126,7 @@ public interface NewBeeMallGoodsMapper {
     List<Sale> findSale(Long id);
     
   //2021/05/13 added by sasaki for sale
-    List<CategorySale> insertCategorySale(List<CategorySale> categorySale);
+   int insertCategorySale(CategorySale categorySale);
     
   //2021/05/13 added by sasaki for sale
     List<CategorySale> findCategorySale(Long id);

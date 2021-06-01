@@ -266,4 +266,11 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
 		List<SaleIndexCategory> saleList = goodsCategoryMapper.selectForIndex();
 		return saleList;
 	}
+
+	@Override
+	public List<SaleIndexCategory> getCategoryForNextLevel(Long categoryId) {
+		Long parentId = categoryId;
+		List<SaleIndexCategory> saleList = goodsCategoryMapper.selectForNextLevel(parentId);
+		return saleList;
+	}
 }

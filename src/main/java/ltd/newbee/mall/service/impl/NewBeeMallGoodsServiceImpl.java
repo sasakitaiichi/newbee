@@ -647,9 +647,26 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	@Override
 	public Boolean deleteCategoryByCateId(Long categoryId) {
 		return goodsMapper.deleteCategoryByCategoryId(categoryId) > 0;
+	}
+
+	@Override
+	public String saveSaleCategory(CategorySale categorySale) {
+		if (goodsMapper.insertCategorySale(categorySale) > 0) {
+			return ServiceResultEnum.SUCCESS.getResult();
+		}
+		return ServiceResultEnum.DB_ERROR.getResult();
+	}
+
+	@Override
+	public Boolean isAvailable(CategorySale categorySale) {
+		List<GoodsSale> goodsSale = goodsMapper.findGoodsSale(categorySale.getId());
+		if (categorySale.getStartDate().compareTo(goodsSale.get(0).getStartDate()) >= 0
+				&& categorySale.getEndDate().compareTo(goodsSale.get(0).getEndDate()) <= 0) {
+			return true;
+		}
+		return false;
 	};
 
-	
 }
 
 //	@Override

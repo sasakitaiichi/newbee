@@ -59,5 +59,8 @@ public interface GoodsCategoryMapper {
     
     //2021/05/29 add by sasaki for sale category
     List<SaleIndexCategory>selectForIndex();  
+    
+  //2021/05/29 add by sasaki for sale category
+    List<SaleIndexCategory>selectForNextLevel(Long parentId);  
 }
 

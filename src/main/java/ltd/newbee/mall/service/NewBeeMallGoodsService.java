@@ -479,4 +479,20 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     Boolean deleteCategoryByCateId(Long categoryId);
+    
+    /**
+     * 插入sale category
+     *
+     * @param categoryId
+     * @return
+     */
+    String saveSaleCategory(CategorySale categorySale);
+    
+    /**
+     * 判斷是否有效時間内
+     *
+     * @param categoryId
+     * @return
+     */
+    Boolean isAvailable(CategorySale categorySale);
 }

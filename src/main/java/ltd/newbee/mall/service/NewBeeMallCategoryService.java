@@ -88,4 +88,6 @@ public interface NewBeeMallCategoryService {
     List<GoodsCategory> getFirstLevelCategory();
     
     List<SaleIndexCategory>getCategoryForIndex();
+    
+    List<SaleIndexCategory> getCategoryForNextLevel(Long categoryId);
 }

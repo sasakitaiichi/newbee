@@ -980,7 +980,7 @@
 	<select id="findGoodsSale" resultMap="GoodsSaleResultMap">
 		select
 		id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag
-		from tb_category
+		from goods_sale
 		where id = #{id,jdbcType=BIGINT}
 	</select>
 

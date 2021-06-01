@@ -280,4 +280,13 @@
         on tb_newbee_mall_goods_category.category_id = tb_category.category_id 
         where parent_id = 0
       </select>
+      
+      <select id="selectForNextLevel"  resultType="ltd.newbee.mall.entity.SaleIndexCategory">
+   		select 
+   		tb_newbee_mall_goods_category.category_id,tb_newbee_mall_goods_category.category_name,tb_newbee_mall_goods_category.parent_id,
+   		tb_category.id,tb_category.category_id,tb_category.start_date,tb_category.end_date
+        from tb_newbee_mall_goods_category left join tb_category
+        on tb_newbee_mall_goods_category.category_id = tb_category.category_id 
+        where parent_id = #{parentId,jdbcType=BIGINT}
+      </select>
 </mapper>
