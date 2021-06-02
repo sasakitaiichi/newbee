@@ -146,6 +146,27 @@
 			property="endDate" />
 	</resultMap>
 
+
+	<!-- 2021/06/02 added by sasaki for sale -->
+	<resultMap id="CampaignSetResultMap"
+		type="ltd.newbee.mall.entity.CampaignSet">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="campaign_id" jdbcType="BIGINT"
+			property="campaignId" />
+		<result column="" jdbcType="BIGINT"
+			property="categoryId" />
+		<result column="primary_goods_id" jdbcType="BIGINT"
+			property="primaryGoodsId" />
+		<result column="category_id" jdbcType="BIGINT"
+			property="categoryId" />
+		<result column="sub_goods_id" jdbcType="BIGINT"
+			property="subGoodsId" />
+		<result column="start_date" jdbcType="TIMESTAMP"
+			property="startDate" />
+		<result column="end_date" jdbcType="TIMESTAMP"
+			property="endDate" />
+	</resultMap>
+
 	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
 		type="ltd.newbee.mall.entity.NewBeeMallGoods">
 		<result column="goods_detail_content" jdbcType="LONGVARCHAR"
@@ -951,7 +972,7 @@
 	<!-- 2021/05/13 added by sasaki for sale -->
 	<insert id="insertCategorySale"
 		parameterType="ltd.newbee.mall.entity.CategorySale">
-		insert tb_sale (id,category_id,start_date,end_date)
+		insert tb_category (id,category_id,start_date,end_date)
 		values
 		(#{id,jdbcType=BIGINT},#{categoryId,jdbcType=BIGINT},#{startDate,jdbcType=TIMESTAMP},
 		#{endDate,jdbcType=TIMESTAMP})
@@ -1194,4 +1215,11 @@
 		#{categoryId,jdbcType=BIGINT}
 	</delete>
 
+	<!-- 2021/06/02 added by sasaki for campaign set -->
+	<insert id="insertCampaignSet"
+		parameterType="ltd.newbee.mall.entity.CampaignSet">
+		insert tb_category (id,primary_goods_id,sub_goods_id)
+		values
+		(#{id,jdbcType=BIGINT},{primaryGoodsId,jdbcType=BIGINT},{subGoodsId,jdbcType=BIGINT})
+	</insert>
 </mapper>

@@ -9,6 +9,7 @@
 package ltd.newbee.mall.service;
 
  
+import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
@@ -483,7 +484,7 @@ public interface NewBeeMallGoodsService {
     /**
      * 插入sale category
      *
-     * @param categoryId
+     * @param 
      * @return
      */
     String saveSaleCategory(CategorySale categorySale);
@@ -495,4 +496,12 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     Boolean isAvailable(CategorySale categorySale);
+    
+    /**
+     * 插入campaign set
+     *
+     * @param 
+     * @return
+     */
+    String saveCampaignSet(CampaignSet campaignSet);
 }

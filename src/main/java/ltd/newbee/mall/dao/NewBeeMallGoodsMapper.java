@@ -9,6 +9,7 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.controller.vo.SaleIndexVO;
+import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsComment;
 import ltd.newbee.mall.entity.GoodsCoupon;
@@ -190,4 +191,7 @@ public interface NewBeeMallGoodsMapper {
     
   //2021/05/30 added by sasaki for sale deleta category
   int deleteCategoryByCategoryId(Long categoryId);
+  
+//2021/06/02 added by sasaki for campaign set
+  int insertCampaignSet(CampaignSet campaignSet);
 }

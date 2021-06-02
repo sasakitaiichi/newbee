@@ -15,6 +15,7 @@ import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.GoodsCommentMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.entity.AdminUser;
+import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.CategorySale;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsComment;
@@ -665,6 +666,14 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String saveCampaignSet(CampaignSet campaignSet) {
+		if (goodsMapper.insertCampaignSet(campaignSet) > 0) {
+			return ServiceResultEnum.SUCCESS.getResult();
+		}
+		return ServiceResultEnum.DB_ERROR.getResult();
 	};
 
 }
