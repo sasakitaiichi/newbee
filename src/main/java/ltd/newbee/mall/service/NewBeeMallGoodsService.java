@@ -504,4 +504,12 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     String saveCampaignSet(CampaignSet campaignSet);
+    
+    /**
+     * 抽取赠送商品
+     *
+     * @param goodsId
+     * @return
+     */
+    List<NewBeeMallGoods>findGiftGoods(Long goodsId);
 }

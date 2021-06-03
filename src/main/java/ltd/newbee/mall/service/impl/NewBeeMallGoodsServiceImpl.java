@@ -674,6 +674,13 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 			return ServiceResultEnum.SUCCESS.getResult();
 		}
 		return ServiceResultEnum.DB_ERROR.getResult();
+	}
+
+	@Override
+	public List<NewBeeMallGoods> findGiftGoods(Long goodsId) {
+		List<NewBeeMallGoods> goods = goodsMapper.findNewBeeMallGoodsListByGoodsId(goodsId);
+		List<NewBeeMallGoods> goodsList = goodsMapper.findNewBeeMallGoodsListByGoodsCategoryId(goods.get(0).getGoodsCategoryId());
+		return goodsList;
 	};
 
 }
