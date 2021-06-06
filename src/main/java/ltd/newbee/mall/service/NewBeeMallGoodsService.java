@@ -512,4 +512,12 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     List<NewBeeMallGoods>findGiftGoods(Long goodsId);
+    
+    /**
+     * 抽取goodsSale
+     *
+     * @param id
+     * @return
+     */
+    List<GoodsSale>getGoodsSaleById(Long id);
 }
