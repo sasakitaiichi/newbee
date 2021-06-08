@@ -17,8 +17,10 @@ public class GoodsSale {
 	
 	private String name;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
 	private Date startDate;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+9")
 	private Date endDate;
 	
 	private String campaign;
