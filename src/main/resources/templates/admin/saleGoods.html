@@ -1,0 +1,151 @@
+<!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+		<!-- 引入页面头header-fragment -->
+		<div th:replace="admin/header::header-nav"></div>
+		<!-- 引入工具栏sidebar-fragment -->
+		<div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid"></div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- Main content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="card card-primary card-outline">
+						<div class="card-header">
+							<h3 class="card-title">GoodsCategory</h3>
+						</div>
+						<div>
+							<div class="grid-btn">
+								<button class="btn btn-info" id="campaignSet"
+									onclick="campaignAdd()">
+									<i class="fa fa-plus"></i>&nbsp;买二送一
+								</button>
+							</div>
+							<table class="order-table">
+								<tbody>
+									<th:block th:unless="${#lists.isEmpty(saleIndexCategories)}">
+										<th:block th:each="c : ${saleIndexCategories}">
+											<tr>
+												<td class="hight1"><select class="custom-select"
+													id="inputGroupSelect04">
+														<option calss="saleId" th:each="s : ${goodsSales}"
+															th:value="${s.id}" th:text="${s.campaign}"
+															th:selected="${s.id == c.id} ? true:false"></option>
+												</select></td>
+												<td class="fontSize">&nbsp; <input type="checkbox"
+													name="checkBox" class="checkBox" th:value="${c.categoryId}"
+													th:checked="${c.id} !=null? true:false"
+													th:text="${c.categoryName}" /> <span>開始日   <input
+														type="date" class="startDate"
+														th:value="${#dates.format(c.startDate,'yyyy-MM-dd')}">
+												</span> <span>終了日   <input type="date" class="endDate"
+														th:value="${#dates.format(c.endDate,'yyyy-MM-dd')}">
+												</span>
+													<button class="buttonPlus" id="button" th:if="${c.id}" th:attr="onclick=|nextLevel(this,'${c.categoryId}')|">➕</button>
+												</td>
+											</tr>
+										</th:block>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.card-body -->
+					</div>
+					<!-- /.container-fluid -->
+				</div>
+			</div>
+
+			<!--secondLevelCategories-->
+			<div id="searchResultUl">
+				<table class="dumyLi">
+					<tbody>
+						<tr>
+							<td><select class="selected" id="inputGroupSelect05">
+									<option value="txt" class="NextLevel"></option>
+							</select></td>
+							<td><input type="checkbox" class="nextLevelCheckBox"/> <a id="categoryId"> link </a>&nbsp;&nbsp;開始日
+								<input type="date" class="nextLevelStartDate">&nbsp;&nbsp;終了日 <input type="date" class="nextLevelEndDate">
+								<button class="buttonPlus" id="button" th:attr="onclick=|nextLevel(this.categoryId)|">➕</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="content">
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="campaignSetModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" style="overflow: auto;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="categoryModalLabel">Modal</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="categoryForm">
+                                <div class="form-group">
+                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                        错误信息展示栏。
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" id="categoryId" name="categoryId">
+                                <input type="hidden" id="categoryLevel" th:value="${categoryLevel}">
+                                <input type="hidden" id="parentId" th:value="${parentId}">
+                                <input type="hidden" id="backParentId" th:value="${backParentId}">
+                                <div class="form-group">
+                                    <label for="primaryGoodsId" class="control-label">购入商品:</label>
+                                    <input type="text" class="form-control" id="addprimaryGoodsId" name="addprimaryGoodsId"
+                                           placeholder="请输入购入商品ID" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subGoodsId" class="control-label">赠送商品:</label>
+                                   <!--  <input type="text" class="form-control" id="addSubGoodsId" name="addSubGoodsId"
+                                           placeholder="请输入赠送商品ID" required="true"> -->
+                                    <select class="form-control" id="addSubGoodsId" name="addSubGoodsId">
+                                    	<option id="giftGoods" ></option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
+			<!-- /.content-wrapper -->
+			<!-- 引入页脚footer-fragment -->
+			<div th:replace="admin/footer::footer-fragment"></div>
+</body>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<!-- ajaxupload -->
+<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
+<!-- wangEditor -->
+<script type="text/javascript"
+	src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/dist/js/saleGoods.js}"></script>
+<link rel="stylesheet" th:href="@{/admin/dist/css/saleGoods.css}">
+<script>
+	
+</script>
+
+</html>
