@@ -17,7 +17,7 @@
 				<!-- /.container-fluid -->
 			</div>
 			<!-- Main content -->
-			<div class="content">
+			<div class="content" id="main">
 				<div class="container-fluid">
 					<div class="card card-primary card-outline">
 						<div class="card-header">
@@ -50,7 +50,8 @@
 												</span> <span>終了日   <input type="date" class="endDate"
 														th:value="${#dates.format(c.endDate,'yyyy-MM-dd')}">
 												</span>
-													<button class="buttonPlus" id="button" th:if="${c.id}" th:attr="onclick=|nextLevel(this,'${c.categoryId}')|">➕</button>
+													<button class="buttonPlus" id="button" th:if="${c.id}"
+														th:onclick="'javascript:nextLevel(' +this +',' + ${c.categoryId} + ');'">➕</button>
 												</td>
 											</tr>
 										</th:block>
@@ -63,70 +64,79 @@
 					<!-- /.container-fluid -->
 				</div>
 			</div>
-
-			<!--secondLevelCategories-->
-			<div id="searchResultUl">
-				<table class="dumyLi">
-					<tbody>
-						<tr>
-							<td><select class="selected" id="inputGroupSelect05">
-									<option value="txt" class="NextLevel"></option>
-							</select></td>
-							<td><input type="checkbox" class="nextLevelCheckBox"/> <a id="categoryId"> link </a>&nbsp;&nbsp;開始日
-								<input type="date" class="nextLevelStartDate">&nbsp;&nbsp;終了日 <input type="date" class="nextLevelEndDate">
-								<button class="buttonPlus" id="button" th:attr="onclick=|nextLevel(this.categoryId)|">➕</button></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
 			<div class="content">
-            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="campaignSetModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" style="overflow: auto;">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="categoryModalLabel">Modal</h6>
-                        </div>
-                        <div class="modal-body">
-                            <form id="categoryForm">
-                                <div class="form-group">
-                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
-                                        错误信息展示栏。
-                                    </div>
-                                </div>
-                                <input type="hidden" class="form-control" id="categoryId" name="categoryId">
-                                <input type="hidden" id="categoryLevel" th:value="${categoryLevel}">
-                                <input type="hidden" id="parentId" th:value="${parentId}">
-                                <input type="hidden" id="backParentId" th:value="${backParentId}">
-                                <div class="form-group">
-                                    <label for="primaryGoodsId" class="control-label">购入商品:</label>
-                                    <input type="text" class="form-control" id="addprimaryGoodsId" name="addprimaryGoodsId"
-                                           placeholder="请输入购入商品ID" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="subGoodsId" class="control-label">赠送商品:</label>
-                                   <!--  <input type="text" class="form-control" id="addSubGoodsId" name="addSubGoodsId"
+				<!-- 模态框（Modal） -->
+				<div class="modal fade" id="campaignSetModal" tabindex="-1"
+					role="dialog" aria-labelledby="categoryModalLabel"
+					style="overflow: auto;">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h6 class="modal-title" id="categoryModalLabel">Modal</h6>
+							</div>
+							<div class="modal-body">
+								<form id="categoryForm">
+									<div class="form-group">
+										<div class="alert alert-danger" id="edit-error-msg"
+											style="display: none;">错误信息展示栏。</div>
+									</div>
+									<input type="hidden" class="form-control" id="categoryId"
+										name="categoryId"> <input type="hidden"
+										id="categoryLevel" th:value="${categoryLevel}"> <input
+										type="hidden" id="parentId" th:value="${parentId}"> <input
+										type="hidden" id="backParentId" th:value="${backParentId}">
+									<div class="form-group">
+										<label for="primaryGoodsId" class="control-label">购入商品:</label>
+										<input type="text" class="form-control" id="addprimaryGoodsId"
+											name="addprimaryGoodsId" placeholder="请输入购入商品ID"
+											required="true">
+									</div>
+									<div class="form-group">
+										<label for="subGoodsId" class="control-label">赠送商品:</label>
+										<!--  <input type="text" class="form-control" id="addSubGoodsId" name="addSubGoodsId"
                                            placeholder="请输入赠送商品ID" required="true"> -->
-                                    <select class="form-control" id="addSubGoodsId" name="addSubGoodsId">
-                                    	<option id="giftGoods" ></option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.modal -->
-        </div>
+										<select class="form-control" id="addSubGoodsId"
+											name="addSubGoodsId">
+											<option id="giftGoods"></option>
+										</select>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">取消</button>
+								<button type="button" class="btn btn-primary" id="saveButton">确认</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.modal -->
+			</div>
 			<!-- /.content-wrapper -->
 			<!-- 引入页脚footer-fragment -->
 			<div th:replace="admin/footer::footer-fragment"></div>
+			
+			<!--secondLevelCategories-->
+			<ul class="nextLevelCategory">
+				<div id="levelCategory">
+					<button type="button" class="close">×</button><br>
+					<li class="dumyLi">
+					<input type="checkbox" class="nextLevelCheckBox" />
+					 <a
+						id="categoryId"> link </a>
+						<span>開始日:</span> <input type="date"
+						class="nextLevelStartDate">
+						<span>終了日:</span> <input
+						type="date" class="nextLevelEndDate">
+						<button class="buttonPlus" id="button"
+							th:onclick="'javascript:nextLevel(' +this +',' + categoryId + ');'">➕</button>
+					</li>
+				</div>
+			</ul>
 </body>
 <!-- jQuery -->
 <script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>

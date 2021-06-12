@@ -170,7 +170,7 @@ $('#saveButton').click(function() {
 
 
 
-function nextLevel(this,categoryId) {
+function nextLevel(thi, categoryId) {
 	$.ajax({
 		type: 'POST',//方法类型
 		url: '/admin/saleGoods/nextCategory',
@@ -179,7 +179,7 @@ function nextLevel(this,categoryId) {
 		success: function(result) {
 			//サーバーが成功した場合
 			if (result.resultCode == 200) {
-				showResult(this,result)
+				showResult(thi, result)
 			} else {
 				swal(result.message, {
 					icon: "error",
@@ -195,38 +195,35 @@ function nextLevel(this,categoryId) {
 	})
 }
 
-$(".buttonPlus").focusout(function() {
+/*$(".buttonPlus").focusout(function() {
 
 	//return means jump out of this function. end.
 	if (MouseOnSearchResultUl) {
 		return;
 	}
-	$("#searchResultUl").children().toArray().forEach(function(value, index, array) {
+	$(".nextLevelCategory").children().toArray().forEach(function(value, index, array) {
 		var incFlag = $(value).attr('class').includes("dumyLi");
-		// delete elements besides dumyLi
 		if (!incFlag) {
 			$(value).remove();
 		}
-
 	})
-	//hide #searchResultUl
-	$("#searchResultUl").hide();
+	$(".nextLevelCategory").hide();
 
 })
 
 function clearResultList() {
-	$("#searchResultUl").children().toArray().forEach(function(value, index, array) {
+	$(".nextLevelCategory").children().toArray().forEach(function(value, index, array) {
 		var incFlag = $(value).attr('class').includes("dumyLi");
 		if (!incFlag) {
 			$(value).remove();
 		}
 	})
-}
-function showResult(this,result) {
+}*/
+function showResult(thi, result) {
 	var goodsList = result.data.goodsList;
 	var goodsSales = result.data.goodsSales;
 	var option = "";
-	var cloneUl = $('.searchResultUl').clone();
+	var cloneUl = $('.nextLevelCategory').clone().removeClass("nextLevelCategory");
 	for (var i = 0; i < goodsSales.length; i++) {
 		var select = $('<select/>');
 		option += '<option value=\"' + goodsSales[i].id + '\">' + goodsSales[i].campaign + '</option>'
@@ -240,36 +237,38 @@ function showResult(this,result) {
 				select.val(goodsSales[i].id);
 			}
 		}
-		el.find('input:first-child').before(select);
-		var sd = el.find("input:nth-child(4)");
-		var ed = el.find("input:nth-child(5)");
-		var checked = el.find("input:nth-child(2)");
+		cloneUl.find('input:first-child').before(select);
+		var startDated = el.find("input:nth-child(4)");
+		var endDate = el.find("input:nth-child(6)");
+		var checked = el.find("input:nth-child(1)");
 		checked.prop('checked', true);
-		sd.val(goodsSales[i].startDate);
-		ed.val(goodsSales[i].endDate);
+		startDated.val(goodsSales[i].startDate);
+		endDate.val(goodsSales[i].endDate);
 		var link = el.find("a");
 		link.text(goodsList[i].categoryName);
-		link.val(goodsList[i].categoryId);
-		$('.buttonPlus').attr('onClick','nextLevel('+goodsList[i].categoryId+');');
-		$(".dumyLi").before(el);
+		cloneUl.find('.buttonPlus').attr('onClick', 'nextLevel(' + thi + ',' + goodsList[i].categoryId + ');');
+		cloneUl.find(".dumyLi").before(el);
 	}
-	$("#searchResultUl").show();
-	appendToSearchBar(this,$("#searchResultUl"));
+	cloneUl.show();
+	//pendToSearchBar(thi, cloneUl);
+	var rect = thi.getBoundingClientRect();
+	cloneUl.css({top: rect.top,left: rect.right,position:'absolute'});
+	$("#main").append(cloneUl);
 }
 
 
-function appendToSearchBar(this,el) {
+/*function appendToSearchBar(thi, el) {
 	debugger;
 	//var searchBar = $(".checkBox");//jquery object
 	//var searchBar = document.getElementById("button");//dom
-	var rect = this.getBoundingClientRect();//转换成dom加[0]  convert jquery object to dom by searchBar[0]
+	var rect = thi.getBoundingClientRect();//转换成dom加[0]  convert jquery object to dom by searchBar[0]
 	console.log(rect.top, rect.right, rect.bottom, rect.left);
 	el.css({ top: rect.top, left: rect.right, position: 'fixed' });//相对定位relative  绝对定位absolute
-}
-$("#searchResultUl").mousemove(function() {
+}*/
+$(".nextLevelCategory").mousemove(function() {
 	MouseOnSearchResultUl = true;
 });
-$("#searchResultUl").mouseleave(function() {
+$(".nextLevelCategory").mouseleave(function() {
 	MouseOnSearchResultUl = false;
 })
 
