@@ -88,19 +88,11 @@ public class SaleGoodsController {
         return ResultGenerator.genSuccessResult(result);
     }
 	
-	@PostMapping(value = "/saleCategory/delete")
-	@ResponseBody
-	public Result deleteCategory(@RequestBody Long categoryId) {
-		if (newBeeMallGoodsService.deleteCategoryByCateId(categoryId)) {
-			return ResultGenerator.genSuccessResult();
-		} else {
-			return ResultGenerator.genFailResult("删除失败");
-		}
-	}
 
-	@PostMapping(value = "/saleCategory/save")
+	@PostMapping(value = "/saleCategory/saveOrDelete")
 	@ResponseBody
 	public Result saveCategory(@RequestBody CategorySale categorySale) {
+		if(categorySale.getFlag()) { 
 		if (Objects.isNull(categorySale.getId()) || Objects.isNull(categorySale.getCategoryId())
 				|| Objects.isNull(categorySale.getStartDate()) || Objects.isNull(categorySale.getEndDate())) {
 			return ResultGenerator.genFailResult("参数异常！");
@@ -111,6 +103,13 @@ public class SaleGoodsController {
 			return ResultGenerator.genSuccessResult();
 		} else {
 			return ResultGenerator.genFailResult(result);
+		}
+		} else {
+			if (newBeeMallGoodsService.deleteCategoryByCateId(categorySale.getCategoryId())) {
+				return ResultGenerator.genSuccessResult();
+			} else {
+				return ResultGenerator.genFailResult("删除失败");
+			}
 		}
 	}
 	

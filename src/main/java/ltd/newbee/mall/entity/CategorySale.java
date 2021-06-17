@@ -13,6 +13,8 @@ import java.util.Date;
 public class CategorySale {
    private Long id;
    
+   private Boolean flag;
+   
    private Long categoryId;
    
    private Date startDate;
@@ -25,6 +27,16 @@ public Long getId() {
 
 public void setId(Long id) {
 	this.id = id;
+}
+
+
+
+public Boolean getFlag() {
+	return flag;
+}
+
+public void setFlag(Boolean flag) {
+	this.flag = flag;
 }
 
 public Long getCategoryId() {
@@ -53,9 +65,10 @@ public void setEndDate(Date endDate) {
 
 @Override
 public String toString() {
-	return "CategorySale [id=" + id + ", categoryId=" + categoryId + ", startDate=" + startDate + ", endDate=" + endDate
-			+ "]";
+	return "CategorySale [id=" + id + ", flag=" + flag + ", categoryId=" + categoryId + ", startDate=" + startDate
+			+ ", endDate=" + endDate + "]";
 }
+
 
 
 

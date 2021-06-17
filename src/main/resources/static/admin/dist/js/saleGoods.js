@@ -222,41 +222,88 @@ function clearResultList() {
 function showResult(thi, result) {
 	var goodsList = result.data.goodsList;
 	var goodsSales = result.data.goodsSales;
-	var option = "";
 	var cloneUl = $('.nextLevelCategory').clone().removeClass("nextLevelCategory");
-	for (var i = 0; i < goodsSales.length; i++) {
-		var select = $('<select/>');
-		option += '<option value=\"' + goodsSales[i].id + '\">' + goodsSales[i].campaign + '</option>'
-		select.html(option);
-		var el = $(".dumyLi").clone().removeClass("dumyLi");
-		for (var j = 0; j < goodsList.length; j++) {
-			if (goodsList[j].id == null) {
-				select.val(goodsSales[0].id);
-			}
-			if (goodsList[j].id != null && goodsSales[i].id == goodsList[j].id) {
-				select.val(goodsSales[i].id);
+	for (var i = 0; i < goodsList.length; i++) {
+		var option = "";
+		var select = $('<select/>', { class: "custom-select" });
+		var el = cloneUl.find(".dumyLi").clone().removeClass("dumyLi");
+		for (var j = 0; j < goodsSales.length; j++) {
+			option += '<option value=\"' + goodsSales[j].id + '\">' + goodsSales[j].campaign + '</option>'
+			select.html(option);
+			if (goodsList[i].id == goodsSales[j].id) {
+				select.val(goodsSales[j].id);
+				el.find(".checkbox").prop('checked', true);
 			}
 		}
-		cloneUl.find('input:first-child').before(select);
-		var startDated = el.find("input:nth-child(4)");
-		var endDate = el.find("input:nth-child(6)");
-		var checked = el.find("input:nth-child(1)");
-		checked.prop('checked', true);
-		startDated.val(goodsSales[i].startDate);
-		endDate.val(goodsSales[i].endDate);
-		var link = el.find("a");
-		link.text(goodsList[i].categoryName);
-		cloneUl.find('.buttonPlus').attr('onClick', 'nextLevel(' + thi + ',' + goodsList[i].categoryId + ');');
+		el.find('input:first-child').before(select);
+		var a = el.find("a");
+		a.text(goodsList[i].categoryName);
+		var startDated = el.find("input:nth-child(6)");
+		var endDate = el.find("input:nth-child(7)");
+		var categoryId = el.find("input:nth-child(3)");
+		categoryId.val(goodsList[i].categoryId);
+		startDated.val(goodsList[i].startDate);
+		endDate.val(goodsList[i].endDate);
+		el.find('.buttonPlus').attr('onClick', 'nextLevel(this,' + goodsList[i].categoryId + ')');
+		el.find(".checkbox").attr('onchange', 'checkPopup(this)');
 		cloneUl.find(".dumyLi").before(el);
+		cloneUl.find(".close").click(function() {
+			cloneUl.find("#levelCategory").remove();
+		})
 	}
 	cloneUl.show();
 	//pendToSearchBar(thi, cloneUl);
 	var rect = thi.getBoundingClientRect();
-	cloneUl.css({top: rect.top,left: rect.right,position:'absolute'});
+	cloneUl.css({ top: rect.top, left: rect.right, position: 'absolute' });
 	$("#main").append(cloneUl);
 }
 
 
+function checkPopup(thi) {
+	debugger;
+	var flag = $(thi).is(':checked');
+	var id = $(thi).parent().parent().find(".custom-select").val();
+	var startDate = $(thi).parent().find(".startDate").val();
+	var endDate = $(thi).parent().find(".endDate").val();
+	var categoryId = $(thi).parent().find(".categoryValue").val();
+	var data = {
+		"flag": flag,
+		"id": id,
+		"startDate": startDate,
+		"endDate": endDate,
+		"categoryId": categoryId
+	};
+	$.ajax({
+		type: 'POST',//方法类型
+		url: '/admin//saleCategory/saveOrDelete',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+		success: function(result) {
+			//サーバーが成功した場合
+			if (result.resultCode == 200) {
+				if (data.flag) {
+					swal("插入成功", {
+						icon: "success",
+					});
+				} else {
+					swal("删除成功", {
+						icon: "success",
+					});
+				}
+			} else {
+				swal(result.message, {
+					icon: "error",
+				});
+			}
+
+		},
+		error: function() {
+			swal("有効期限外", {
+				icon: "error",
+			});
+		}
+	})
+}
 /*function appendToSearchBar(thi, el) {
 	debugger;
 	//var searchBar = $(".checkBox");//jquery object

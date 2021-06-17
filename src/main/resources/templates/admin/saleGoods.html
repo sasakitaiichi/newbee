@@ -44,7 +44,9 @@
 												<td class="fontSize">&nbsp; <input type="checkbox"
 													name="checkBox" class="checkBox" th:value="${c.categoryId}"
 													th:checked="${c.id} !=null? true:false"
-													th:text="${c.categoryName}" /> <span>開始日   <input
+													th:text="${c.categoryName}" /> 
+													<input type="hidden" class="categoryValue" th:value="${c.categoryId}">
+													<span>開始日   <input
 														type="date" class="startDate"
 														th:value="${#dates.format(c.startDate,'yyyy-MM-dd')}">
 												</span> <span>終了日   <input type="date" class="endDate"
@@ -86,7 +88,7 @@
 									</div>
 									<input type="hidden" class="form-control" id="categoryId"
 										name="categoryId"> <input type="hidden"
-										id="categoryLevel" th:value="${categoryLevel}"> <input
+										id="categoryLevel" > <input
 										type="hidden" id="parentId" th:value="${parentId}"> <input
 										type="hidden" id="backParentId" th:value="${backParentId}">
 									<div class="form-group">
@@ -125,15 +127,15 @@
 				<div id="levelCategory">
 					<button type="button" class="close">×</button><br>
 					<li class="dumyLi">
-					<input type="checkbox" class="nextLevelCheckBox" />
+					<input type="checkbox" class="checkbox" />
+					<input type="hidden" class="categoryValue" >
 					 <a
 						id="categoryId"> link </a>
 						<span>開始日:</span> <input type="date"
-						class="nextLevelStartDate">
+						class="startDate">
 						<span>終了日:</span> <input
-						type="date" class="nextLevelEndDate">
-						<button class="buttonPlus" id="button"
-							th:onclick="'javascript:nextLevel(' +this +',' + categoryId + ');'">➕</button>
+						type="date" class="endDate">
+						<button class="buttonPlus" id="button">➕</button>
 					</li>
 				</div>
 			</ul>
